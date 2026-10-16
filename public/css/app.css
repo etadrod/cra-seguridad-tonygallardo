@@ -322,3 +322,8 @@ body.redimensionando .ventana * { cursor: inherit; }
 .tipo-act small { color: var(--suave); font-size: .78rem; }
 
 .aviso-eval { border: 1px solid var(--acento); background: var(--acento-fondo); border-radius: 8px; padding: 8px 10px; font-size: .85rem; margin: 6px 0; }
+
+.eval-int { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: .85rem; padding: 2px 4px; }
+.eval-int label { color: var(--texto); font-weight: 600; }
+.eval-int input { width: 86px; padding: 4px 6px; }
+#d-eval-prog { font-weight: 700; color: var(--acento); margin: 0; }

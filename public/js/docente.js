@@ -15,9 +15,10 @@
         const sel = D.v.programa.filter((p) => p.entra);
         if (!sel.length && !confirm('No hay ningún supuesto marcado en «Entra». En la evaluación solo entran los casos que lances tú. ¿Iniciar igualmente?')) return;
         const libres = D.v.puestos.filter((p) => p.alumno && !p.alumno.esBot).length;
-        if (!confirm(`Evaluación con ${sel.length} supuesto(s) marcados, iguales para los ${libres} alumno(s) conectados. ¿Iniciar?`)) return;
+        const iv = Number($('#d-intervalo').value) || 240;
+        if (!confirm(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), uno cada ${iv} s, iguales para los ${libres} alumno(s) conectados. Duración aproximada: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
       }
-      res(await emitir('doc_iniciar', { tipo }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas ni la guía hasta que la finalices.' : 'Práctica iniciada.');
+      res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 240 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas ni la guía hasta que la finalices.' : 'Práctica iniciada.');
     });
     $('#d-finalizar').addEventListener('click', async () => {
       if (!confirm('¿Finalizar la actividad? Las incidencias abiertas se evaluarán tal como estén.')) return;
@@ -56,6 +57,7 @@
       $$('#d-programa tbody .p-entra').forEach((c) => { c.checked = on; });
     });
     $('#d-lanzar-todos').addEventListener('click', async () => {
+      if (D.v && (D.v.actividad.tipo === 'evaluacion' || ($('input[name="tipo-act"]:checked') || {}).value === 'evaluacion')) return;
       const filas = $$('#d-programa tbody tr').filter((tr) => $('.p-entra', tr).checked);
       if (!filas.length) return aviso('No hay supuestos marcados.', 'error');
       for (const tr of filas) { const r = await emitir('doc_lanzar', { supId: tr.dataset.sup, destino: $('.p-dest', tr).value }); if (r.error) return aviso(r.error, 'error'); }
@@ -169,6 +171,20 @@
     const evalSel = (($('input[name="tipo-act"]:checked') || {}).value === 'evaluacion' && a.estado !== 'en_curso') || (a.estado === 'en_curso' && a.tipo === 'evaluacion');
     $$('#d-programa .p-dest').forEach((sel) => { sel.disabled = evalSel; if (evalSel) sel.value = 'todos'; });
     $('#d-eval-aviso').hidden = !evalSel;
+    $('#d-eval-int').hidden = !evalSel;
+    $('#d-intervalo').disabled = a.estado === 'en_curso';
+    if (a.estado === 'en_curso' && a.tipo === 'evaluacion' && a.intervalo) $('#d-intervalo').value = a.intervalo;
+    // en evaluación no se lanza a mano: botones desactivados y minutos sin efecto
+    $('#d-lanzar-todos').disabled = evalSel;
+    $$('#d-programa [data-lanzar]').forEach((b) => { b.disabled = evalSel; });
+    $$('#d-programa .p-min').forEach((i) => { i.disabled = evalSel; });
+    $$('#d-programa .p-entra').forEach((i) => { i.disabled = a.estado === 'en_curso' && a.tipo === 'evaluacion'; });
+    const ep = $('#d-eval-prog');
+    if (a.estado === 'en_curso' && a.tipo === 'evaluacion') {
+      const sec = a.secuencia || [];
+      ep.hidden = false;
+      ep.dataset.total = sec.length; ep.dataset.enviados = a.enviados || 0; ep.dataset.iv = a.intervalo; ep.dataset.inicio = a.inicio;
+    } else ep.hidden = true;
     const nEntra = v.programa.filter((p) => p.entra).length;
     const mt = $('#d-entra-todos');
     mt.checked = nEntra === v.programa.length; mt.indeterminate = nEntra > 0 && nEntra < v.programa.length;
@@ -257,6 +273,12 @@
     if (!v) return;
     const a = v.actividad;
     const ahora = a.pausadaDesde || ahoraSrv();
+    const ep = $('#d-eval-prog');
+    if (ep && !ep.hidden) {
+      const tot = Number(ep.dataset.total), env = Number(ep.dataset.enviados), iv = Number(ep.dataset.iv);
+      const prox = Number(ep.dataset.inicio) + env * iv * 1000 - ahora;
+      ep.textContent = env >= tot ? `Enviados ${env}/${tot} supuestos. Ya no entran más.` : `Enviados ${env}/${tot} · siguiente supuesto en ${fmt(Math.max(0, prox / 1000))}`;
+    }
     $('#d-reloj').textContent = a.inicio ? fmt(((a.estado === 'finalizada' ? a.fin : ahora) - a.inicio) / 1000) : '--:--';
     const obj = S.datos ? S.datos.config.tiempoObjetivoSeg : 120;
     $$('#d-puestos [data-cogida]').forEach((e) => { const s = (ahora - Number(e.dataset.cogida)) / 1000; const l = Number(e.dataset.lim) || obj; e.textContent = `${fmt(s)} / ${fmt(l)}`; e.closest('.puesto').classList.toggle('fuera', s > l); });

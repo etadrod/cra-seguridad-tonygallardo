@@ -24,7 +24,7 @@ app.get('/vendor/autotable.js', (_q, r) => r.sendFile(path.join(__dirname, 'node
 app.get('/api/datos', (_q, r) => r.json({
   config: {
     empresa: datos.config.empresa, nombreSala: datos.config.nombreSala, numPuestos: datos.config.numPuestos,
-    tiempoObjetivoSeg: datos.config.tiempoObjetivoSeg, cuerposSeguridad: datos.config.cuerposSeguridad, mostrarNotaAlCerrar: datos.config.mostrarNotaAlCerrar,
+    tiempoObjetivoSeg: datos.config.tiempoObjetivoSeg, intervaloEvaluacionSeg: datos.config.intervaloEvaluacionSeg, cuerposSeguridad: datos.config.cuerposSeguridad, mostrarNotaAlCerrar: datos.config.mostrarNotaAlCerrar,
   },
   preguntas: datos.preguntas.map(({ id, grupo, tipo, texto }) => ({ id, grupo, tipo, texto })),
   clasificaciones: datos.rubrica.clasificaciones,
@@ -79,13 +79,13 @@ io.on('connection', (socket) => {
     socket.join('docente');
     ack(cb, { ok: true, ahora: Date.now(), vista: sala.vistaDocente(), persistencia: persistencia.modo, limite: limite.estado() });
   });
-  socket.on('doc_iniciar', soloDocente(socket, ({ tipo }) => sala.iniciarActividad(tipo)));
+  socket.on('doc_iniciar', soloDocente(socket, ({ tipo, intervalo }) => sala.iniciarActividad(tipo, intervalo)));
   socket.on('doc_finalizar', soloDocente(socket, () => sala.finalizarActividad()));
   socket.on('doc_pausa', soloDocente(socket, () => sala.pausar()));
   socket.on('doc_reanudar', soloDocente(socket, () => sala.reanudar()));
   socket.on('doc_test', soloDocente(socket, () => sala.iniciarTest()));
   socket.on('doc_fin_test', soloDocente(socket, () => sala.finalizarTest()));
-  socket.on('doc_lanzar', soloDocente(socket, ({ supId, destino }) => sala.lanzar(supId, destino)));
+  socket.on('doc_lanzar', soloDocente(socket, ({ supId, destino }) => sala.lanzarManual(supId, destino)));
   socket.on('doc_programa', soloDocente(socket, ({ lista }) => sala.setPrograma(lista)));
   socket.on('doc_liberar', soloDocente(socket, ({ puesto }) => sala.liberarPuesto(Number(puesto))));
   socket.on('doc_incidencia', soloDocente(socket, ({ id }) => sala.incidenciaDocente(id) || { error: 'No encontrada.' }));
