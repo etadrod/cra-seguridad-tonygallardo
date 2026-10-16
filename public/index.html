@@ -6,7 +6,7 @@
 <title>CRA · Simulador</title>
 <meta name="description" content="Simulador de Central Receptora de Alarmas · CFGM Técnico en Seguridad · CIFP Tony Gallardo">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101a2b'/%3E%3Cpath d='M16 6l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10v-6z' fill='%23f5a524'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/app.css?v=14">
+<link rel="stylesheet" href="css/app.css?v=15">
 </head>
 <body>
 <a class="saltar" href="#principal">Saltar al contenido</a>
@@ -144,6 +144,7 @@
         </section>
         <section class="panel" aria-labelledby="t-sup">
           <h2 id="t-sup">Supuestos programados</h2>
+          <p class="aviso-eval" id="d-eval-aviso" hidden>🎓 <strong>Evaluación:</strong> solo entran los supuestos que marques en «Entra» (en su minuto) o que lances con «Lanzar ya», y <strong>todos los puestos reciben los mismos</strong>. El destino queda fijado en «Todos». Si un alumno se incorpora tarde, recibe los casos ya enviados.</p>
           <p class="ayuda">«Entra»: se lanza solo en el minuto indicado al iniciar la actividad. Destino «Todos»: una copia por puesto ocupado (evaluación homogénea). «Común»: la coge el primero.</p>
           <div class="tabla-env"><table class="tabla compacta" id="d-programa">
             <thead><tr><th><label class="entra-todos" title="Marcar / desmarcar todos"><input type="checkbox" id="d-entra-todos" aria-label="Marcar o desmarcar todos los supuestos"> Entra</label></th><th>Min</th><th>Supuesto</th><th>Destino</th><th><span class="sr">Lanzar</span></th></tr></thead>
@@ -258,10 +259,10 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/vendor/jspdf.js"></script>
 <script src="/vendor/autotable.js"></script>
-<script src="js/app.js?v=14"></script>
-<script src="js/pdf.js?v=14"></script>
-<script src="js/teleoperador.js?v=14"></script>
-<script src="js/docente.js?v=14"></script>
-<script src="js/visor.js?v=14"></script>
+<script src="js/app.js?v=15"></script>
+<script src="js/pdf.js?v=15"></script>
+<script src="js/teleoperador.js?v=15"></script>
+<script src="js/docente.js?v=15"></script>
+<script src="js/visor.js?v=15"></script>
 </body>
 </html>

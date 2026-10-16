@@ -6,10 +6,17 @@
   function montar() {
     if (D.montado) return;
     D.montado = true;
+    $$('input[name="tipo-act"]').forEach((r) => r.addEventListener('change', () => D.v && patch(D.v)));
     $('#d-iniciar').addEventListener('click', async () => {
       const v = D.v;
       if (v && v.cerradas.length && !confirm('Se borrarán los resultados del ejercicio anterior. ¿Has descargado ya los informes?')) return;
       const tipo = ($('input[name="tipo-act"]:checked') || {}).value || 'practica';
+      if (tipo === 'evaluacion') {
+        const sel = D.v.programa.filter((p) => p.entra);
+        if (!sel.length && !confirm('No hay ningún supuesto marcado en «Entra». En la evaluación solo entran los casos que lances tú. ¿Iniciar igualmente?')) return;
+        const libres = D.v.puestos.filter((p) => p.alumno && !p.alumno.esBot).length;
+        if (!confirm(`Evaluación con ${sel.length} supuesto(s) marcados, iguales para los ${libres} alumno(s) conectados. ¿Iniciar?`)) return;
+      }
       res(await emitir('doc_iniciar', { tipo }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas ni la guía hasta que la finalices.' : 'Práctica iniciada.');
     });
     $('#d-finalizar').addEventListener('click', async () => {
@@ -159,6 +166,9 @@
       $('.p-entra', tr).checked = p.entra; $('.p-min', tr).value = p.minuto; $('.p-dest', tr).value = p.destino;
     });
 
+    const evalSel = (($('input[name="tipo-act"]:checked') || {}).value === 'evaluacion' && a.estado !== 'en_curso') || (a.estado === 'en_curso' && a.tipo === 'evaluacion');
+    $$('#d-programa .p-dest').forEach((sel) => { sel.disabled = evalSel; if (evalSel) sel.value = 'todos'; });
+    $('#d-eval-aviso').hidden = !evalSel;
     const nEntra = v.programa.filter((p) => p.entra).length;
     const mt = $('#d-entra-todos');
     mt.checked = nEntra === v.programa.length; mt.indeterminate = nEntra > 0 && nEntra < v.programa.length;

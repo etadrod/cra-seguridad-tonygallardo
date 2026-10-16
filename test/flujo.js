@@ -115,8 +115,13 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     ok((await a1.pedir('coger', { id: 'x' })).error, 'tras finalizar no se pueden coger señales');
     // Evaluación: sin nota ni informe del alumno hasta finalizar
     ok((await doc.pedir('doc_iniciar', { tipo: 'evaluacion' })).ok, 'evaluación iniciada');
-    await doc.pedir('doc_lanzar', { supId: 'S01', destino: 'puesto:2' });
-    await hasta(() => a2.ultima.cola.length === 1 && !a2.ultima.activa);
+    const le = await doc.pedir('doc_lanzar', { supId: 'S01', destino: 'comun' });
+    ok(le.ids.length === 2, 'evaluación: el supuesto llega a todos los puestos aunque se pida cola común');
+    await hasta(() => a1.ultima.cola.length === 1 && a2.ultima.cola.length === 1 && !a2.ultima.activa);
+    const tarde = await cliente(srv.url); await tarde.pedir('hola', { clientId: 'alu-3' });
+    await tarde.pedir('entrar', { nombre: 'Rayco Tardío', puesto: 3 });
+    await hasta(() => tarde.ultima && tarde.ultima.cola.length === 1);
+    ok(true, 'evaluación: el alumno que entra tarde recibe los casos ya enviados');
     await a2.pedir('coger', { id: a2.ultima.cola[0].id });
     const ce = await a2.pedir('cerrar', { clasificacion: 'falsa_error_usuario', observaciones: 'Error de usuario confirmado con palabra clave.' });
     ok(ce.ok && ce.eval === null, 'en evaluación no se muestra la nota al cerrar');

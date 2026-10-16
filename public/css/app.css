@@ -320,3 +320,5 @@ body.redimensionando .ventana * { cursor: inherit; }
 .tipo-act input { width: 18px; height: 18px; margin-top: 2px; flex: none; }
 .tipo-act span { display: grid; }
 .tipo-act small { color: var(--suave); font-size: .78rem; }
+
+.aviso-eval { border: 1px solid var(--acento); background: var(--acento-fondo); border-radius: 8px; padding: 8px 10px; font-size: .85rem; margin: 6px 0; }
