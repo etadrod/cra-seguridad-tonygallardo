@@ -6,7 +6,17 @@
   function montar() {
     if (D.montado) return;
     D.montado = true;
-    $$('input[name="tipo-act"]').forEach((r) => r.addEventListener('change', () => D.v && patch(D.v)));
+    $$('input[name="tipo-act"]').forEach((r) => r.addEventListener('change', () => {
+      // Evaluación: se marcan por defecto los supuestos que cubren un incidente de cada tipo (el docente puede cambiarlos)
+      if (r.checked && r.value === 'evaluacion' && D.v && D.v.actividad.estado !== 'en_curso' && S.datos) {
+        const def = new Set(S.datos.config.evaluacionPorDefecto || []);
+        if (def.size) {
+          emitir('doc_programa', { lista: D.v.programa.map((p) => ({ supId: p.supId, entra: def.has(p.supId), destino: 'todos' })) });
+          aviso(`Marcados por defecto ${def.size} supuestos: uno de cada tipo de incidente (${[...def].join(', ')}). Puedes cambiarlos antes de iniciar.`, 'ok', 5000);
+        }
+      }
+      if (D.v) patch(D.v);
+    }));
     $('#d-iniciar').addEventListener('click', async () => {
       const v = D.v;
       if (v && v.cerradas.length && !confirm('Se borrarán los resultados del ejercicio anterior. ¿Has descargado ya los informes?')) return;

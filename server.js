@@ -24,7 +24,7 @@ app.get('/vendor/autotable.js', (_q, r) => r.sendFile(path.join(__dirname, 'node
 app.get('/api/datos', (_q, r) => r.json({
   config: {
     empresa: datos.config.empresa, nombreSala: datos.config.nombreSala, numPuestos: datos.config.numPuestos,
-    tiempoObjetivoSeg: datos.config.tiempoObjetivoSeg, intervaloEvaluacionSeg: datos.config.intervaloEvaluacionSeg, cuerposSeguridad: datos.config.cuerposSeguridad, mostrarNotaAlCerrar: datos.config.mostrarNotaAlCerrar,
+    tiempoObjetivoSeg: datos.config.tiempoObjetivoSeg, intervaloEvaluacionSeg: datos.config.intervaloEvaluacionSeg, evaluacionPorDefecto: datos.config.evaluacionPorDefecto || [], cuerposSeguridad: datos.config.cuerposSeguridad, mostrarNotaAlCerrar: datos.config.mostrarNotaAlCerrar,
   },
   preguntas: datos.preguntas.map(({ id, grupo, tipo, texto }) => ({ id, grupo, tipo, texto })),
   clasificaciones: datos.rubrica.clasificaciones,

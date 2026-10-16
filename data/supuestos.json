@@ -1871,5 +1871,85 @@
       "datosAviso": [],
       "solucion": "La titular no puede confirmar quién hay dentro: verificación personal in situ con vigilante. Confirmados los huéspedes, falsa alarma por error de usuario; registrar y no avisar a FCSE."
     }
+  },
+  {
+    "id": "S26",
+    "titulo": "Falsa alarma de causa desconocida en el taller",
+    "docente": "Una única activación del volumétrico del taller que se restaura sola. Vídeo sin movimiento, el titular confirma que no hay nadie ni animales ni obras, y el vigilante in situ no encuentra nada anómalo. No se identifica la causa: falsa alarma de causa desconocida. Registrar y proponer revisión al SAT; no FCSE.",
+    "origen": "senal",
+    "abonadoId": "ABN-1012",
+    "minuto": 25,
+    "senal": {
+      "codigo": "E130",
+      "evento": "Alarma de intrusión",
+      "zona": "Z03"
+    },
+    "secuencia": [
+      {
+        "seg": 0,
+        "zona": "Z03",
+        "evento": "Volumétrico taller · ALARMA (restaura a los 3 s)"
+      },
+      {
+        "seg": 0,
+        "zona": "Z01/Z02",
+        "evento": "Sin activaciones en exposición ni campa"
+      }
+    ],
+    "video": "Cámara taller: imagen estable, vehículos en los elevadores y herramientas en su sitio. No se observa ningún movimiento ni personas.",
+    "videoClip": "S26",
+    "llamada": {
+      "quien": "Yeray Cabrera Umpiérrez (gerente)",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "Yeray, dígame.",
+      "respuestas": {
+        "identificarse": "Yeray Cabrera, el gerente del concesionario.",
+        "que_ocurre": "¿En el taller? Qué raro… cerramos a las ocho y lo dejé todo apagado.",
+        "error_usuario": "No, la alarma la conecté yo al salir y no ha vuelto nadie.",
+        "en_lugar": "No, estoy en casa.",
+        "personas": "No, a estas horas no queda nadie.",
+        "autores": "No sé, no he visto nada raro al cerrar.",
+        "armas": "No, no, ¿por qué?",
+        "heridos": "No hay nadie dentro.",
+        "consciente": "Sí, yo estoy bien.",
+        "acceso": "El servicio de acuda tiene llaves si hace falta entrar."
+      },
+      "porDefecto": "No se me ocurre qué ha podido ser. ¿Mandan a alguien a mirar?"
+    },
+    "vigilante": {
+      "seg": 25,
+      "informe": "Vigilante en el lugar: perímetro, puertas y ventanas intactos. Revisa el taller con el acuda: sin presencia, sin animales, sin corrientes de aire ni equipos encendidos. No se identifica la causa."
+    },
+    "tecnico": "Servicio técnico: recibido. Se revisará el detector del taller (posible fallo o sensibilidad) en la próxima visita.",
+    "eval": {
+      "tipo": "falsa_desconocida",
+      "preguntasClave": [
+        "palabra_clave",
+        "error_usuario",
+        "personas"
+      ],
+      "verificacion": {
+        "algunaDe": [
+          "video",
+          "vigilante",
+          "secuencial"
+        ],
+        "obligatorias": [
+          "video"
+        ],
+        "prohibidas": []
+      },
+      "avisos": {
+        "obligatorios": [
+          "titular"
+        ],
+        "prohibidos": [
+          "fcse"
+        ]
+      },
+      "datosAviso": [],
+      "solucion": "Una sola zona que se restaura: verificar por vídeo (sin movimiento) y llamar al titular con palabra clave (sin error de usuario ni personas). Si se envía vigilante y no halla nada, no se conoce la causa: cerrar como falsa alarma de causa desconocida, registrar y proponer revisión al SAT. No procede FCSE."
+    }
   }
 ]

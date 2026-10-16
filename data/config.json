@@ -17,5 +17,17 @@
   "notaNormativa": "Referencias normativas: Ley 5/2014 (arts. 5.1.g, 47 y 48), RD 2364/1994 (arts. 46 a 51), Orden INT/316/2011 (modificada por Orden INT/1504/2013), UNE-EN 50130, 50131, 50136 y 50518. Artículos y vigencia pendientes de verificación por el docente.",
   "tiempoPracticaSeg": 240,
   "tiempoEvaluacionSeg": 190,
-  "intervaloEvaluacionSeg": 240
+  "intervaloEvaluacionSeg": 240,
+  "evaluacionPorDefecto": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S11",
+    "S26"
+  ]
 }

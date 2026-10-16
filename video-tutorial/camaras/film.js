@@ -24,6 +24,7 @@ const CLIPS = [
   { id: 'S21', cam: 'CAM 02 · ZONA DE VENTA', hora: [23, 9, 0], dibujar: sinSenal },
   { id: 'S22', cam: 'CAM 02 · PATIO', hora: [0, 41, 27], dibujar: patio },
   { id: 'S24', cam: 'CAM 03 · LÍNEA DE CAJAS', hora: [19, 52, 33], dibujar: cajas },
+  { id: 'S26', cam: 'CAM 03 · TALLER', hora: [2, 17, 44], dibujar: taller },
 ];
 
 // ---------------------------------------------------------------- utilidades de dibujo
@@ -337,6 +338,23 @@ function cajas(ctx, t) {
   // hombre con gorra, mano en el bolsillo como si ocultara algo
   persona(ctx, x, 1060, 1.12, { paso: sale ? andar(t, 9) : 0, brazoD: 0.08, brazoI: sale ? 0.4 : 1.25 }, 24);
   ctx.fillStyle = g(90); ctx.fillRect(x - 46, 1060 - 520, 100, 20);
+}
+
+function taller(ctx, t) {
+  sala(ctx, 40, 54, 46);
+  // dos elevadores con coches, banco de herramientas y estantería: todo quieto
+  for (let i = 0; i < 2; i++) {
+    const x = 470 + i * 560;
+    rect(ctx, x, 700, 20, 120, g(90)); rect(ctx, x + 400, 700, 20, 120, g(90));
+    rect(ctx, x - 10, 690, 440, 14, g(110));
+    rect(ctx, x + 20, 560, 380, 120, g(70 + i * 8)); rect(ctx, x + 90, 500, 230, 70, g(82));
+    ctx.fillStyle = g(26); ctx.beginPath(); ctx.arc(x + 80, 685, 34, 0, 7); ctx.arc(x + 340, 685, 34, 0, 7); ctx.fill();
+  }
+  rect(ctx, 380, 250, 520, 16, g(80)); for (let k = 0; k < 6; k++) rect(ctx, 400 + k * 80, 270, 14, 60 + (k % 3) * 18, g(100));
+  rect(ctx, 1300, 230, 220, 520, g(60)); for (let k = 0; k < 5; k++) rect(ctx, 1300, 300 + k * 90, 220, 10, g(88));
+  // piloto del detector en la esquina: un solo destello al principio
+  if (t < 0.6 && Math.sin(t * 30) > 0) { ctx.fillStyle = 'rgb(255,60,60)'; ctx.beginPath(); ctx.arc(1505, 252, 7, 0, 7); ctx.fill(); }
+  rect(ctx, 1470, 210, 50, 34, g(150));
 }
 
 // ---------------------------------------------------------------- OSD de la cámara
