@@ -54,28 +54,46 @@
       const r = await emitir('doc_informes');
       if (r.error) return aviso(r.error, 'error');
       if (!r.alumnos.length) return aviso('Todavía no hay incidencias evaluadas.', 'error');
-      for (const al of r.alumnos) { PDF.informeAlumno({ cabecera: r.cabecera, alumno: al }); await new Promise((x) => setTimeout(x, 400)); }
+      PDF.individuales(r);
     });
 
     $('#d-puestos').addEventListener('click', async (e) => {
       const b = e.target.closest('[data-p]');
-      if (!b) return;
+      if (!b) {
+        // Pulsar en cualquier parte de la tarjeta abre el visualizador del puesto
+        const card = e.target.closest('.puesto[data-np]');
+        if (card && !card.classList.contains('libre')) observar(Number(card.dataset.np));
+        return;
+      }
       const n = Number(b.dataset.n);
       const p = D.v.puestos.find((x) => x.n === n);
-      if (b.dataset.p === 'obs' && p.activa) observar(p.activa.id);
+      if (b.dataset.p === 'obs') observar(n);
       if (b.dataset.p === 'pdf' && p.alumno) {
         const r = await emitir('doc_informe_alumno', { id: p.alumno.id });
         if (r.error) return aviso(r.error, 'error');
         PDF.informeAlumno(r);
       }
       if (b.dataset.p === 'lib' && confirm(`¿Liberar el puesto ${n}? El alumno conserva sus resultados.`)) res(await emitir('doc_liberar', { puesto: n }), `Puesto ${n} liberado.`);
-      if (b.dataset.p === 'msg') { $('#d-msg-destino').value = `puesto:${n}`; $('#d-msg-texto').focus(); }
+      if (b.dataset.p === 'msg') { panelMensajes(true); $('#d-msg-destino').value = `puesto:${n}`; $('#d-msg-texto').focus(); }
+    });
+    $('#d-puestos').addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const card = e.target.closest('.puesto[data-np]');
+      if (card && e.target === card && !card.classList.contains('libre')) { e.preventDefault(); observar(Number(card.dataset.np)); }
     });
     $('#d-cerradas').addEventListener('click', async (e) => {
       const b = e.target.closest('[data-ver]');
       if (!b) return;
       const r = await emitir('doc_incidencia', { id: b.dataset.ver });
       if (r.error) return aviso(r.error, 'error');
+      verCerrada(r);
+    });
+    $('#m-cuerpo').addEventListener('click', async (e) => {
+      const b = e.target.closest('[data-obs-ver]');
+      if (!b) return;
+      const r = await emitir('doc_incidencia', { id: b.dataset.obsVer });
+      if (r.error) return aviso(r.error, 'error');
+      D.observando = null;
       verCerrada(r);
     });
     $('#d-f-msg').addEventListener('submit', async (e) => {
@@ -86,6 +104,7 @@
       const r = await emitir('doc_msg', { destino: $('#d-msg-destino').value, texto });
       if (r.error) aviso(r.error, 'error');
     });
+    msgPanel.alAbrir.push(() => { if (S.rol === 'docente' && D.v) { D.msgVistos = D.v.mensajes.filter((m) => m.de !== 'docente').length; badgeMensajes(0); const c = $('#d-mensajes'); c.scrollTop = c.scrollHeight; } });
     setInterval(tic, 500);
   }
 
@@ -151,9 +170,12 @@
       c.innerHTML = v.mensajes.length ? v.mensajes.map((m) => `<div class="m ${m.de === 'docente' ? 'yo' : ''}"><small>${esc(nombre(m.de))}${m.de === 'docente' ? ` → ${destino(m.destino)}` : ''} · ${hora(m.t)}</small>${esc(m.texto)}</div>`).join('') : '<p class="ayuda">Sin mensajes.</p>';
       c.scrollTop = c.scrollHeight;
       const ult = v.mensajes[v.mensajes.length - 1];
-      if (ult && ult.de !== 'docente' && D.firmas.mensajes !== undefined && D.yaVisto) aviso(`Mensaje de ${nombre(ult.de)}: ${ult.texto}`);
+      if (ult && ult.de !== 'docente' && D.yaVisto && !msgPanel.abierto) aviso(`Mensaje de ${nombre(ult.de)}: ${ult.texto}`);
       D.yaVisto = true;
     }
+    const recibidos = v.mensajes.filter((m) => m.de !== 'docente').length;
+    if (msgPanel.abierto || D.msgVistos === undefined) D.msgVistos = recibidos;
+    badgeMensajes(recibidos - D.msgVistos);
     if (D.observando) pintarObservacion();
     tic();
   }
@@ -174,13 +196,13 @@
     $('#d-puestos').innerHTML = v.puestos.map((p) => {
       const a = p.alumno;
       const cls = !a ? 'libre' : p.activa ? 'atendiendo' : a.conectado ? 'ocupado' : 'desconectado';
-      return `<div class="puesto ${cls}" data-np="${p.n}">
+      return `<div class="puesto ${cls}" data-np="${p.n}" ${a ? `tabindex="0" role="button" aria-label="Visualizar el puesto ${p.n} (${esc(a.nombre)})" title="Pulsa para visualizar el puesto"` : ''}>
         <span class="n">PUESTO ${String(p.n).padStart(2, '0')} ${a && a.esBot ? '· BOT' : ''}${a && !a.conectado ? ' · desconectado' : ''}</span>
         <span class="nom">${a ? esc(a.nombre) : 'Libre'}</span>
         ${p.activa ? `<span>${esc(p.activa.codigo)} · ${esc(p.activa.abonado)}</span><span class="num" data-cogida="${p.activa.cogida}">00:00</span><div class="mini-barra"><div data-barra="${p.activa.cogida}"></div></div>` : `<span class="ayuda">${a ? 'Disponible' : '—'}</span>`}
         ${a ? `<span>Cerradas: <strong>${p.cerradas}</strong> · Media: <strong class="${claseNota(p.notaMedia)}">${p.notaMedia == null ? '—' : p.notaMedia.toFixed(2)}</strong></span>` : ''}
         ${a ? `<div class="acc">
-          ${p.activa ? `<button class="btn" data-p="obs" data-n="${p.n}">Observar</button>` : ''}
+          <button class="btn" data-p="obs" data-n="${p.n}">Visualizar</button>
           <button class="btn" data-p="pdf" data-n="${p.n}" ${p.cerradas ? '' : 'disabled'}>PDF</button>
           ${a.esBot ? '' : `<button class="btn" data-p="msg" data-n="${p.n}">Mensaje</button><button class="btn fantasma" data-p="lib" data-n="${p.n}" ${p.activa ? 'disabled' : ''}>Liberar</button>`}
         </div>` : ''}
@@ -198,37 +220,69 @@
     $$('#d-puestos [data-cogida]').forEach((e) => { const s = (ahora - Number(e.dataset.cogida)) / 1000; e.textContent = fmt(s); e.closest('.puesto').classList.toggle('fuera', s > obj); });
     $$('#d-puestos [data-barra]').forEach((e) => { const r = Math.min(1, (ahora - Number(e.dataset.barra)) / 1000 / obj); e.style.width = `${Math.max(3, r * 100)}%`; e.style.background = `hsl(${Math.round(120 * (1 - r))} 80% 45%)`; });
     $$('#d-cola [data-desde]').forEach((s) => { s.textContent = fmt((ahora - Number(s.dataset.desde)) / 1000); });
-    if (D.observando) { const t = $('#obs-tiempo'); const inc = v.activas.find((x) => x.id === D.observando); if (t && inc) t.textContent = fmt((ahora - inc.cogida) / 1000); }
+    if (D.observando && D.obsInc) {
+      const inc = v.activas.find((x) => x.id === D.obsInc);
+      if (inc && $('#obs-tiempo')) {
+        const s2 = (ahora - inc.cogida) / 1000; const r = Math.min(1, s2 / obj);
+        $('#obs-tiempo').textContent = fmt(s2);
+        $('#obs-tiempo').classList.toggle('n-baja', s2 > obj);
+        $('#obs-barra').style.width = `${Math.max(2, r * 100)}%`; $('#obs-barra').style.background = `hsl(${Math.round(120 * (1 - r))} 80% 45%)`;
+      }
+    }
   }
 
   // ---------- Observar un puesto (solo lectura) ----------
   function chatHtml(inc) {
     return inc.chat.map((m) => `<div class="msg ${m.de}"><small>${m.de === 'op' ? 'Operador/a' : m.de === 'int' ? 'Interlocutor' : 'Sistema'} · +${fmt((m.t - inc.cogida) / 1000)}</small>${esc(m.texto)}</div>`).join('');
   }
-  function observar(id) {
-    D.observando = id;
-    modal('Observación del puesto (solo lectura)', '<div id="obs"></div>', () => { D.observando = null; });
+  function observar(n) {
+    D.observando = n;
+    D.obsInc = null; D.obsChat = 0;
+    modal(`Visualizador · Puesto ${String(n).padStart(2, '0')}`, '<div id="obs"></div>', () => { D.observando = null; });
     pintarObservacion();
   }
   function pintarObservacion() {
-    const inc = D.v.activas.find((x) => x.id === D.observando);
     const c = $('#obs');
-    if (!c) return;
-    if (!inc) { c.innerHTML = '<p class="chip ok">La incidencia se ha cerrado. Puedes verla en «Incidencias cerradas».</p>'; D.observando = null; return; }
-    const chat = $('#obs .chat');
-    const scroll = chat ? chat.scrollHeight - chat.scrollTop - chat.clientHeight < 40 : true;
-    c.innerHTML = `<p><strong>${esc(inc.id)}</strong> · Puesto ${inc.puesto} · ${esc(inc.alumno)} · <span class="chip">${esc(inc.supId)} ${esc(inc.titulo)}</span> · <span class="num" id="obs-tiempo"></span></p>
-      <div class="obs-sala"><div class="chat">${chatHtml(inc)}</div>
-      <div><div class="ficha-bloque"><h3>Verificaciones</h3><div class="chips">${inc.verif.map((x) => `<span class="chip ok">${esc(S.datos.verificaciones[x])}</span>`).join('') || '<span class="ayuda">Ninguna</span>'}</div></div>
+    if (!c || !D.observando) return;
+    const p = D.v.puestos.find((x) => x.n === D.observando);
+    if (!p || !p.alumno) { c.innerHTML = '<p class="chip">El puesto ha quedado libre.</p>'; D.obsInc = null; return; }
+    const inc = p.activa ? D.v.activas.find((x) => x.id === p.activa.id) : null;
+    const hechas = D.v.cerradas.filter((x) => x.puesto === p.n);
+    const historial = `<div class="ficha-bloque"><h3>Incidencias cerradas en este puesto (${hechas.length})</h3>${hechas.length ? `<table class="tabla compacta"><tbody>${hechas.slice().reverse().map((h) => `<tr><td class="num">${esc(h.id)}</td><td>${esc(h.titulo)}</td><td class="num">${fmt(h.segundos)}</td><td class="num ${claseNota(h.nota)}">${h.nota.toFixed(2)}</td><td><button class="btn" data-obs-ver="${h.id}">Ver</button></td></tr>`).join('')}</tbody></table>` : '<p class="ayuda">Ninguna todavía.</p>'}</div>`;
+    const cab = `<p><strong>${esc(p.alumno.nombre)}</strong>${p.alumno.esBot ? ' <span class="chip alerta">BOT</span>' : ''} · Media <strong class="${claseNota(p.notaMedia)}">${p.notaMedia == null ? '—' : p.notaMedia.toFixed(2)}</strong>`;
+    if (!inc) {
+      D.obsInc = null;
+      c.innerHTML = `${cab} · <span class="chip">Disponible · esperando señal</span></p>${historial}`;
+      return;
+    }
+    if (D.obsInc !== inc.id) {
+      D.obsInc = inc.id; D.obsChat = 0;
+      c.innerHTML = `${cab} · <span class="chip alerta">Atendiendo</span></p>
+        <div class="obs-cab"><strong>${esc(inc.id)}</strong> · ${esc(inc.senal.codigo)} ${esc(inc.senal.evento)} · ${esc(inc.abonado.nombre)} · <span class="chip">${esc(inc.supId)} ${esc(inc.titulo)}</span>
+        <span class="obs-t"><span class="num" id="obs-tiempo">00:00</span><span class="t-barra"><div id="obs-barra"></div></span></span></div>
+        <div class="obs-sala"><div class="chat" id="obs-chat" role="log" aria-live="polite"></div><div id="obs-lado"></div></div>${historial}`;
+    }
+    const chat = $('#obs-chat');
+    const abajo = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 40;
+    for (let k = D.obsChat; k < inc.chat.length; k++) {
+      const m = inc.chat[k];
+      const d = document.createElement('div');
+      d.className = `msg ${m.de}`;
+      d.innerHTML = `<small>${m.de === 'op' ? 'Operador/a' : m.de === 'int' ? 'Interlocutor' : 'Sistema'} · +${fmt((m.t - inc.cogida) / 1000)}</small>${esc(m.texto)}`;
+      chat.appendChild(d);
+    }
+    if (inc.chat.length > D.obsChat && abajo) chat.scrollTop = chat.scrollHeight;
+    D.obsChat = inc.chat.length;
+    $('#obs-lado').innerHTML = `<div class="ficha-bloque"><h3>Llamada</h3>${inc.llamadaAbierta ? '<span class="chip ok">● Abierta</span>' : '<span class="chip">Sin llamada</span>'}</div>
+      <div class="ficha-bloque"><h3>Verificaciones</h3><div class="chips">${inc.verif.map((x) => `<span class="chip ok">${esc(S.datos.verificaciones[x])}</span>`).join('') || '<span class="ayuda">Ninguna</span>'}</div></div>
       <div class="ficha-bloque"><h3>Avisos</h3><div class="chips">${inc.avisos.map((x) => `<span class="chip info">${esc(S.datos.avisos[x])}</span>`).join('') || '<span class="ayuda">Ninguno</span>'}</div></div>
-      <div class="ficha-bloque"><h3>Preguntas realizadas</h3><div class="chips">${inc.preguntas.map((x) => `<span class="chip">${esc((S.datos.preguntas.find((p) => p.id === x) || {}).texto || x)}</span>`).join('') || '<span class="ayuda">Ninguna</span>'}</div></div></div></div>`;
-    const nuevo = $('#obs .chat');
-    if (scroll) nuevo.scrollTop = nuevo.scrollHeight;
+      <div class="ficha-bloque"><h3>Preguntas realizadas</h3><div class="chips">${inc.preguntas.map((x) => `<span class="chip">${esc((S.datos.preguntas.find((q) => q.id === x) || {}).texto || x)}</span>`).join('') || '<span class="ayuda">Ninguna</span>'}</div></div>`;
     tic();
   }
   function verCerrada(inc) {
     const ev = inc.eval;
     modal(`${inc.id} · ${inc.titulo}`, `
+      ${ev.errorGrave ? `<p class="chip alerta">⛔ ERROR GRAVE · ${esc(ev.errorGrave)}</p>` : ''}
       <p>Puesto ${inc.puesto} · ${esc(inc.alumno)} · Nota <strong class="${claseNota(ev.nota)}">${ev.nota.toFixed(2)}</strong> · Tiempo ${fmt(ev.segundos)}</p>
       <div class="tabla-env"><table class="tabla compacta"><thead><tr><th>Criterio</th><th>CE</th><th>Nivel</th><th class="num">Puntos</th><th>Observación</th></tr></thead><tbody>
       ${ev.criterios.map((c) => `<tr><td>${esc(c.nombre)}</td><td>${esc(c.ce)}</td><td>${esc(c.nivel)}</td><td class="num">${c.puntos.toFixed(2)}/${c.max}</td><td>${esc(c.obs)}</td></tr>`).join('')}</tbody></table></div>

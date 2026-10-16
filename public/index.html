@@ -6,7 +6,7 @@
 <title>CRA · Simulador</title>
 <meta name="description" content="Simulador de Central Receptora de Alarmas · CFGM Técnico en Seguridad · CIFP Tony Gallardo">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101a2b'/%3E%3Cpath d='M16 6l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10v-6z' fill='%23f5a524'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/app.css?v=2">
+<link rel="stylesheet" href="css/app.css?v=6">
 </head>
 <body>
 <a class="saltar" href="#principal">Saltar al contenido</a>
@@ -18,12 +18,31 @@
   </div>
   <div class="barra-centro" id="barra-centro"></div>
   <div class="barra-acciones">
+    <button class="btn msg-btn" id="b-mensajes" hidden aria-expanded="false" aria-controls="panel-msg" title="Mensajería docente ↔ alumnado">✉ Mensajes <span class="badge" id="b-msg-n" hidden></span></button>
     <button class="btn-ico" id="b-letra-menos" title="Reducir tamaño de letra" aria-label="Reducir tamaño de letra">A−</button>
     <button class="btn-ico" id="b-letra-mas" title="Aumentar tamaño de letra" aria-label="Aumentar tamaño de letra">A+</button>
     <button class="btn-ico" id="b-voz" title="Leer en voz alta los mensajes del interlocutor" aria-pressed="false" aria-label="Lectura en voz alta">🔈</button>
     <button class="btn-ico" id="b-tema" title="Cambiar tema claro / oscuro" aria-label="Cambiar tema">◐</button>
   </div>
 </header>
+
+<aside id="panel-msg" class="panel-msg" hidden role="dialog" aria-labelledby="pm-titulo">
+  <div class="pm-cab"><h2 id="pm-titulo">Mensajería</h2><button class="btn-ico" id="pm-cerrar" aria-label="Cerrar mensajería">✕</button></div>
+  <div id="pm-docente" hidden>
+    <div id="d-mensajes" class="mensajes" aria-live="polite"></div>
+          <form id="d-f-msg" class="msg-form">
+            <label class="sr" for="d-msg-destino">Destino</label>
+            <select id="d-msg-destino"></select>
+            <label class="sr" for="d-msg-texto">Mensaje</label>
+            <input id="d-msg-texto" maxlength="500" placeholder="Escribe un mensaje…">
+            <button class="btn" type="submit">Enviar</button>
+          </form>
+  </div>
+  <div id="pm-teleop" hidden>
+    <div id="t-mensajes" class="mensajes" aria-live="polite"></div>
+    <form id="t-f-msg" class="msg-form"><label class="sr" for="t-msg-texto">Mensaje al docente</label><input id="t-msg-texto" maxlength="500" placeholder="Escribe al docente…"><button class="btn primario" type="submit">Enviar</button></form>
+  </div>
+</aside>
 
 <main id="principal" tabindex="-1">
 
@@ -83,7 +102,6 @@
         <div class="fila-botones">
           <button class="btn primario" id="b-mi-pdf">Descargar mi informe (PDF)</button>
           <button class="btn" id="b-guia">Guía del procedimiento</button>
-          <button class="btn" id="b-msg-alumno">Mensajes con el docente <span class="badge" id="msg-n" hidden></span></button>
           <button class="btn fantasma" id="b-salir">Salir del puesto</button>
         </div>
       </section>
@@ -111,17 +129,6 @@
           <h2 id="t-inf">Informes PDF</h2>
           <p class="ayuda">Informe individual desde cada puesto o el conjunto de todo el grupo.</p>
           <div class="fila-botones"><button class="btn primario" id="d-pdf-todos">Informe conjunto (PDF)</button><button class="btn" id="d-pdf-individuales">Todos los individuales</button></div>
-        </section>
-        <section class="panel" aria-labelledby="t-msg">
-          <h2 id="t-msg">Mensajería</h2>
-          <div id="d-mensajes" class="mensajes" aria-live="polite"></div>
-          <form id="d-f-msg" class="msg-form">
-            <label class="sr" for="d-msg-destino">Destino</label>
-            <select id="d-msg-destino"></select>
-            <label class="sr" for="d-msg-texto">Mensaje</label>
-            <input id="d-msg-texto" maxlength="500" placeholder="Escribe un mensaje…">
-            <button class="btn" type="submit">Enviar</button>
-          </form>
         </section>
       </aside>
       <div class="doc-main">
@@ -170,8 +177,12 @@
   </div>
   <div class="w-cuerpo">
     <section class="w-chat" aria-label="Conversación">
-      <div class="w-chat-cab"><h3>Comunicación</h3><span id="w-llamada" class="chip"></span></div>
+      <div class="w-chat-cab"><h3>Comunicación</h3><div class="w-tam"><span id="w-llamada" class="chip"></span>
+        <button type="button" class="btn-ico" id="w-chat-menos" title="Reducir la comunicación" aria-label="Reducir la comunicación">⟨</button>
+        <button type="button" class="btn-ico" id="w-chat-mas" title="Ampliar la comunicación" aria-label="Ampliar la comunicación">⟩</button>
+        <button type="button" class="btn-ico" id="w-chat-max" title="Comunicación a pantalla completa / restaurar" aria-pressed="false" aria-label="Comunicación a ancho completo">⤢</button></div></div>
       <div id="w-mensajes" class="chat" role="log" aria-live="polite"></div>
+      <div class="sep sep-h" id="w-sep-h" role="separator" aria-orientation="horizontal" tabindex="0" aria-label="Ajustar alto de mensajes y preguntas (flechas arriba y abajo; doble clic restablece)" title="Arrastra para ajustar el alto de los mensajes y de las preguntas · doble clic: restablecer"><span></span></div>
       <div class="preguntas" id="w-preguntas" aria-label="Preguntas e indicaciones programadas"></div>
       <form id="w-f-libre" class="chat-form">
         <label class="sr" for="w-libre">Mensaje libre al interlocutor</label>
@@ -179,12 +190,13 @@
         <button class="btn primario" type="submit">Enviar</button>
       </form>
     </section>
+    <div class="sep sep-v" id="w-sep-v" role="separator" aria-orientation="vertical" tabindex="0" aria-label="Ajustar ancho de la comunicación (flechas izquierda y derecha; doble clic restablece)" title="Arrastra para ampliar o reducir la comunicación · doble clic: restablecer"><span></span></div>
     <section class="w-ficha" aria-label="Ficha del abonado" id="w-ficha"></section>
   </div>
   <div class="w-acciones">
     <fieldset>
       <legend>Verificación</legend>
-      <button class="btn" data-acc="secuencial">📋 Secuencia de zonas</button>
+      <button class="btn" data-acc="secuencial" title="Consulta qué detectores (zonas) se han activado y en qué orden. Varios detectores distintos = indicio de alarma real">📋 Zonas activadas (secuencial)</button>
       <button class="btn" data-acc="video">📹 Vídeo</button>
       <button class="btn" data-acc="audio">🎧 Audio</button>
       <button class="btn" data-acc="llamar" id="w-b-llamar">📞 Llamar al titular</button>
@@ -225,9 +237,9 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/vendor/jspdf.js"></script>
 <script src="/vendor/autotable.js"></script>
-<script src="js/app.js?v=2"></script>
-<script src="js/pdf.js?v=2"></script>
-<script src="js/teleoperador.js?v=2"></script>
-<script src="js/docente.js?v=2"></script>
+<script src="js/app.js?v=6"></script>
+<script src="js/pdf.js?v=6"></script>
+<script src="js/teleoperador.js?v=6"></script>
+<script src="js/docente.js?v=6"></script>
 </body>
 </html>

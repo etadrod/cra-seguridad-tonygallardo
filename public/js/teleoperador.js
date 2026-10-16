@@ -38,7 +38,12 @@
         if (!confirm('Señal de atraco silencioso. ¿Seguro que quieres llamar a la instalación?')) return;
       }
       const r = await emitir('accion', { tipo: b.dataset.acc });
-      if (r.error) aviso(r.error, 'error');
+      if (r.error) return aviso(r.error, 'error');
+      if (r.errorGrave) {
+        $('#w-obs').value = ''; $('#w-clasif').value = '';
+        if (r.eval) mostrarCorreccion(r.eval);
+        aviso('ERROR GRAVE: has colgado sin realizar ninguna gestión. La incidencia se ha cerrado con nota 0.', 'error');
+      }
     });
     $('#w-f-cierre').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -57,7 +62,13 @@
       PDF.informeAlumno(r);
     });
     $('#b-guia').addEventListener('click', guia);
-    $('#b-msg-alumno').addEventListener('click', mensajes);
+    msgPanel.alAbrir.push(() => { if (S.rol === 'teleop') pintarMensajes(); });
+    $('#t-f-msg').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const i = $('#t-msg-texto'); const texto = i.value.trim(); if (!texto) return; i.value = '';
+      const r = await emitir('msg_alumno', { texto });
+      if (r.error) aviso(r.error, 'error');
+    });
     $('#b-salir').addEventListener('click', async () => {
       if (!confirm('¿Salir del puesto? Tus resultados se conservan con tu nombre.')) return;
       const r = await emitir('salir');
@@ -76,8 +87,74 @@
       const r = await emitir('coger', { id: b.dataset.coger });
       if (r.error) { aviso(r.error, 'error'); b.disabled = false; }
     });
+    montarDivisores();
     setInterval(tic, 250);
     if (S.vista) patch(S.vista);
+  }
+
+  // ---------- Divisores redimensionables (ancho de la comunicación y alto de mensajes/preguntas) ----------
+  function montarDivisores() {
+    const w = $('#ventana');
+    const lim = (v, a, b) => Math.min(b, Math.max(a, v));
+    const setAncho = (pct, guardar = true) => {
+      pct = lim(pct, 25, 85);
+      w.style.setProperty('--w-chat', `${pct}%`);
+      $('#w-sep-v').setAttribute('aria-valuenow', String(Math.round(pct)));
+      if (guardar) pref('cra-w-chat', String(Math.round(pct)));
+    };
+    const setAlto = (px, guardar = true) => {
+      const chat = $('.w-chat');
+      const max = chat && chat.clientHeight ? chat.clientHeight - 170 : 600;
+      px = lim(px, 60, Math.max(80, max));
+      w.style.setProperty('--h-preg', `${px}px`);
+      if (guardar) pref('cra-h-preg', String(Math.round(px)));
+    };
+    const anchoActual = () => parseFloat(getComputedStyle(w).getPropertyValue('--w-chat')) || 56;
+    const altoActual = () => $('#w-preguntas').getBoundingClientRect().height;
+    if (pref('cra-w-chat')) setAncho(Number(pref('cra-w-chat')), false);
+    if (pref('cra-h-preg')) w.style.setProperty('--h-preg', `${Number(pref('cra-h-preg'))}px`);
+
+    function arrastrar(sep, alMover) {
+      sep.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        sep.setPointerCapture(e.pointerId);
+        sep.classList.add('arrastrando');
+        document.body.classList.add('redimensionando');
+        document.body.style.cursor = getComputedStyle(sep).cursor;
+        const mover = (ev) => alMover(ev);
+        const fin = () => {
+          sep.classList.remove('arrastrando'); document.body.classList.remove('redimensionando'); document.body.style.cursor = '';
+          sep.removeEventListener('pointermove', mover); sep.removeEventListener('pointerup', fin); sep.removeEventListener('pointercancel', fin);
+        };
+        sep.addEventListener('pointermove', mover); sep.addEventListener('pointerup', fin); sep.addEventListener('pointercancel', fin);
+      });
+    }
+    arrastrar($('#w-sep-v'), (ev) => {
+      const r = $('.w-cuerpo').getBoundingClientRect();
+      setAncho(((ev.clientX - r.left) / r.width) * 100);
+    });
+    arrastrar($('#w-sep-h'), (ev) => {
+      const form = $('#w-f-libre').getBoundingClientRect();
+      setAlto(form.top - ev.clientY - 5);
+    });
+    $('#w-sep-v').addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); setAncho(anchoActual() - 5); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); setAncho(anchoActual() + 5); }
+    });
+    $('#w-sep-h').addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowUp') { e.preventDefault(); setAlto(altoActual() + 30); }
+      if (e.key === 'ArrowDown') { e.preventDefault(); setAlto(altoActual() - 30); }
+    });
+    $('#w-sep-v').addEventListener('dblclick', () => { w.style.removeProperty('--w-chat'); pref('cra-w-chat', ''); });
+    $('#w-sep-h').addEventListener('dblclick', () => { w.style.removeProperty('--h-preg'); pref('cra-h-preg', ''); });
+    $('#w-chat-menos').addEventListener('click', () => { quitarMax(); setAncho(anchoActual() - 10); });
+    $('#w-chat-mas').addEventListener('click', () => { quitarMax(); setAncho(anchoActual() + 10); });
+    const quitarMax = () => { w.classList.remove('chat-max'); $('#w-chat-max').setAttribute('aria-pressed', 'false'); };
+    $('#w-chat-max').addEventListener('click', () => {
+      const on = !w.classList.contains('chat-max');
+      w.classList.toggle('chat-max', on);
+      $('#w-chat-max').setAttribute('aria-pressed', String(on));
+    });
   }
 
   // ---------- Parche de la vista ----------
@@ -113,10 +190,10 @@
 
     // Mensajes del docente
     const delDoc = v.mensajes.filter((m) => m.de === 'docente');
+    if (msgPanel.abierto) pintarMensajes();
     const sinLeer = delDoc.length - T.msgVistos;
-    $('#msg-n').hidden = sinLeer <= 0; $('#msg-n').textContent = sinLeer;
+    badgeMensajes(sinLeer);
     if (sinLeer > 0 && T.avisoMsg !== delDoc.length) { T.avisoMsg = delDoc.length; aviso(`Mensaje del docente: ${delDoc[delDoc.length - 1].texto}`); }
-    if (!$('#modal').hidden && $('#m-cuerpo .mensajes')) pintarMensajes();
 
     // Ventana de trabajo
     if (v.activa) abrirVentana(v.activa); else cerrarVentana();
@@ -158,7 +235,7 @@
     ll.textContent = inc.llamadaAbierta ? '● Llamada abierta' : 'Sin llamada';
     ll.className = `chip ${inc.llamadaAbierta ? 'ok' : ''}`;
     $('#w-b-llamar').disabled = inc.llamadaAbierta;
-    $('#w-b-colgar').disabled = !inc.llamadaAbierta;
+    $('#w-b-colgar').disabled = false; // siempre disponible: colgar sin gestionar es un error grave
     $('#w-libre').disabled = !inc.llamadaAbierta;
     $('#w-libre').placeholder = inc.llamadaAbierta ? 'Mensaje libre (con «?» es pregunta; sin «?», indicación)…' : 'Abre una llamada para hablar con el interlocutor';
     $$('#w-preguntas [data-preg]').forEach((b) => { b.disabled = !inc.llamadaAbierta; b.classList.toggle('usada', inc.preguntas.includes(b.dataset.preg)); });
@@ -256,6 +333,7 @@
       <div class="tabla-env"><table class="tabla" style="margin-top:12px"><thead><tr><th>Criterio</th><th>CE</th><th>Nivel</th><th class="num">Puntos</th><th>Observación</th></tr></thead><tbody>
         ${ev.criterios.map((c) => `<tr><td>${esc(c.nombre)}</td><td>${esc(c.ce)}</td><td>${esc(c.nivel)}</td><td class="num">${c.puntos.toFixed(2)} / ${c.max}</td><td>${esc(c.obs)}</td></tr>`).join('')}
       </tbody></table></div>
+      ${ev.errorGrave ? `<p class="aviso error" style="margin-top:12px;box-shadow:none">⛔ ERROR GRAVE · ${esc(ev.errorGrave)}</p>` : ''}
       ${ev.mejoras.length ? `<h3 style="margin-top:12px">Mejoras concretas</h3><ul class="mejoras">${ev.mejoras.map((m) => `<li>${esc(m)}</li>`).join('')}</ul>` : '<p class="chip ok" style="margin-top:12px">Procedimiento completo. ¡Bien hecho!</p>'}
       <h3 style="margin-top:12px">Procedimiento esperado</h3><p>${esc(ev.solucion)}</p>`);
   }
@@ -265,8 +343,8 @@
     modal('Guía del procedimiento en CRA', `
       <ol class="mejoras">
         <li><strong>Recepción.</strong> Atiende la señal o la llamada. Lee el código, el evento y la zona.</li>
-        <li><strong>Identificación.</strong> Consulta la ficha del abonado y la <em>secuencia de zonas</em>. Si hablas con alguien: identifica al interlocutor y pide la <strong>palabra clave</strong>. Compárala con la palabra de <strong>coacción</strong>.</li>
-        <li><strong>Verificación.</strong> Según los medios del abonado: secuencial (varias zonas), vídeo, audio o verificación personal (llamada al titular o vigilante de acuda).</li>
+        <li><strong>Identificación.</strong> Consulta la ficha del abonado y pulsa <em>Zonas activadas</em>: verás qué detectores han saltado, a qué hora y en qué orden. Si hablas con alguien: identifica al interlocutor y pide la <strong>palabra clave</strong>. Compárala con la palabra de <strong>coacción</strong>.</li>
+        <li><strong>Verificación.</strong> Según los medios del abonado: <em>secuencial</em> (si saltan varios detectores distintos seguidos, p. ej. puerta → pasillo → salón, es indicio de que alguien se mueve dentro; si salta uno solo, no basta), vídeo, audio o verificación personal (llamada al titular o vigilante de acuda).</li>
         <li><strong>Decisión.</strong> ¿Alarma real, falsa alarma o incidencia técnica? No movilices recursos públicos sin verificación, salvo riesgo para las personas.</li>
         <li><strong>Transmisión.</strong> Alarma real: aviso inmediato a la FCSE competente con dirección, tipo de señal, verificación y datos de autores o personas. Emergencias sanitarias o incendio: 1-1-2. Avisa al llavero cuando haga falta acceder.</li>
         <li><strong>Registro y cierre.</strong> Clasifica y anota qué ocurrió, qué verificaste, a quién avisaste y cuándo.</li>
@@ -276,23 +354,16 @@
 
   // ---------- Mensajería alumno ↔ docente ----------
   function pintarMensajes() {
-    const v = T.ultimaV; const c = $('#m-cuerpo .mensajes');
+    const v = T.ultimaV; const c = $('#t-mensajes');
     if (!v || !c) return;
-    c.innerHTML = v.mensajes.length ? v.mensajes.map((m) => `<div class="m ${m.de === 'docente' ? '' : 'yo'}"><small>${m.de === 'docente' ? 'Docente' : 'Tú'} · ${hora(m.t)}</small>${esc(m.texto)}</div>`).join('') : '<p class="ayuda">Sin mensajes.</p>';
-    c.scrollTop = c.scrollHeight;
+    const firma = v.mensajes.length;
+    if (T.firmaMsg !== firma) {
+      T.firmaMsg = firma;
+      c.innerHTML = v.mensajes.length ? v.mensajes.map((m) => `<div class="m ${m.de === 'docente' ? '' : 'yo'}"><small>${m.de === 'docente' ? 'Docente' : 'Tú'} · ${hora(m.t)}</small>${esc(m.texto)}</div>`).join('') : '<p class="ayuda">Sin mensajes.</p>';
+      c.scrollTop = c.scrollHeight;
+    }
     T.msgVistos = v.mensajes.filter((m) => m.de === 'docente').length;
-    $('#msg-n').hidden = true;
-  }
-  function mensajes() {
-    const cuerpo = modal('Mensajes con el docente', `<div class="mensajes"></div>
-      <form id="f-msg-al" class="chat-form" style="padding:0;border:0"><label class="sr" for="msg-al">Mensaje</label><input id="msg-al" maxlength="500" placeholder="Escribe al docente…"><button class="btn primario">Enviar</button></form>`);
-    pintarMensajes();
-    $('#f-msg-al', cuerpo).addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const i = $('#msg-al', cuerpo); const texto = i.value.trim(); if (!texto) return; i.value = '';
-      const r = await emitir('msg_alumno', { texto });
-      if (r.error) aviso(r.error, 'error');
-    });
+    badgeMensajes(0);
   }
 
   S.vistas.teleop = { montar, patch, tareaActual: () => T.incId };

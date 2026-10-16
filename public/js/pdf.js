@@ -104,6 +104,7 @@ const PDF = (function () {
         styles: { fontSize: 7.8 },
         columnStyles: { 0: { cellWidth: 46 }, 1: { cellWidth: 11 }, 2: { cellWidth: 20 }, 3: { cellWidth: 17, halign: 'right' } },
       }) + 3;
+      if (i.eval.errorGrave) y = parrafo(doc, `ERROR GRAVE: ${i.eval.errorGrave} Nota de la incidencia: 0.`, y, { size: 9, bold: true, color: [196, 43, 43] });
       if (i.eval.mejoras.length) {
         y = parrafo(doc, 'Mejoras concretas:', y, { size: 8.5, bold: true });
         for (const m of i.eval.mejoras) y = parrafo(doc, `• ${m}`, y, { size: 8 });
@@ -169,5 +170,20 @@ const PDF = (function () {
     doc.save(`Informe_CRA_conjunto_${d}.pdf`);
   }
 
-  return { informeAlumno, conjunto };
+  // Todos los informes individuales en un único archivo: Informe_CRA_[fecha_hora].pdf (hora de Canarias)
+  function individuales({ cabecera, alumnos }) {
+    const doc = nuevo();
+    alumnos.forEach((a, k) => {
+      if (k) doc.addPage();
+      const y = banda(doc, cabecera, 'Informe individual de evaluación · Recepción, verificación y transmisión de señales de alarma');
+      seccionAlumno(doc, cabecera, a, y + 4);
+    });
+    doc.addPage();
+    anexo(doc, cabecera, 18);
+    pies(doc);
+    const p = Object.fromEntries(new Intl.DateTimeFormat('es-ES', { timeZone: 'Atlantic/Canary', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date(cabecera.generado)).map((x) => [x.type, x.value]));
+    doc.save(`Informe_CRA_${p.year}-${p.month}-${p.day}_${p.hour}-${p.minute}.pdf`);
+  }
+
+  return { informeAlumno, conjunto, individuales };
 })();

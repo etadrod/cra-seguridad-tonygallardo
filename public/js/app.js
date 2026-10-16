@@ -85,7 +85,34 @@ function mostrar(rol) {
   if (rol !== 'teleop') $('#ventana').hidden = true;
   if (S.vistas[rol] && S.vistas[rol].montar && rol !== 'docente') S.vistas[rol].montar();
   if (rol === 'inicio') $('#barra-centro').innerHTML = '';
+  $('#b-mensajes').hidden = rol === 'inicio';
+  $('#pm-docente').hidden = rol !== 'docente';
+  $('#pm-teleop').hidden = rol !== 'teleop';
+  if (rol === 'inicio') panelMensajes(false);
+  altoBarra();
 }
+
+// ---------- Mensajería (panel arriba a la derecha) ----------
+const msgPanel = { abierto: false, alAbrir: [] };
+function panelMensajes(abrir) {
+  msgPanel.abierto = abrir === undefined ? !msgPanel.abierto : abrir;
+  $('#panel-msg').hidden = !msgPanel.abierto;
+  $('#b-mensajes').setAttribute('aria-expanded', String(msgPanel.abierto));
+  if (msgPanel.abierto) {
+    msgPanel.alAbrir.forEach((f) => f());
+    const i = $(S.rol === 'docente' ? '#d-msg-texto' : '#t-msg-texto');
+    if (i) setTimeout(() => i.focus(), 30);
+  }
+}
+function badgeMensajes(n) {
+  const b = $('#b-msg-n');
+  b.hidden = !(n > 0); b.textContent = n;
+  $('#b-mensajes').classList.toggle('nuevo', n > 0);
+}
+$('#b-mensajes').addEventListener('click', () => panelMensajes());
+$('#pm-cerrar').addEventListener('click', () => panelMensajes(false));
+function altoBarra() { document.documentElement.style.setProperty('--barra-h', `${$('.barra').offsetHeight}px`); }
+addEventListener('resize', altoBarra);
 
 function rellenarPuestos(v) {
   const sel = $('#i-puesto');

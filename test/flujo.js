@@ -72,6 +72,21 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     await esperar(300);
     ok(a2.ultima.activa && a2.ultima.activa.estado === 'atencion', 'la conversación sigue abierta hasta el cierre');
 
+    // Colgar sin gestión = error grave (nota 0) — S07 sigue abierta en el puesto 2: se cierra antes
+    await a2.pedir('cerrar', { clasificacion: 'coaccion', observaciones: 'Palabra de coacción TEJINA. Aviso a Policía Nacional.' });
+    await doc.pedir('doc_lanzar', { supId: 'S03', destino: 'puesto:2' });
+    await hasta(() => a2.ultima.cola.length === 1 && !a2.ultima.activa && !vistos.has(a2.ultima.cola[0].id)); vistos.add(a2.ultima.cola[0].id);
+    await a2.pedir('coger', { id: a2.ultima.cola[0].id });
+    const cg = await a2.pedir('accion', { tipo: 'colgar' });
+    ok(cg.errorGrave && cg.eval.nota === 0, 'colgar sin gestión: error grave y nota 0');
+    // Colgar con gestión hecha no es error
+    await doc.pedir('doc_lanzar', { supId: 'S03', destino: 'puesto:2' });
+    await hasta(() => a2.ultima.cola.length === 1 && !a2.ultima.activa && !vistos.has(a2.ultima.cola[0].id)); vistos.add(a2.ultima.cola[0].id);
+    await a2.pedir('coger', { id: a2.ultima.cola[0].id });
+    await a2.pedir('pregunta', { preguntaId: 'direccion' });
+    const cg2 = await a2.pedir('accion', { tipo: 'colgar' });
+    ok(cg2.ok && !cg2.errorGrave, 'colgar tras gestionar no es error grave');
+
     // Informes
     const inf = await a1.pedir('mi_informe');
     ok(inf.alumno || (await a2.pedir('mi_informe')).alumno, 'informe del alumno disponible');
@@ -79,7 +94,7 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     const todos = await doc.pedir('doc_informes');
     ok(todos.alumnos.length === 2, 'informe conjunto con los dos alumnos');
     const alu2 = todos.alumnos.find((x) => x.alumno === 'Luis Gil');
-    ok(alu2.incidencias.length === (r1.ok ? 2 : 3), 'incidencia abierta evaluada al finalizar');
+    ok(alu2.incidencias.length === (r1.ok ? 4 : 5), 'incidencia abierta evaluada al finalizar');
     ok(alu2.incidencias.some((i) => i.clasificacion === 'No cerrada por el alumno'), 'incidencia no cerrada registrada');
     ok((await a1.pedir('coger', { id: 'x' })).error, 'tras finalizar no se pueden coger señales');
     console.log('OK flujo');
