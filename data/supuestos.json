@@ -149,7 +149,7 @@
   {
     "id": "S03",
     "titulo": "Emergencia sanitaria: caída de persona mayor",
-    "docente": "Pulsador colgante con manos libres. Mujer de 82 años caída en el baño, consciente, sola y con la puerta cerrada. Aviso al 1-1-2 y al familiar con llave; mantener la línea.",
+    "docente": "Pulsador colgante con manos libres. La propia afectada (82 años) se ha caído en el baño, está sola y con la puerta cerrada. Como habla ella misma, no procede preguntar si está consciente: interesa dirección, lesiones, acceso y mantener la línea. Aviso al 1-1-2 y al familiar con llave.",
     "origen": "llamada",
     "abonadoId": "ABN-1005",
     "minuto": 2,
@@ -174,7 +174,7 @@
         "identificarse": "Soy Carmen... Carmen Ojeda.",
         "direccion": "En mi casa, en la calle Doctor Fleming, el 3, segundo B, en Arucas.",
         "que_ocurre": "Fui al baño, resbalé y me caí. Me duele mucho la cadera, no me puedo mover.",
-        "consciente": "Sí, estoy despierta... respiro bien, pero me duele mucho.",
+        "consciente": "Pues claro, mi niño, si estoy hablando con usted… lo que me duele mucho es la cadera.",
         "heridos": "Creo que me he hecho daño en la cadera derecha. Tengo un golpe en el brazo.",
         "personas": "Vivo sola, mi hijo viene los domingos.",
         "acceso": "La puerta está cerrada con llave. Mi hijo Daniel tiene llave.",
@@ -192,14 +192,14 @@
           "texto": "Por favor, que no tarden..."
         }
       ],
-      "porDefecto": "No le oigo bien, mi niño... ¿qué me dice?"
+      "porDefecto": "No le oigo bien, mi niño... ¿qué me dice?",
+      "afectado": true
     },
     "llavero": "Soy Daniel, el hijo. Voy ahora mismo para allá con la llave, estoy a diez minutos.",
     "eval": {
       "tipo": "sanitaria",
       "preguntasClave": [
         "direccion",
-        "consciente",
         "heridos",
         "acceso",
         "mantener_linea"
@@ -223,7 +223,7 @@
         "personas",
         "contacto"
       ],
-      "solucion": "Atender por manos libres, confirmar dirección, estado (consciente, respira), lesiones y acceso. Aviso al 1-1-2 con datos y al familiar con llave. Mantener la línea hasta la llegada."
+      "solucion": "Atender por manos libres, confirmar dirección, qué ha pasado, lesiones y cómo pueden acceder. Aviso al 1-1-2 con datos y al familiar con llave. Mantener la línea hasta la llegada. Al hablar la propia afectada, preguntar si está consciente no aporta."
     }
   },
   {
@@ -1604,17 +1604,17 @@
         "identificarse": "Soy Carmen Ojeda.",
         "que_ocurre": "Le di al botón sin querer al ponerme la chaqueta.",
         "error_usuario": "Sí, sí, fue sin querer, estoy bien.",
-        "consciente": "Estoy perfectamente, sentada en el sofá viendo la tele.",
+        "consciente": "Sí, sí, si estoy hablando con usted… estoy perfectamente.",
         "heridos": "No, no me he hecho nada.",
         "personas": "Estoy sola, mi hijo viene el domingo."
       },
-      "porDefecto": "Estoy bien, de verdad, gracias por llamar."
+      "porDefecto": "Estoy bien, de verdad, gracias por llamar.",
+      "afectado": true
     },
     "eval": {
       "tipo": "falsa_error_usuario",
       "preguntasClave": [
         "error_usuario",
-        "consciente",
         "heridos"
       ],
       "verificacion": {
@@ -1631,7 +1631,7 @@
         ]
       },
       "datosAviso": [],
-      "solucion": "Hablar con la titular y comprobar su estado (consciente, sin lesiones) antes de cerrar. Falsa alarma por error de usuario; registrar. No movilizar al 1-1-2."
+      "solucion": "Hablar con la titular, confirmar que fue un error y que no tiene lesiones ni se encuentra mal antes de cerrar. Falsa alarma por error de usuario; registrar. No movilizar al 1-1-2."
     }
   },
   {
