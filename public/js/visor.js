@@ -51,7 +51,8 @@ const Visor = (function () {
   function abrir(id, desc) {
     $('#visor-tit').textContent = `📹 Cámara · grabación de verificación`;
     $('#visor-desc').textContent = desc || '';
-    v.src = `video/camaras/${id}.mp4`;
+    const mp4 = v.canPlayType('video/mp4; codecs="avc1.640028"');
+    v.src = `video/camaras/${id}.${mp4 ? 'mp4' : 'webm'}`;
     box.hidden = false;
     v.currentTime = 0;
     v.play().catch(() => pintar());
