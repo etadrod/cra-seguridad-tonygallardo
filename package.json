@@ -1,0 +1,24 @@
+{
+  "name": "cra-seguridad-tonygallardo",
+  "version": "1.0.0",
+  "description": "Simulador de Central Receptora de Alarmas (CRA) para el CFGM Técnico en Seguridad · Módulo 1679",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/flujo.js && node test/bots.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "express": "^5.3.0",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.9",
+    "socket.io": "^4.8.4"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.4"
+  }
+}

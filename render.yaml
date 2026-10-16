@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: cra-seguridad-tonygallardo
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /salud
+    envVars:
+      - key: DOCENTE_PIN
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_REPO
+        value: etadrod/cra-seguridad-tonygallardo
+      - key: LIMITE_HORAS_DIA
+        value: "0"

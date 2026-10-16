@@ -1,0 +1,421 @@
+[
+  {
+    "id": "S01",
+    "titulo": "Falsa alarma por error de usuario en vivienda",
+    "docente": "Señal de intrusión en la puerta de entrada sin desconexión. El titular confirma con la palabra clave correcta que olvidó desconectar. Debe verificarse por llamada y NO avisar a las FCSE.",
+    "origen": "senal",
+    "abonadoId": "ABN-1002",
+    "minuto": 0,
+    "senal": { "codigo": "E130", "evento": "Alarma de intrusión", "zona": "Z01" },
+    "secuencia": [
+      { "seg": -38, "zona": "Z01", "evento": "Apertura puerta de entrada (inicio temporización de entrada)" },
+      { "seg": 0, "zona": "Z01", "evento": "Fin de temporización sin código de desconexión · ALARMA" }
+    ],
+    "llamada": {
+      "quien": "José Rivero Santana (titular)",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "¿Sí? ¿Dígame?",
+      "respuestas": {
+        "identificarse": "Soy José Rivero, el titular de la casa.",
+        "que_ocurre": "Uy, perdone... acabo de llegar con la compra y no me ha dado tiempo a meter el código.",
+        "error_usuario": "Sí, sí, ha sido culpa mía, se me pasó el tiempo de la entrada.",
+        "en_lugar": "Sí, estoy en casa ahora mismo.",
+        "personas": "Solo estoy yo, mi mujer llega más tarde.",
+        "direccion": "Calle Los Almendros, 12, en Vecindario."
+      },
+      "porDefecto": "Todo está bien, de verdad, ha sido un despiste mío."
+    },
+    "vigilante": { "seg": 25, "informe": "Vigilante en el lugar: el titular abre la puerta, se identifica con DNI y confirma error de usuario. Sin signos de forzamiento." },
+    "eval": {
+      "tipo": "falsa_error_usuario",
+      "preguntasClave": ["palabra_clave", "error_usuario"],
+      "verificacion": { "algunaDe": ["llamada", "vigilante"], "obligatorias": ["llamada"], "prohibidas": [] },
+      "avisos": { "obligatorios": [], "prohibidos": ["fcse"] },
+      "datosAviso": [],
+      "solucion": "Consultar zonas, llamar al titular, pedir palabra clave y confirmar error de usuario. Cerrar como falsa alarma por error de usuario y registrarla. No procede aviso a FCSE."
+    }
+  },
+  {
+    "id": "S02",
+    "titulo": "Intrusión nocturna verificada en joyería",
+    "docente": "Secuencia de tres zonas distintas y verificación por vídeo positiva (dos personas encapuchadas). Alarma real confirmada: aviso inmediato a FCSE con datos completos y aviso al llavero.",
+    "origen": "senal",
+    "abonadoId": "ABN-1001",
+    "minuto": 1,
+    "senal": { "codigo": "E130", "evento": "Alarma de intrusión", "zona": "Z03" },
+    "secuencia": [
+      { "seg": -20, "zona": "Z03", "evento": "Rotura de cristal escaparate · ALARMA" },
+      { "seg": -12, "zona": "Z02", "evento": "Detección volumétrico zona de venta · ALARMA" },
+      { "seg": -4, "zona": "Z04", "evento": "Sísmico caja fuerte · ALARMA" }
+    ],
+    "video": "Cámara 2 (zona de venta): dos personas encapuchadas con mochilas golpean las vitrinas. Escaparate roto. Uno lleva una maza. No se observan más personas.",
+    "llamada": {
+      "quien": "Marta Suárez Ojeda (titular)",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "¿Diga? ¿Quién es a estas horas?",
+      "respuestas": {
+        "identificarse": "Soy Marta Suárez, la dueña de la joyería.",
+        "en_lugar": "No, estoy en mi casa durmiendo. La tienda cerró a las ocho.",
+        "personas": "No debería haber nadie dentro, está cerrada.",
+        "que_ocurre": "¿Cómo que ha saltado la alarma? ¿Qué está pasando?"
+      },
+      "porDefecto": "Hagan lo que tengan que hacer, por favor. ¿Aviso yo a alguien?"
+    },
+    "vigilante": { "seg": 25, "informe": "Vigilante en el lugar: escaparate roto, vitrinas vacías, los autores han huido en un turismo oscuro. Patrulla de FCSE llegando." },
+    "llavero": "Soy Pedro, el llavero. Salgo ahora hacia Triana con las llaves, en unos 15 minutos estoy.",
+    "eval": {
+      "tipo": "intrusion_real",
+      "preguntasClave": [],
+      "verificacion": { "algunaDe": ["secuencial", "video"], "obligatorias": ["video"], "prohibidas": [] },
+      "avisos": { "obligatorios": ["fcse", "llavero"], "prohibidos": [] },
+      "datosAviso": ["direccion", "tipo_senal", "verificacion", "autores"],
+      "solucion": "Consultar secuencia (3 zonas), verificar por vídeo, aviso inmediato a Policía Nacional con dirección, zonas, verificación y descripción de autores. Avisar al llavero. Cerrar como intrusión real."
+    }
+  },
+  {
+    "id": "S03",
+    "titulo": "Emergencia sanitaria: caída de persona mayor",
+    "docente": "Pulsador colgante con manos libres. Mujer de 82 años caída en el baño, consciente, sola y con la puerta cerrada. Aviso al 1-1-2 y al familiar con llave; mantener la línea.",
+    "origen": "llamada",
+    "abonadoId": "ABN-1005",
+    "minuto": 2,
+    "senal": { "codigo": "E100", "evento": "Alarma médica · pulsador de ayuda", "zona": "Z08" },
+    "secuencia": [
+      { "seg": 0, "zona": "Z08", "evento": "Pulsador colgante · ALARMA MÉDICA · apertura de audio manos libres" }
+    ],
+    "llamada": {
+      "quien": "Carmen Ojeda Pérez (titular, 82 años)",
+      "contesta": true,
+      "clave": "no_sabe",
+      "inicial": "(Voz débil por el manos libres) Ay... ¿hay alguien? Me he caído en el baño y no me puedo levantar...",
+      "respuestas": {
+        "identificarse": "Soy Carmen... Carmen Ojeda.",
+        "direccion": "En mi casa, en la calle Doctor Fleming, el 3, segundo B, en Arucas.",
+        "que_ocurre": "Fui al baño, resbalé y me caí. Me duele mucho la cadera, no me puedo mover.",
+        "consciente": "Sí, estoy despierta... respiro bien, pero me duele mucho.",
+        "heridos": "Creo que me he hecho daño en la cadera derecha. Tengo un golpe en el brazo.",
+        "personas": "Vivo sola, mi hijo viene los domingos.",
+        "acceso": "La puerta está cerrada con llave. Mi hijo Daniel tiene llave.",
+        "mantener_linea": "Vale, mi niño... no me deje sola, por favor.",
+        "seguridad": "No me puedo mover de aquí aunque quiera.",
+        "aviso_dado": "Ay, gracias, gracias..."
+      },
+      "evolucion": [
+        { "seg": 35, "texto": "¿Sigue ahí? Tengo mucho frío en el suelo..." },
+        { "seg": 80, "texto": "Por favor, que no tarden..." }
+      ],
+      "porDefecto": "No le oigo bien, mi niño... ¿qué me dice?"
+    },
+    "llavero": "Soy Daniel, el hijo. Voy ahora mismo para allá con la llave, estoy a diez minutos.",
+    "eval": {
+      "tipo": "sanitaria",
+      "preguntasClave": ["direccion", "consciente", "heridos", "acceso", "mantener_linea"],
+      "verificacion": { "algunaDe": ["llamada"], "obligatorias": [], "prohibidas": [] },
+      "avisos": { "obligatorios": ["cecoes112", "llavero"], "prohibidos": [] },
+      "datosAviso": ["direccion", "personas", "contacto"],
+      "solucion": "Atender por manos libres, confirmar dirección, estado (consciente, respira), lesiones y acceso. Aviso al 1-1-2 con datos y al familiar con llave. Mantener la línea hasta la llegada."
+    }
+  },
+  {
+    "id": "S04",
+    "titulo": "Incidencia técnica: fallo de alimentación en nave industrial",
+    "docente": "Pérdida de 220 V con batería en funcionamiento. El titular confirma un corte programado. Incidencia técnica: comunicar al titular y registrar; no procede aviso a FCSE.",
+    "origen": "senal",
+    "abonadoId": "ABN-1004",
+    "minuto": 3,
+    "senal": { "codigo": "E301", "evento": "Fallo de alimentación de red (220 V)", "zona": "Z99" },
+    "secuencia": [
+      { "seg": -60, "zona": "Z99", "evento": "Pérdida de alimentación de red · funcionamiento con batería" },
+      { "seg": 0, "zona": "Z99", "evento": "Persistencia del fallo > 60 s · AVISO TÉCNICO" }
+    ],
+    "video": "Cámaras operativas por batería: muelle y almacén sin movimiento. Alumbrado exterior del polígono apagado.",
+    "llamada": {
+      "quien": "Carlos Monzón Vega (jefe de seguridad)",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "Buenas, Carlos Monzón, dígame.",
+      "respuestas": {
+        "identificarse": "Carlos Monzón, jefe de seguridad de Logística Insular.",
+        "que_ocurre": "Ah, sí: hoy hay un corte de luz programado en todo el polígono de Arinaga hasta las seis.",
+        "error_usuario": "No, no ha sido nadie de aquí, es el corte de la compañía eléctrica.",
+        "en_lugar": "No, estoy fuera, pero nos avisaron del corte por correo.",
+        "personas": "No hay personal en la nave a estas horas."
+      },
+      "porDefecto": "Si la batería aguanta, no hace falta nada más. Anótenlo, por favor."
+    },
+    "tecnico": "Servicio técnico: recibido. Revisaremos la autonomía de la batería mañana a primera hora.",
+    "eval": {
+      "tipo": "tecnica",
+      "preguntasClave": ["palabra_clave", "que_ocurre"],
+      "verificacion": { "algunaDe": ["secuencial", "llamada", "video"], "obligatorias": [], "prohibidas": [] },
+      "avisos": { "obligatorios": ["titular"], "prohibidos": ["fcse", "cecoes112"] },
+      "datosAviso": [],
+      "solucion": "Consultar la secuencia, contactar con el titular (palabra clave) y confirmar el corte programado. Cerrar como incidencia técnica; opcional aviso al SAT. No procede aviso a FCSE."
+    }
+  },
+  {
+    "id": "S05",
+    "titulo": "Atraco en farmacia con persona herida",
+    "docente": "Pulsador de atraco y llamada de la empleada en voz baja. Autor huido con cuchillo; compañera con un corte. Aviso a FCSE con descripción y huida, y al 1-1-2.",
+    "origen": "llamada",
+    "abonadoId": "ABN-1003",
+    "minuto": 4,
+    "senal": { "codigo": "E120", "evento": "Pulsador de atraco / pánico", "zona": "Z09" },
+    "secuencia": [
+      { "seg": -15, "zona": "Z09", "evento": "Pulsador de atraco mostrador · ALARMA" },
+      { "seg": 0, "zona": "—", "evento": "Llamada entrante desde la instalación" }
+    ],
+    "video": "Cámara mostrador (grabación de hace 1 min): hombre con sudadera gris y capucha amenaza con un cuchillo y se lleva el cajón de la caja. Sale corriendo a la derecha.",
+    "audio": "Se oye llanto y a una mujer que dice: «tranquila, ya se ha ido».",
+    "llamada": {
+      "quien": "Nerea, empleada de la farmacia",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "(Susurrando, nerviosa) Por favor... nos acaban de atracar en la farmacia...",
+      "respuestas": {
+        "identificarse": "Soy Nerea, trabajo en la farmacia de Cristina Medina.",
+        "direccion": "Avenida de Canarias, 215, en Telde.",
+        "que_ocurre": "Ha entrado un hombre con un cuchillo, se ha llevado el dinero de la caja.",
+        "autores": "Era un hombre de unos treinta años, sudadera gris con capucha, vaqueros. Se fue corriendo hacia la calle de abajo hace un minuto.",
+        "armas": "Un cuchillo grande, de cocina.",
+        "heridos": "Mi compañera tiene un corte en la mano, le sangra bastante.",
+        "personas": "Estamos mi compañera y yo, y un señor mayor que estaba comprando.",
+        "seguridad": "Vale, vale... ya cerramos la puerta.",
+        "mantener_linea": "Sí, no cuelgo.",
+        "aviso_dado": "Gracias... por favor, que vengan rápido."
+      },
+      "evolucion": [
+        { "seg": 30, "texto": "¿Van a venir ya? ¡Estoy temblando!" },
+        { "seg": 70, "texto": "Mi compañera sigue sangrando, le he puesto una toalla." }
+      ],
+      "porDefecto": "Perdone, estoy muy nerviosa... ¿qué me ha dicho?"
+    },
+    "llavero": "Soy Luis Medina. Voy para la farmacia ahora mismo.",
+    "eval": {
+      "tipo": "atraco_panico",
+      "preguntasClave": ["direccion", "autores", "armas", "heridos", "seguridad"],
+      "verificacion": { "algunaDe": ["llamada", "video", "audio"], "obligatorias": [], "prohibidas": [] },
+      "avisos": { "obligatorios": ["fcse", "cecoes112"], "prohibidos": [] },
+      "datosAviso": ["direccion", "tipo_senal", "autores", "personas"],
+      "solucion": "Tranquilizar, confirmar dirección, recabar descripción de autor, arma, huida y heridos. Indicaciones de seguridad. Aviso inmediato a Policía Nacional con datos de huida y al 1-1-2 por la herida."
+    }
+  },
+  {
+    "id": "S06",
+    "titulo": "Falsa alarma por causa ambiental en oficinas",
+    "docente": "Activaciones repetidas de un único volumétrico. El vídeo muestra globos movidos por el aire acondicionado. Verificar, contactar con el titular y cerrar como falsa alarma por causa técnica/ambiental.",
+    "origen": "senal",
+    "abonadoId": "ABN-1010",
+    "minuto": 5,
+    "senal": { "codigo": "E130", "evento": "Alarma de intrusión", "zona": "Z02" },
+    "secuencia": [
+      { "seg": -140, "zona": "Z02", "evento": "Volumétrico recepción · ALARMA (restaura a los 5 s)" },
+      { "seg": -70, "zona": "Z02", "evento": "Volumétrico recepción · ALARMA (restaura a los 5 s)" },
+      { "seg": 0, "zona": "Z02", "evento": "Volumétrico recepción · ALARMA" },
+      { "seg": 0, "zona": "Z01/Z03", "evento": "Sin activaciones en puerta ni despachos" }
+    ],
+    "video": "Cámara recepción: no hay personas. Varios globos de helio de una celebración se desplazan lentamente delante del detector por la corriente del aire acondicionado.",
+    "llamada": {
+      "quien": "Sergio Padrón León (titular)",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "Sí, Sergio Padrón, dígame.",
+      "respuestas": {
+        "identificarse": "Sergio Padrón, el titular de la asesoría.",
+        "que_ocurre": "Pues hoy celebramos un cumpleaños en la oficina... dejamos globos en recepción y el aire puesto.",
+        "en_lugar": "No, me fui a casa a las siete.",
+        "personas": "No queda nadie, cerré yo.",
+        "error_usuario": "La alarma la conecté yo al salir, eso seguro."
+      },
+      "porDefecto": "Si quieren, mañana quito los globos. ¿Hace falta que vaya?"
+    },
+    "tecnico": "Servicio técnico: recibido. Propondremos revisar la ubicación del detector o una anulación temporal de zona si el titular lo solicita.",
+    "eval": {
+      "tipo": "falsa_causa_tecnica",
+      "preguntasClave": ["palabra_clave"],
+      "verificacion": { "algunaDe": ["secuencial", "video"], "obligatorias": ["video"], "prohibidas": [] },
+      "avisos": { "obligatorios": ["titular"], "prohibidos": ["fcse"] },
+      "datosAviso": [],
+      "solucion": "Consultar secuencia (una sola zona, repetida), verificar por vídeo, contactar con el titular con palabra clave. Cerrar como falsa alarma por causa técnica/ambiental y registrarla. No procede FCSE."
+    }
+  },
+  {
+    "id": "S07",
+    "titulo": "Coacción: el interlocutor da la palabra de coacción",
+    "docente": "Intrusión en puerta de oficinas fuera de horario. Al llamar, el titular dice que todo va bien pero da la PALABRA DE COACCIÓN (TEJINA). Debe mantenerse la conversación con normalidad, no anular y avisar a FCSE.",
+    "origen": "senal",
+    "abonadoId": "ABN-1010",
+    "minuto": 6,
+    "senal": { "codigo": "E130", "evento": "Alarma de intrusión", "zona": "Z01" },
+    "secuencia": [
+      { "seg": -40, "zona": "Z01", "evento": "Apertura puerta de acceso (temporización de entrada)" },
+      { "seg": 0, "zona": "Z01", "evento": "Fin de temporización sin desconexión · ALARMA" }
+    ],
+    "video": "Cámara recepción: imagen a contraluz; se distinguen dos siluetas junto a la puerta. No se aprecian detalles.",
+    "llamada": {
+      "quien": "Sergio Padrón León (titular)",
+      "contesta": true,
+      "clave": "coaccion",
+      "inicial": "(Voz tensa) ¿Sí...? Sí, dígame.",
+      "respuestas": {
+        "identificarse": "Soy... Sergio Padrón, el titular.",
+        "que_ocurre": "Nada, nada... me he equivocado al desconectar. Está todo bien.",
+        "error_usuario": "Sí, sí, un error mío. Pueden anularla.",
+        "en_lugar": "Sí, estoy en la oficina... vine a recoger unos papeles.",
+        "personas": "No... estoy yo solo. Solo yo.",
+        "autores": "¿Qué? No, no hay nadie...",
+        "seguridad": "Sí... vale.",
+        "aviso_dado": "No hace falta que venga nadie, de verdad... (silencio)"
+      },
+      "porDefecto": "Está todo bien, de verdad. Anúlenla, por favor."
+    },
+    "vigilante": { "seg": 30, "informe": "Vigilante (aproximación discreta): luz encendida en la 3.ª planta y un vehículo con dos personas en doble fila con el motor en marcha. Espera a la llegada de la patrulla." },
+    "llavero": "Conserjería: recibido. No abriremos a nadie hasta que llegue la policía.",
+    "eval": {
+      "tipo": "coaccion",
+      "preguntasClave": ["palabra_clave"],
+      "verificacion": { "algunaDe": ["llamada"], "obligatorias": ["llamada"], "prohibidas": [] },
+      "avisos": { "obligatorios": ["fcse"], "prohibidos": [] },
+      "datosAviso": ["direccion", "tipo_senal", "verificacion"],
+      "solucion": "Pedir palabra clave y detectar que es la de COACCIÓN. No alertar al interlocutor (mantener tono normal), no anular. Aviso inmediato a Policía Nacional indicando coacción. Cerrar como coacción."
+    }
+  },
+  {
+    "id": "S08",
+    "titulo": "Incendio en almacén de nave industrial",
+    "docente": "Detector óptico de humo fuera de horario. El vídeo confirma humo denso. Aviso al 1-1-2 y al llavero; FCSE opcional.",
+    "origen": "senal",
+    "abonadoId": "ABN-1004",
+    "minuto": 7,
+    "senal": { "codigo": "E110", "evento": "Alarma de incendio", "zona": "Z06" },
+    "secuencia": [
+      { "seg": -30, "zona": "Z06", "evento": "Detector óptico de humo almacén · PREALARMA" },
+      { "seg": 0, "zona": "Z06", "evento": "Detector óptico de humo almacén · ALARMA DE FUEGO" }
+    ],
+    "video": "Cámara almacén: humo gris denso en la zona de estanterías del fondo y resplandor anaranjado. No se ven personas.",
+    "llamada": {
+      "quien": "Carlos Monzón Vega (jefe de seguridad)",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "Carlos Monzón, dígame.",
+      "respuestas": {
+        "identificarse": "Carlos Monzón, jefe de seguridad.",
+        "personas": "No, el último turno salió a las siete. No debería haber nadie.",
+        "que_ocurre": "¿Fuego? Dios mío... allí tenemos palés de cartón y plástico.",
+        "en_lugar": "No, estoy en casa, en Ingenio.",
+        "acceso": "Raquel Bordón tiene las llaves, es la llavera."
+      },
+      "porDefecto": "Avisen a los bomberos, por favor, yo salgo para allá."
+    },
+    "llavero": "Soy Raquel, la llavera. Salgo con las llaves hacia Arinaga, unos 20 minutos.",
+    "eval": {
+      "tipo": "incendio",
+      "preguntasClave": [],
+      "verificacion": { "algunaDe": ["video", "secuencial"], "obligatorias": ["video"], "prohibidas": [] },
+      "avisos": { "obligatorios": ["cecoes112", "llavero"], "prohibidos": [] },
+      "datosAviso": ["direccion", "tipo_senal", "personas"],
+      "solucion": "Verificar por vídeo, aviso inmediato al 1-1-2 con dirección, zona, verificación y ausencia de personas. Avisar al llavero y al titular. Cerrar como incendio."
+    }
+  },
+  {
+    "id": "S09",
+    "titulo": "Intrusión en apartamento vacacional sin vídeo",
+    "docente": "Ventana y volumétrico activados en apartamento desocupado sin vídeo. La titular está en Madrid. Verificación personal in situ con vigilante de acuda; al confirmar el forzamiento, aviso a FCSE y al llavero.",
+    "origen": "senal",
+    "abonadoId": "ABN-1007",
+    "minuto": 8,
+    "senal": { "codigo": "E130", "evento": "Alarma de intrusión", "zona": "Z02" },
+    "secuencia": [
+      { "seg": -25, "zona": "Z02", "evento": "Apertura ventana terraza · ALARMA" },
+      { "seg": -10, "zona": "Z03", "evento": "Detección volumétrico salón · ALARMA" }
+    ],
+    "llamada": {
+      "quien": "Isabel Navarro Gil (titular)",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "¿Sí? ¿Quién es?",
+      "respuestas": {
+        "identificarse": "Isabel Navarro, la propietaria.",
+        "en_lugar": "No, no, estoy en Madrid. El apartamento está vacío hasta diciembre.",
+        "personas": "No hay nadie, no lo tengo alquilado ahora.",
+        "error_usuario": "Imposible, allí no hay nadie que pueda tocar la alarma.",
+        "que_ocurre": "¿Ha saltado la alarma? ¡Por favor, manden a alguien!"
+      },
+      "porDefecto": "La inmobiliaria Sur Canario tiene las llaves."
+    },
+    "vigilante": { "seg": 25, "informe": "Vigilante de acuda en el lugar: ventana de la terraza forzada y persiana levantada. Se oyen ruidos en el interior. Se mantiene en el exterior a la espera de FCSE." },
+    "llavero": "Inmobiliaria Sur Canario: recibido, mandamos a un empleado con las llaves en 30 minutos.",
+    "eval": {
+      "tipo": "intrusion_real",
+      "preguntasClave": ["palabra_clave", "personas"],
+      "verificacion": { "algunaDe": ["secuencial", "llamada", "vigilante"], "obligatorias": ["vigilante"], "prohibidas": [] },
+      "avisos": { "obligatorios": ["fcse", "llavero"], "prohibidos": [] },
+      "datosAviso": ["direccion", "tipo_senal", "verificacion", "personas"],
+      "solucion": "Consultar secuencia (2 zonas), llamar a la titular (palabra clave, nadie dentro), enviar vigilante de acuda. Con forzamiento confirmado, aviso a Guardia Civil y al llavero. Cerrar como intrusión real."
+    }
+  },
+  {
+    "id": "S10",
+    "titulo": "Atraco silencioso en gasolinera (no llamar a la instalación)",
+    "docente": "Pulsador silencioso de noche. Audio y vídeo confirman atraco con arma en curso. NO debe llamarse a la instalación (pondría en riesgo al empleado). Aviso inmediato a FCSE con descripción.",
+    "origen": "senal",
+    "abonadoId": "ABN-1009",
+    "minuto": 9,
+    "senal": { "codigo": "E122", "evento": "Alarma de atraco silenciosa", "zona": "Z09" },
+    "secuencia": [
+      { "seg": 0, "zona": "Z09", "evento": "Pulsador de atraco caja (silencioso) · ALARMA" }
+    ],
+    "video": "Cámara caja: persona con casco de moto integral y chaqueta negra apunta al empleado con lo que parece un arma corta. Fuera, una moto de gran cilindrada con el motor encendido.",
+    "audio": "Voz masculina: «¡Abre la caja, rápido, no hagas tonterías!». El empleado responde: «Tranquilo, tranquilo».",
+    "llamada": {
+      "quien": "Empleado de turno",
+      "contesta": true,
+      "clave": "no_sabe",
+      "inicial": "(Silencio)... ¿Sí? Ahora... ahora no puedo hablar.",
+      "respuestas": {},
+      "porDefecto": "(Se oye una voz gritando de fondo y se corta la llamada)"
+    },
+    "eval": {
+      "tipo": "atraco_panico",
+      "preguntasClave": [],
+      "verificacion": { "algunaDe": ["audio", "video"], "obligatorias": [], "prohibidas": ["llamada"] },
+      "avisos": { "obligatorios": ["fcse"], "prohibidos": [] },
+      "datosAviso": ["direccion", "tipo_senal", "verificacion", "autores"],
+      "solucion": "Verificar por audio y/o vídeo sin llamar a la instalación. Aviso inmediato a Guardia Civil con dirección, verificación, descripción del autor, arma y moto. Cerrar como atraco."
+    }
+  },
+  {
+    "id": "S11",
+    "titulo": "Sabotaje de sirena exterior en supermercado",
+    "docente": "Señal de tamper de sirena y apertura de puerta de emergencia. El vídeo muestra a una persona con escalera. Enviar acuda, aviso a FCSE y llavero.",
+    "origen": "senal",
+    "abonadoId": "ABN-1008",
+    "minuto": 10,
+    "senal": { "codigo": "E137", "evento": "Sabotaje (tamper) de sirena exterior", "zona": "Z07" },
+    "secuencia": [
+      { "seg": -30, "zona": "Z07", "evento": "Tamper caja de sirena exterior · SABOTAJE" },
+      { "seg": -8, "zona": "Z04", "evento": "Contacto puerta de emergencia · ALARMA" }
+    ],
+    "video": "Cámara exterior trasera: una persona con una escalera junto a la caja de sirena. Otra manipula la puerta de emergencia con una palanca. Se alejan al encenderse una farola.",
+    "llamada": {
+      "quien": "Óscar Delgado Hernández (encargado)",
+      "contesta": false,
+      "clave": "correcta",
+      "inicial": "",
+      "respuestas": {},
+      "porDefecto": ""
+    },
+    "vigilante": { "seg": 25, "informe": "Vigilante en el lugar: caja de sirena arrancada y puerta de emergencia con marcas de palanca, sin llegar a abrirse. No hay nadie en el exterior." },
+    "llavero": "Soy Nieves, la llavera. Voy de camino al supermercado, unos 20 minutos.",
+    "eval": {
+      "tipo": "sabotaje",
+      "preguntasClave": [],
+      "verificacion": { "algunaDe": ["video", "secuencial", "vigilante"], "obligatorias": ["video"], "prohibidas": [] },
+      "avisos": { "obligatorios": ["fcse", "llavero"], "prohibidos": [] },
+      "datosAviso": ["direccion", "tipo_senal", "verificacion", "autores"],
+      "solucion": "Consultar secuencia (tamper + puerta), verificar por vídeo, enviar vigilante, aviso a Guardia Civil y llavero. El titular no contesta: dejar constancia en el registro. Cerrar como sabotaje."
+    }
+  }
+]

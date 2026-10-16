@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRA · Simulador</title>
+<meta name="description" content="Simulador de Central Receptora de Alarmas · CFGM Técnico en Seguridad · CIFP Tony Gallardo">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101a2b'/%3E%3Cpath d='M16 6l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10v-6z' fill='%23f5a524'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/app.css?v=2">
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<header class="barra" role="banner">
+  <div class="marca">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4l10 4.5v7c0 6-4.4 10.7-10 12-5.6-1.3-10-6-10-12v-7z" fill="currentColor"/><path d="M11 16l3.5 3.5L21 13" stroke="var(--panel)" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div><strong id="marca-sala">Central Receptora de Alarmas</strong><span id="marca-empresa"></span></div>
+  </div>
+  <div class="barra-centro" id="barra-centro"></div>
+  <div class="barra-acciones">
+    <button class="btn-ico" id="b-letra-menos" title="Reducir tamaño de letra" aria-label="Reducir tamaño de letra">A−</button>
+    <button class="btn-ico" id="b-letra-mas" title="Aumentar tamaño de letra" aria-label="Aumentar tamaño de letra">A+</button>
+    <button class="btn-ico" id="b-voz" title="Leer en voz alta los mensajes del interlocutor" aria-pressed="false" aria-label="Lectura en voz alta">🔈</button>
+    <button class="btn-ico" id="b-tema" title="Cambiar tema claro / oscuro" aria-label="Cambiar tema">◐</button>
+  </div>
+</header>
+
+<main id="principal" tabindex="-1">
+
+  <!-- ===== Inicio ===== -->
+  <section id="v-inicio" class="vista" aria-labelledby="t-inicio">
+    <div class="inicio">
+      <div class="inicio-intro">
+        <p class="sobre">CFGM Técnico en Seguridad · Módulo 1679 Vigilancia y protección · RA4</p>
+        <h1 id="t-inicio">Central Receptora de Alarmas</h1>
+        <p>Recepción, verificación, respuesta y transmisión de señales de alarma. Atiende cada señal o llamada aplicando el procedimiento en un tiempo objetivo de <strong>120 segundos</strong>.</p>
+        <ul class="inicio-pasos">
+          <li><span>1</span>Recibe la señal de la centralita o la llamada del alertante.</li>
+          <li><span>2</span>Verifica: secuencia de zonas, vídeo, audio o verificación personal.</li>
+          <li><span>3</span>Decide y transmite: FCSE, 1-1-2, llavero o servicio técnico.</li>
+          <li><span>4</span>Clasifica, registra y cierra.</li>
+        </ul>
+      </div>
+      <div class="inicio-forms">
+        <form id="f-alumno" class="tarjeta" autocomplete="off">
+          <h2>Teleoperador/a</h2>
+          <label for="i-nombre">Nombre y apellidos</label>
+          <input id="i-nombre" required maxlength="60" placeholder="p. ej. Laura Santana Díaz">
+          <label for="i-puesto">Puesto</label>
+          <select id="i-puesto" required></select>
+          <button class="btn primario" type="submit">Entrar al puesto</button>
+        </form>
+        <form id="f-docente" class="tarjeta" autocomplete="off">
+          <h2>Docente</h2>
+          <label for="i-pin">Contraseña</label>
+          <input id="i-pin" type="password" inputmode="numeric" required>
+          <button class="btn" type="submit">Entrar como docente</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Teleoperador ===== -->
+  <section id="v-teleop" class="vista" hidden aria-label="Puesto de teleoperador">
+    <div class="teleop">
+      <section class="panel" aria-labelledby="t-cola">
+        <div class="panel-cab">
+          <h2 id="t-cola">Señales y llamadas entrantes</h2>
+          <span class="contador" id="cola-n" aria-live="polite">0</span>
+        </div>
+        <div id="estado-actividad" class="estado-actividad" role="status"></div>
+        <ul id="cola" class="cola" aria-live="polite"></ul>
+      </section>
+      <section class="panel" aria-labelledby="t-hist">
+        <div class="panel-cab">
+          <h2 id="t-hist">Mis incidencias</h2>
+          <span class="nota-media" id="nota-media"></span>
+        </div>
+        <div class="tabla-env"><table class="tabla" id="historial">
+          <thead><tr><th>Incidencia</th><th>Abonado</th><th>Clasificación</th><th>Tiempo</th><th>Nota</th><th><span class="sr">Acciones</span></th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <div class="fila-botones">
+          <button class="btn primario" id="b-mi-pdf">Descargar mi informe (PDF)</button>
+          <button class="btn" id="b-guia">Guía del procedimiento</button>
+          <button class="btn" id="b-msg-alumno">Mensajes con el docente <span class="badge" id="msg-n" hidden></span></button>
+          <button class="btn fantasma" id="b-salir">Salir del puesto</button>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ===== Docente ===== -->
+  <section id="v-docente" class="vista" hidden aria-label="Panel docente">
+    <div class="docente">
+      <aside class="doc-col">
+        <section class="panel" aria-labelledby="t-control">
+          <h2 id="t-control">Control del ejercicio</h2>
+          <div class="reloj" id="d-reloj" aria-live="off">--:--</div>
+          <div id="d-estado" class="estado-actividad" role="status"></div>
+          <div class="grid-botones">
+            <button class="btn verde" id="d-iniciar">▶ Inicio actividad</button>
+            <button class="btn rojo" id="d-finalizar">■ Fin actividad</button>
+            <button class="btn ambar" id="d-test">▶ TEST</button>
+            <button class="btn" id="d-fintest">■ FIN TEST</button>
+          </div>
+          <p class="ayuda" id="d-persistencia"></p>
+          <p class="ayuda" id="d-limite"></p>
+        </section>
+        <section class="panel" aria-labelledby="t-inf">
+          <h2 id="t-inf">Informes PDF</h2>
+          <p class="ayuda">Informe individual desde cada puesto o el conjunto de todo el grupo.</p>
+          <div class="fila-botones"><button class="btn primario" id="d-pdf-todos">Informe conjunto (PDF)</button><button class="btn" id="d-pdf-individuales">Todos los individuales</button></div>
+        </section>
+        <section class="panel" aria-labelledby="t-msg">
+          <h2 id="t-msg">Mensajería</h2>
+          <div id="d-mensajes" class="mensajes" aria-live="polite"></div>
+          <form id="d-f-msg" class="msg-form">
+            <label class="sr" for="d-msg-destino">Destino</label>
+            <select id="d-msg-destino"></select>
+            <label class="sr" for="d-msg-texto">Mensaje</label>
+            <input id="d-msg-texto" maxlength="500" placeholder="Escribe un mensaje…">
+            <button class="btn" type="submit">Enviar</button>
+          </form>
+        </section>
+      </aside>
+      <div class="doc-main">
+        <section class="panel" aria-labelledby="t-puestos">
+          <div class="panel-cab"><h2 id="t-puestos">Puestos de teleoperador</h2><span class="ayuda" id="d-resumen"></span></div>
+          <div id="d-puestos" class="puestos"></div>
+        </section>
+        <section class="panel" aria-labelledby="t-sup">
+          <h2 id="t-sup">Supuestos programados</h2>
+          <p class="ayuda">«Entra»: se lanza solo en el minuto indicado al iniciar la actividad. Destino «Todos»: una copia por puesto ocupado (evaluación homogénea). «Común»: la coge el primero.</p>
+          <div class="tabla-env"><table class="tabla compacta" id="d-programa">
+            <thead><tr><th>Entra</th><th>Min</th><th>Supuesto</th><th>Destino</th><th><span class="sr">Lanzar</span></th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+          <div class="fila-botones"><button class="btn" id="d-lanzar-todos">Lanzar ya todos los marcados</button></div>
+        </section>
+        <section class="panel" aria-labelledby="t-dcola">
+          <div class="panel-cab"><h2 id="t-dcola">Señales en cola</h2><span class="contador" id="d-cola-n">0</span></div>
+          <ul id="d-cola" class="cola compacta"></ul>
+        </section>
+        <section class="panel" aria-labelledby="t-dcerr">
+          <div class="panel-cab"><h2 id="t-dcerr">Incidencias cerradas</h2><span class="ayuda" id="d-noat"></span></div>
+          <div class="tabla-env"><table class="tabla compacta" id="d-cerradas">
+            <thead><tr><th>Inc.</th><th>Puesto</th><th>Alumno/a</th><th>Supuesto</th><th>Tiempo</th><th>Nota</th><th><span class="sr">Ver</span></th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== Ventana de trabajo del teleoperador ===== -->
+<div id="ventana" class="ventana" hidden role="dialog" aria-modal="true" aria-labelledby="w-titulo">
+  <div class="w-cab">
+    <div class="w-tit">
+      <span class="chip" id="w-origen"></span>
+      <h2 id="w-titulo"></h2>
+      <span class="w-sub" id="w-sub"></span>
+    </div>
+    <div class="temporizador" role="timer" aria-live="off">
+      <div class="t-num"><span id="w-tiempo">00:00</span><small>/ 02:00</small></div>
+      <div class="t-barra" aria-hidden="true"><div id="w-barra"></div></div>
+      <span class="t-estado" id="w-testado"></span>
+    </div>
+  </div>
+  <div class="w-cuerpo">
+    <section class="w-chat" aria-label="Conversación">
+      <div class="w-chat-cab"><h3>Comunicación</h3><span id="w-llamada" class="chip"></span></div>
+      <div id="w-mensajes" class="chat" role="log" aria-live="polite"></div>
+      <div class="preguntas" id="w-preguntas" aria-label="Preguntas e indicaciones programadas"></div>
+      <form id="w-f-libre" class="chat-form">
+        <label class="sr" for="w-libre">Mensaje libre al interlocutor</label>
+        <input id="w-libre" maxlength="500" placeholder="Mensaje libre (con «?» es pregunta; sin «?», indicación)…">
+        <button class="btn primario" type="submit">Enviar</button>
+      </form>
+    </section>
+    <section class="w-ficha" aria-label="Ficha del abonado" id="w-ficha"></section>
+  </div>
+  <div class="w-acciones">
+    <fieldset>
+      <legend>Verificación</legend>
+      <button class="btn" data-acc="secuencial">📋 Secuencia de zonas</button>
+      <button class="btn" data-acc="video">📹 Vídeo</button>
+      <button class="btn" data-acc="audio">🎧 Audio</button>
+      <button class="btn" data-acc="llamar" id="w-b-llamar">📞 Llamar al titular</button>
+      <button class="btn" data-acc="colgar" id="w-b-colgar">Colgar</button>
+      <button class="btn" data-acc="vigilante">🚗 Vigilante (acuda)</button>
+    </fieldset>
+    <fieldset>
+      <legend>Respuesta y transmisión</legend>
+      <button class="btn azul" data-form="fcse">🚓 Aviso FCSE</button>
+      <button class="btn azul" data-form="cecoes112">🚑 Aviso 1-1-2</button>
+      <button class="btn" data-acc="llavero">🔑 Llavero</button>
+      <button class="btn" data-acc="tecnico">🛠️ Servicio técnico</button>
+    </fieldset>
+    <form id="w-f-cierre" class="cierre">
+      <fieldset>
+        <legend>Clasificación, registro y cierre</legend>
+        <label class="sr" for="w-clasif">Clasificación</label>
+        <select id="w-clasif" required></select>
+        <label class="sr" for="w-obs">Observaciones para el registro</label>
+        <textarea id="w-obs" rows="2" maxlength="2000" placeholder="Registro: qué ocurrió, qué verificaste, a quién avisaste…"></textarea>
+        <button class="btn verde" type="submit">Cerrar incidencia</button>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<!-- ===== Modal genérico ===== -->
+<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="m-titulo">
+  <div class="modal-caja">
+    <div class="modal-cab"><h2 id="m-titulo"></h2><button class="btn-ico" id="m-cerrar" aria-label="Cerrar">✕</button></div>
+    <div id="m-cuerpo" class="modal-cuerpo"></div>
+  </div>
+</div>
+
+<div id="avisos" class="avisos" aria-live="assertive"></div>
+<div id="bloqueo" class="bloqueo" hidden><div><h2>Límite de uso diario agotado</h2><p>El simulador estará disponible de nuevo a partir de las 00:00 (hora de Canarias).</p></div></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/vendor/jspdf.js"></script>
+<script src="/vendor/autotable.js"></script>
+<script src="js/app.js?v=2"></script>
+<script src="js/pdf.js?v=2"></script>
+<script src="js/teleoperador.js?v=2"></script>
+<script src="js/docente.js?v=2"></script>
+</body>
+</html>

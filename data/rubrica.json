@@ -1,0 +1,65 @@
+{
+  "ra": "RA4. Describe operaciones de recepción, verificación, respuesta y transmisión de las señales de alarma relacionándolas con la norma de funcionamiento de las centrales receptoras.",
+  "fuente": "Real Decreto 570/2023, de 4 de julio (BOE núm. 177, de 26 de julio de 2023) · Módulo 1679 Vigilancia y protección",
+  "ce": {
+    "a": "Se ha verificado a través de «simulacros» el funcionamiento técnico de la alarma comprobando que la señal emitida por el usuario es recibida en la central de alarma y respondida por esta.",
+    "b": "Se ha analizado el proceso de verificación secuencial de la alarma, video o audio para verificar la veracidad de la misma.",
+    "c": "Se ha analizado el proceso de verificación personal para verificar la veracidad de la misma.",
+    "d": "Se han identificado los documentos u otras opciones de registro de la información en la gestión de las señales de alarma.",
+    "e": "Se ha valorado la importancia de la verificación de las alarmas y de la identificación de las falsas alarmas.",
+    "f": "Se han descrito los protocolos de comunicación y coordinación con las Fuerzas y Cuerpos de Seguridad, cuando procede, en base a la gestión de las señales de alarma."
+  },
+  "criterios": [
+    { "id": "tiempo", "nombre": "Tiempo de gestión (objetivo ≤ 120 s)", "ce": "a", "max": 3 },
+    { "id": "recepcion", "nombre": "Recepción e identificación (señal, zona, interlocutor, palabra clave)", "ce": "a, c", "max": 1.5 },
+    { "id": "verificacion", "nombre": "Verificación de la señal (secuencial, vídeo, audio, personal)", "ce": "b, c", "max": 2 },
+    { "id": "clasificacion", "nombre": "Clasificación: alarma real / falsa alarma / técnica", "ce": "e", "max": 1.5 },
+    { "id": "comunicacion", "nombre": "Respuesta y transmisión (FCSE, 1-1-2, llavero, SAT) con datos completos", "ce": "f", "max": 1.5 },
+    { "id": "registro", "nombre": "Registro y cierre de la incidencia", "ce": "d", "max": 0.5 }
+  ],
+  "tiempo": {
+    "excelenteHastaSeg": 60,
+    "limiteSeg": 120,
+    "notaEnLimite": 0.5,
+    "nota": "≤ 60 s: puntuación completa. Entre 60 y 120 s: baja de forma lineal hasta el 50 %. Más de 120 s: 0 puntos en este criterio (la conversación se mantiene hasta el cierre). La puntuación de tiempo se multiplica por el porcentaje obtenido en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa."
+  },
+  "niveles": [
+    { "nombre": "Excelente", "desde": 0.85 },
+    { "nombre": "Adecuado", "desde": 0.5 },
+    { "nombre": "Insuficiente", "desde": 0 }
+  ],
+  "clasificaciones": [
+    { "id": "intrusion_real", "nombre": "Alarma real · Intrusión", "familia": "real" },
+    { "id": "atraco_panico", "nombre": "Alarma real · Atraco / pánico", "familia": "real" },
+    { "id": "coaccion", "nombre": "Alarma real · Coacción", "familia": "real" },
+    { "id": "sabotaje", "nombre": "Alarma real · Sabotaje", "familia": "real" },
+    { "id": "sanitaria", "nombre": "Emergencia sanitaria", "familia": "emergencia" },
+    { "id": "incendio", "nombre": "Incendio / emergencia técnica grave", "familia": "emergencia" },
+    { "id": "tecnica", "nombre": "Incidencia técnica (avería, alimentación, comunicaciones)", "familia": "tecnica" },
+    { "id": "falsa_error_usuario", "nombre": "Falsa alarma · Error de usuario", "familia": "falsa" },
+    { "id": "falsa_causa_tecnica", "nombre": "Falsa alarma · Causa técnica o ambiental", "familia": "falsa" },
+    { "id": "falsa_desconocida", "nombre": "Falsa alarma · Causa desconocida", "familia": "falsa" }
+  ],
+  "verificaciones": {
+    "secuencial": "Verificación secuencial (consulta de zonas activadas)",
+    "video": "Verificación por vídeo",
+    "audio": "Verificación por audio",
+    "llamada": "Verificación personal telefónica (titular / interlocutor)",
+    "vigilante": "Verificación personal in situ (vigilante de acuda)"
+  },
+  "avisos": {
+    "fcse": "Aviso a Fuerzas y Cuerpos de Seguridad",
+    "cecoes112": "Aviso al 1-1-2 (CECOES)",
+    "llavero": "Aviso al llavero / custodia de llaves",
+    "tecnico": "Aviso al servicio técnico (SAT)",
+    "titular": "Comunicación con el titular"
+  },
+  "datosAviso": {
+    "direccion": "Dirección completa",
+    "tipo_senal": "Tipo de señal y zona",
+    "verificacion": "Verificación realizada y resultado",
+    "autores": "Descripción de autores / huida",
+    "personas": "Personas en el lugar / heridos",
+    "contacto": "Contacto de llavero o responsable"
+  }
+}
