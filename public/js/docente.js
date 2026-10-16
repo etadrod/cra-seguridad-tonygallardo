@@ -7,6 +7,7 @@
     if (D.montado) return;
     D.montado = true;
     $$('input[name="tipo-act"]').forEach((r) => r.addEventListener('change', () => {
+      D.tipoTocado = true;
       // Evaluación: se marcan por defecto los supuestos que cubren un incidente de cada tipo (el docente puede cambiarlos)
       if (r.checked && r.value === 'evaluacion' && D.v && D.v.actividad.estado !== 'en_curso' && S.datos) {
         const def = new Set(S.datos.config.evaluacionPorDefecto || []);
@@ -21,6 +22,11 @@
       const v = D.v;
       if (v && v.cerradas.length && !confirm('Se borrarán los resultados del ejercicio anterior. ¿Has descargado ya los informes?')) return;
       const tipo = ($('input[name="tipo-act"]:checked') || {}).value || 'practica';
+      const a0 = D.v && D.v.actividad;
+      if (a0 && a0.estado === 'en_curso' && a0.tipo === 'online') {
+        if (tipo === 'online') return aviso('El modo online ya está activo.', 'ok', 2500);
+        if (!confirm('Se detendrá el modo online (las incidencias abiertas se evaluarán tal como estén) y empezará la nueva actividad. ¿Continuar?')) return;
+      }
       if (tipo === 'evaluacion') {
         const sel = D.v.programa.filter((p) => p.entra);
         if (!sel.length && !confirm('No hay ningún supuesto marcado en «Entra». En la evaluación solo entran los casos que lances tú. ¿Iniciar igualmente?')) return;
@@ -28,13 +34,14 @@
         const iv = Number($('#d-intervalo').value) || 240;
         if (!confirm(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), uno cada ${iv} s, iguales para los ${libres} alumno(s) conectados. Duración aproximada: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
       }
-      res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 240 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas ni la guía hasta que la finalices.' : 'Práctica iniciada.');
+      res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 240 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas ni la guía hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
     });
     $('#d-finalizar').addEventListener('click', async () => {
       if (!confirm('¿Finalizar la actividad? Las incidencias abiertas se evaluarán tal como estén.')) return;
       res(await emitir('doc_finalizar'), 'Actividad finalizada. Ya puedes descargar los informes.');
     });
     $('#d-test').addEventListener('click', async () => {
+      if (D.v && D.v.actividad.tipo === 'online' && D.v.actividad.estado === 'en_curso' && !confirm('Se detendrá el modo online para iniciar el TEST. ¿Continuar?')) return;
       if (D.v && D.v.cerradas.length && !confirm('El TEST borra los resultados actuales. ¿Continuar?')) return;
       const r = await emitir('doc_test');
       res(r, r.ok ? `TEST iniciado: ${r.bots} bots ocupan los puestos libres y entran señales automáticas.` : '');
@@ -146,17 +153,20 @@
     if (!D.montado) montar();
     D.v = v;
     const a = v.actividad;
-    $('#barra-centro').innerHTML = `<span class="chip info">Docente</span>${a.estado === 'en_curso' ? `<span class="chip ${a.modo === 'test' ? 'alerta' : 'ok'}">${a.modo === 'test' ? 'TEST en curso' : a.tipo === 'evaluacion' ? 'Evaluación en curso' : 'Práctica en curso'}</span>` : `<span class="chip">${a.estado === 'finalizada' ? 'Actividad finalizada' : 'En espera'}</span>`}<button class="btn fantasma" id="d-salir">Salir</button>`;
+    $('#barra-centro').innerHTML = `<span class="chip info">Docente</span>${a.estado === 'en_curso' ? `<span class="chip ${a.modo === 'test' ? 'alerta' : 'ok'}">${a.modo === 'test' ? 'TEST en curso' : a.tipo === 'evaluacion' ? 'Evaluación en curso' : a.tipo === 'online' ? 'Modo online activo' : 'Práctica en curso'}</span>` : `<span class="chip">${a.estado === 'finalizada' ? 'Actividad finalizada' : 'En espera'}</span>`}<button class="btn fantasma" id="d-salir">Salir</button>`;
     $('#d-salir').onclick = () => { try { sessionStorage.removeItem('cra-pin'); } catch { /* */ } location.reload(); };
     const de = $('#d-estado');
     de.className = `estado-actividad ${a.estado === 'en_curso' ? (a.modo === 'test' ? 'test' : 'en_curso') : ''}`;
-    de.textContent = a.pausadaDesde ? `⏸ En pausa desde las ${hora(a.pausadaDesde)}. Tiempos, cola y supuestos programados detenidos.` : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST: bots en puestos libres y señales automáticas. Los alumnos conectados también pueden atender.' : `${a.tipo === 'evaluacion' ? 'EVALUACIÓN' : 'PRÁCTICA'} en curso. Los supuestos marcados entran en su minuto.${a.tipo === 'evaluacion' ? ' El alumnado no ve notas ni la guía hasta que la finalices.' : ''}`)
+    de.textContent = a.pausadaDesde ? `⏸ En pausa desde las ${hora(a.pausadaDesde)}. Tiempos, cola y supuestos programados detenidos.` : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST: bots en puestos libres y señales automáticas. Los alumnos conectados también pueden atender.' : (a.tipo === 'online' ? 'MODO ONLINE activo: cada alumno que entra en un puesto recibe los supuestos S01-S10 en orden aleatorio, uno tras otro, a su ritmo. Pulsa «Fin actividad» para pararlo y elegir otro tipo.' : `${a.tipo === 'evaluacion' ? 'EVALUACIÓN' : 'PRÁCTICA'} en curso. Los supuestos marcados entran en su minuto.${a.tipo === 'evaluacion' ? ' El alumnado no ve notas ni la guía hasta que la finalices.' : ''}`))
       : a.estado === 'finalizada' ? `Finalizada a las ${hora(a.fin)}. Descarga los informes.` : 'En espera de inicio.';
     const enCurso = a.estado === 'en_curso';
-    $('#d-iniciar').disabled = enCurso;
-    $$('#d-tipo input').forEach((r) => { r.disabled = enCurso; if (enCurso && a.tipo) r.checked = r.value === a.tipo; });
+    const enOnline = enCurso && a.modo === 'actividad' && a.tipo === 'online';
+    $('#d-iniciar').disabled = enCurso && !enOnline;
+    $('#d-iniciar').textContent = enOnline ? '▶ Cambiar a la actividad elegida' : '▶ Inicio actividad';
+    $('#d-test').disabled = enCurso && !enOnline;
+    $$('#d-tipo input').forEach((r) => { r.disabled = enCurso && !enOnline; if (enCurso && !enOnline && a.tipo) r.checked = r.value === a.tipo; });
+    if (enOnline && !D.tipoTocado) $$('#d-tipo input').forEach((r) => { r.checked = r.value === 'online'; });
     $('#d-finalizar').disabled = !(enCurso && a.modo === 'actividad');
-    $('#d-test').disabled = enCurso;
     $('#d-fintest').disabled = !(enCurso && a.modo === 'test');
     const pausaBtn = $('#d-pausa');
     pausaBtn.disabled = !(enCurso && a.modo === 'actividad');

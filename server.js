@@ -123,6 +123,7 @@ function emitirVistas() {
 setInterval(() => { if (sala.tomarSucio()) emitirVistas(); }, 150);
 setInterval(() => { if (sala.S.actividad.estado === 'en_curso') io.to('docente').emit('vista_docente', { ahora: Date.now(), vista: sala.vistaDocente(), limite: limite.estado() }); }, 1000);
 setInterval(() => sala.tic(), 250);
+setInterval(() => { if (sala.asegurarOnline()) console.log('[cra] modo ONLINE reactivado'); }, 10 * 60 * 1000);
 
 // Límite de uso diario
 setInterval(() => {
@@ -138,6 +139,7 @@ async function arrancar() {
   await limite.cargar();
   const d = await persistencia.leer('estado.json');
   if (d && sala.importar(d)) console.log('[cra] estado restaurado desde', persistencia.modo);
+  if (sala.asegurarOnline()) console.log('[cra] modo ONLINE activado por defecto');
   server.listen(PORT, () => console.log(`[cra] escuchando en ${PORT} · persistencia: ${persistencia.modo} · PIN docente ${PIN ? 'configurado' : 'NO configurado'}`));
 }
 

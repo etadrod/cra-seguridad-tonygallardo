@@ -276,8 +276,9 @@ function verRubrica() {
     <p class="ayuda">Los puntos de tiempo se multiplican por el porcentaje que consigas en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa.</p>
     <h3 style="margin-top:14px">Penalizaciones y error grave</h3>
     <ul class="mejoras">${R.penalizaciones.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
-    <h3 style="margin-top:14px">Práctica y evaluación</h3>
+    <h3 style="margin-top:14px">Online, práctica y evaluación</h3>
     <ul class="mejoras">
+      <li><strong>Online:</strong> ${tp} s por incidencia. Al entrar en tu puesto recibes los supuestos de práctica en orden aleatorio, uno tras otro, a tu ritmo, con corrección al cerrar cada uno.</li>
       <li><strong>Práctica:</strong> ${tp} s por incidencia. Ves la corrección y la nota al cerrar cada una y tienes la guía del procedimiento.</li>
       <li><strong>Evaluación:</strong> ${te} s por incidencia. Todos recibís los mismos casos, uno tras otro. No ves notas ni la guía hasta que el docente finalice; después puedes descargar tu informe.</li>
     </ul>

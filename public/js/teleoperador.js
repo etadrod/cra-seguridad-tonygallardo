@@ -167,7 +167,7 @@
     ea.className = `estado-actividad ${a.estado === 'en_curso' ? (a.modo === 'test' ? 'test' : 'en_curso') : ''}`;
     $('#w-pausa').hidden = !a.pausadaDesde;
     $('#barra-centro').insertAdjacentHTML('beforeend', a.pausadaDesde ? '<span class="chip info">⏸ En pausa</span>' : '');
-    ea.textContent = a.pausadaDesde ? '⏸ Actividad en pausa. El tiempo está detenido.' : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST en curso: el docente está probando el sistema. Puedes atender señales.' : (a.tipo === 'evaluacion' ? 'EVALUACIÓN en curso. Atiende las señales en cuanto entren. Verás tu nota cuando el docente finalice la actividad.' : 'PRÁCTICA en curso. Atiende las señales en cuanto entren. Verás la corrección al cerrar cada incidencia.'))
+    ea.textContent = a.pausadaDesde ? '⏸ Actividad en pausa. El tiempo está detenido.' : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST en curso: el docente está probando el sistema. Puedes atender señales.' : (a.tipo === 'online' ? `MODO ONLINE: recibirás los supuestos de uno en uno, en orden aleatorio${v.online ? ` (${v.online.hechos} de ${v.online.total})` : ''}. Al cerrar uno entra el siguiente. Verás la corrección al cerrar cada incidencia.${v.online && v.online.hechos >= v.online.total && !v.activa && !v.cola.length ? ' ¡Has completado todos los supuestos! Descarga tu informe.' : ''}` : a.tipo === 'evaluacion' ? 'EVALUACIÓN en curso. Atiende las señales en cuanto entren. Verás tu nota cuando el docente finalice la actividad.' : 'PRÁCTICA en curso. Atiende las señales en cuanto entren. Verás la corrección al cerrar cada incidencia.'))
       : a.estado === 'finalizada' ? 'Actividad finalizada. Descarga tu informe en PDF.' : 'En espera: el docente aún no ha iniciado la actividad.';
 
     const evalCurso = a.tipo === 'evaluacion' && a.estado === 'en_curso';
@@ -205,7 +205,7 @@
     if (v.activa) abrirVentana(v.activa); else cerrarVentana();
   }
 
-  const estadoChip = (a) => a.estado === 'en_curso' ? `<span class="chip ${a.modo === 'test' ? 'alerta' : 'ok'}">${a.modo === 'test' ? 'TEST' : a.tipo === 'evaluacion' ? 'Evaluación' : 'Práctica'}</span>`
+  const estadoChip = (a) => a.estado === 'en_curso' ? `<span class="chip ${a.modo === 'test' ? 'alerta' : 'ok'}">${a.modo === 'test' ? 'TEST' : a.tipo === 'evaluacion' ? 'Evaluación' : a.tipo === 'online' ? 'Online' : 'Práctica'}</span>`
     : `<span class="chip">${a.estado === 'finalizada' ? 'Actividad finalizada' : 'En espera'}</span>`;
 
   // ---------- Ventana ----------
