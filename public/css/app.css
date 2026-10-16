@@ -293,3 +293,7 @@ body.redimensionando .ventana * { cursor: inherit; }
 .visor-ctrl .btn { min-height: 34px; padding: 5px 10px; }
 .visor-ctrl input[type=range] { flex: 1; min-width: 120px; padding: 0; }
 .visor .ayuda { margin: 0; }
+
+/* Colgar: grande y rojo */
+.btn.colgar { background: var(--rojo); border-color: var(--rojo); color: #fff; font-size: 1.05rem; padding: 10px 22px; min-height: 46px; font-weight: 800; }
+.btn.colgar:hover:not(:disabled) { filter: brightness(1.1); border-color: var(--rojo); }

@@ -48,6 +48,7 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     ok((await quien.pedir('cerrar', { clasificacion: 'nada' })).error, 'cierre sin clasificación válida rechazado');
     const c = await quien.pedir('cerrar', { clasificacion: 'intrusion_real', observaciones: 'Intrusión verificada por vídeo: dos encapuchados. Aviso a Policía Nacional y llavero.' });
     ok(c.ok && c.eval.nota >= 9.5, `evaluación correcta con nota alta (${c.eval.nota})`);
+    ok(c.eval.limite === 240, 'cola común: objetivo de 240 s');
     ok(c.eval.criterios.length === 6 && Math.abs(c.eval.criterios.reduce((s, x) => s + x.max, 0) - 10) < 1e-9, 'rúbrica de 6 criterios sobre 10');
 
     // Falsa alarma mal gestionada (aviso improcedente a FCSE, sin palabra clave)
@@ -56,6 +57,7 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     await a2.pedir('coger', { id: a2.ultima.cola[0].id });
     await a2.pedir('accion', { tipo: 'fcse', datos: { cuerpo: 'Guardia Civil', datos: [] } });
     const c2 = await a2.pedir('cerrar', { clasificacion: 'intrusion_real', observaciones: '' });
+    ok(c2.eval.limite === 120, 'destino puesto: objetivo de 120 s');
     ok(c2.eval.nota < 4.5, `mala gestión penalizada (${c2.eval.nota})`);
     ok(c2.eval.mejoras.length >= 3, 'el informe incluye mejoras concretas');
 

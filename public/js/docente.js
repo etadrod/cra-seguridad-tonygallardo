@@ -217,7 +217,7 @@
       return `<div class="puesto ${cls}" data-np="${p.n}" ${a ? `tabindex="0" role="button" aria-label="Visualizar el puesto ${p.n} (${esc(a.nombre)})" title="Pulsa para visualizar el puesto"` : ''}>
         <span class="n">PUESTO ${String(p.n).padStart(2, '0')} ${a && a.esBot ? '· BOT' : ''}${a && !a.conectado ? ' · desconectado' : ''}</span>
         <span class="nom">${a ? esc(a.nombre) : 'Libre'}</span>
-        ${p.activa ? `<span>${esc(p.activa.codigo)} · ${esc(p.activa.abonado)}</span><span class="num" data-cogida="${p.activa.cogida}">00:00</span><div class="mini-barra"><div data-barra="${p.activa.cogida}"></div></div>` : `<span class="ayuda">${a ? 'Disponible' : '—'}</span>`}
+        ${p.activa ? `<span>${esc(p.activa.codigo)} · ${esc(p.activa.abonado)}</span><span class="num" data-cogida="${p.activa.cogida}" data-lim="${p.activa.limite}">00:00</span><div class="mini-barra"><div data-barra="${p.activa.cogida}" data-lim="${p.activa.limite}"></div></div>` : `<span class="ayuda">${a ? 'Disponible' : '—'}</span>`}
         ${a ? `<span>Cerradas: <strong>${p.cerradas}</strong> · Media: <strong class="${claseNota(p.notaMedia)}">${p.notaMedia == null ? '—' : p.notaMedia.toFixed(2)}</strong></span>` : ''}
         ${a ? `<div class="acc">
           <button class="btn" data-p="obs" data-n="${p.n}">Visualizar</button>
@@ -235,15 +235,15 @@
     const ahora = a.pausadaDesde || ahoraSrv();
     $('#d-reloj').textContent = a.inicio ? fmt(((a.estado === 'finalizada' ? a.fin : ahora) - a.inicio) / 1000) : '--:--';
     const obj = S.datos ? S.datos.config.tiempoObjetivoSeg : 120;
-    $$('#d-puestos [data-cogida]').forEach((e) => { const s = (ahora - Number(e.dataset.cogida)) / 1000; e.textContent = fmt(s); e.closest('.puesto').classList.toggle('fuera', s > obj); });
-    $$('#d-puestos [data-barra]').forEach((e) => { const r = Math.min(1, (ahora - Number(e.dataset.barra)) / 1000 / obj); e.style.width = `${Math.max(3, r * 100)}%`; e.style.background = `hsl(${Math.round(120 * (1 - r))} 80% 45%)`; });
+    $$('#d-puestos [data-cogida]').forEach((e) => { const s = (ahora - Number(e.dataset.cogida)) / 1000; const l = Number(e.dataset.lim) || obj; e.textContent = `${fmt(s)} / ${fmt(l)}`; e.closest('.puesto').classList.toggle('fuera', s > l); });
+    $$('#d-puestos [data-barra]').forEach((e) => { const r = Math.min(1, (ahora - Number(e.dataset.barra)) / 1000 / (Number(e.dataset.lim) || obj)); e.style.width = `${Math.max(3, r * 100)}%`; e.style.background = `hsl(${Math.round(120 * (1 - r))} 80% 45%)`; });
     $$('#d-cola [data-desde]').forEach((s) => { s.textContent = fmt((ahora - Number(s.dataset.desde)) / 1000); });
     if (D.observando && D.obsInc) {
       const inc = v.activas.find((x) => x.id === D.obsInc);
       if (inc && $('#obs-tiempo')) {
-        const s2 = (ahora - inc.cogida) / 1000; const r = Math.min(1, s2 / obj);
+        const lo = inc.limite || obj; const s2 = (ahora - inc.cogida) / 1000; const r = Math.min(1, s2 / lo);
         $('#obs-tiempo').textContent = fmt(s2);
-        $('#obs-tiempo').classList.toggle('n-baja', s2 > obj);
+        $('#obs-tiempo').classList.toggle('n-baja', s2 > lo);
         $('#obs-barra').style.width = `${Math.max(2, r * 100)}%`; $('#obs-barra').style.background = `hsl(${Math.round(120 * (1 - r))} 80% 45%)`;
       }
     }

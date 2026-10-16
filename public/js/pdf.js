@@ -97,7 +97,7 @@ const PDF = (function () {
     for (const i of al.incidencias) {
       y = espacio(doc, y, 50);
       y = titulo(doc, `${i.id} · ${i.titulo} · Nota ${f2(i.eval.nota)}`, y, 10);
-      y = parrafo(doc, `${i.abonado} (${i.municipio}) · ${i.codigo} ${i.evento} · ${i.origen === 'llamada' ? 'Llamada entrante' : 'Señal de centralita'} · Atendida ${fecha(i.cogida)} · Tiempo ${mmss(i.eval.segundos)}${i.eval.segundos > cab.tiempo.limiteSeg ? ' (fuera de tiempo)' : ''}`, y, { size: 8, color: GRIS });
+      y = parrafo(doc, `${i.abonado} (${i.municipio}) · ${i.codigo} ${i.evento} · ${i.origen === 'llamada' ? 'Llamada entrante' : 'Señal de centralita'} · Atendida ${fecha(i.cogida)} · Tiempo ${mmss(i.eval.segundos)}/${mmss(i.eval.limite || cab.tiempo.limiteSeg)}${i.eval.segundos > (i.eval.limite || cab.tiempo.limiteSeg) ? ' (fuera de tiempo)' : ''}`, y, { size: 8, color: GRIS });
       y = tabla(doc, {
         startY: y, head: [['Criterio', 'CE', 'Nivel', 'Puntos', 'Observación']],
         body: i.eval.criterios.map((c) => [t(c.nombre), c.ce, c.nivel, `${f2(c.puntos)}/${c.max}`, t(c.obs)]),

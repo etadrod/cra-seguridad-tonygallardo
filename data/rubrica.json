@@ -10,7 +10,7 @@
     "f": "Se han descrito los protocolos de comunicación y coordinación con las Fuerzas y Cuerpos de Seguridad, cuando procede, en base a la gestión de las señales de alarma."
   },
   "criterios": [
-    { "id": "tiempo", "nombre": "Tiempo de gestión (objetivo ≤ 120 s)", "ce": "a", "max": 3 },
+    { "id": "tiempo", "nombre": "Tiempo de gestión (objetivo 120 s / 240 s en cola común)", "ce": "a", "max": 3 },
     { "id": "recepcion", "nombre": "Recepción e identificación (señal, zona, interlocutor, palabra clave)", "ce": "a, c", "max": 1.5 },
     { "id": "verificacion", "nombre": "Verificación de la señal (secuencial, vídeo, audio, personal)", "ce": "b, c", "max": 2 },
     { "id": "clasificacion", "nombre": "Clasificación: alarma real / falsa alarma / técnica", "ce": "e", "max": 1.5 },
@@ -21,7 +21,7 @@
     "excelenteHastaSeg": 60,
     "limiteSeg": 120,
     "notaEnLimite": 0.5,
-    "nota": "≤ 60 s: puntuación completa. Entre 60 y 120 s: baja de forma lineal hasta el 50 %. Más de 120 s: 0 puntos en este criterio (la conversación se mantiene hasta el cierre). La puntuación de tiempo se multiplica por el porcentaje obtenido en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa."
+    "nota": "Tiempo objetivo: 120 s (destino «Todos» o puesto) y 240 s (cola «Común»). Hasta la mitad del objetivo: puntuación completa. Hasta el objetivo: baja de forma lineal hasta el 50 %. Por encima del objetivo: 0 puntos en este criterio (la conversación se mantiene hasta el cierre). La puntuación de tiempo se multiplica por el porcentaje obtenido en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa."
   },
   "niveles": [
     { "nombre": "Excelente", "desde": 0.85 },
