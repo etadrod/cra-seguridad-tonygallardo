@@ -19,15 +19,15 @@
   "tiempoEvaluacionSeg": 190,
   "intervaloEvaluacionSeg": 240,
   "evaluacionPorDefecto": [
-    "S01",
-    "S02",
-    "S03",
-    "S04",
-    "S05",
-    "S06",
-    "S07",
-    "S08",
     "S11",
-    "S26"
+    "S12",
+    "S13",
+    "S15",
+    "S16",
+    "S18",
+    "S19",
+    "S21",
+    "S26",
+    "S27"
   ]
 }

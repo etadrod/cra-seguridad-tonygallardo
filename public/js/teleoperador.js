@@ -296,15 +296,14 @@
     const obj = inc.limite || S.datos.config.tiempoObjetivoSeg;
     const objTxt = $('.t-num small'); if (objTxt) objTxt.textContent = `/ ${fmt(obj)}`;
     const seg = (ahora - inc.cogida) / 1000;
-    const r = Math.min(1, seg / obj);
-    const hue = Math.round(120 * (1 - r));
+    const rr = seg / obj; const r = Math.min(1, rr);
     $('#w-tiempo').textContent = fmt(seg);
     const barra = $('#w-barra');
     barra.style.width = `${Math.max(2, r * 100)}%`;
-    barra.style.background = `hsl(${hue} 80% 45%)`;
+    barra.style.background = colorTramo(rr);
     const fuera = seg > obj;
     $('.temporizador').classList.toggle('fuera', fuera);
-    $('#w-testado').textContent = fuera ? `Fuera de tiempo (+${fmt(seg - obj)}) · la comunicación continúa` : `Quedan ${fmt(obj - seg)}`;
+    $('#w-testado').textContent = fuera ? `Fuera de tiempo (+${fmt(seg - obj)}) · la comunicación continúa` : `Quedan ${fmt(obj - seg)} · ${nombreTramo(rr)}`;
   }
 
   // ---------- Formularios de aviso ----------

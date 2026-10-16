@@ -25,6 +25,7 @@ const CLIPS = [
   { id: 'S22', cam: 'CAM 02 · PATIO', hora: [0, 41, 27], dibujar: patio },
   { id: 'S24', cam: 'CAM 03 · LÍNEA DE CAJAS', hora: [19, 52, 33], dibujar: cajas },
   { id: 'S26', cam: 'CAM 03 · TALLER', hora: [2, 17, 44], dibujar: taller },
+  { id: 'S27', cam: 'CAM 06 · COCINA', hora: [3, 26, 8], dibujar: cocina, color: true },
 ];
 
 // ---------------------------------------------------------------- utilidades de dibujo
@@ -355,6 +356,41 @@ function taller(ctx, t) {
   // piloto del detector en la esquina: un solo destello al principio
   if (t < 0.6 && Math.sin(t * 30) > 0) { ctx.fillStyle = 'rgb(255,60,60)'; ctx.beginPath(); ctx.arc(1505, 252, 7, 0, 7); ctx.fill(); }
   rect(ctx, 1470, 210, 50, 34, g(150));
+}
+
+function cocina(ctx, t) {
+  // cámara en color, cocina industrial en penumbra
+  ctx.fillStyle = 'rgb(58,60,62)'; ctx.fillRect(0, 0, W, H);
+  poly(ctx, [[0, H], [360, 760], [1560, 760], [W, H]], 'rgb(74,76,78)');
+  // azulejos
+  ctx.strokeStyle = 'rgba(255,255,255,.06)'; ctx.lineWidth = 2;
+  for (let y = 200; y < 760; y += 60) { ctx.beginPath(); ctx.moveTo(360, y); ctx.lineTo(1560, y); ctx.stroke(); }
+  // campana extractora, freidora y encimeras de acero
+  poly(ctx, [[640, 200], [1280, 200], [1360, 360], [560, 360]], 'rgb(140,142,146)');
+  rect(ctx, 520, 560, 880, 200, 'rgb(120,122,126)'); rect(ctx, 520, 560, 880, 14, 'rgb(170,172,176)');
+  rect(ctx, 820, 500, 260, 70, 'rgb(90,92,96)');
+  // llamas sobre la freidora
+  for (let k = 0; k < 14; k++) {
+    const ph = t * (6 + hash01(k, 3) * 4) + k;
+    const h = 90 + 70 * (0.5 + 0.5 * Math.sin(ph)) * (0.6 + hash01(k, 5) * 0.6);
+    const x = 840 + k * 16 + Math.sin(ph * 1.3) * 6;
+    const gr = ctx.createLinearGradient(0, 500, 0, 500 - h);
+    gr.addColorStop(0, 'rgba(255,200,60,.95)'); gr.addColorStop(0.6, 'rgba(255,110,20,.8)'); gr.addColorStop(1, 'rgba(255,60,0,0)');
+    ctx.fillStyle = gr; ctx.beginPath(); ctx.ellipse(x, 500 - h / 2, 14, h / 2, 0, 0, Math.PI * 2); ctx.fill();
+  }
+  const glow = ctx.createRadialGradient(950, 470, 20, 950, 470, 600);
+  glow.addColorStop(0, `rgba(255,140,40,${0.35 + 0.1 * Math.sin(t * 9)})`); glow.addColorStop(1, 'rgba(255,140,40,0)');
+  ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
+  // humo que sale de la campana y llena el techo
+  for (let k = 0; k < 36; k++) {
+    const nace = hash01(k, 21) * 3.5, v = t - nace;
+    if (v < 0) continue;
+    const x = 960 + (hash01(k, 23) - 0.5) * 500 + v * 70 * (hash01(k, 25) - 0.5) * 2;
+    const y = 300 - v * 60 - hash01(k, 27) * 60;
+    ctx.fillStyle = `rgba(110,110,112,${clamp(0.3 - v * 0.03, 0.08, 0.3)})`;
+    ctx.beginPath(); ctx.arc(x, y, 60 + v * 60, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.fillStyle = `rgba(100,100,104,${0.15 + 0.05 * t})`; ctx.fillRect(0, 0, W, 300);
 }
 
 // ---------------------------------------------------------------- OSD de la cámara

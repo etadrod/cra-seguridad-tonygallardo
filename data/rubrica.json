@@ -10,35 +10,171 @@
     "f": "Se han descrito los protocolos de comunicación y coordinación con las Fuerzas y Cuerpos de Seguridad, cuando procede, en base a la gestión de las señales de alarma."
   },
   "criterios": [
-    { "id": "tiempo", "nombre": "Tiempo de gestión (objetivo 240 s práctica / 190 s evaluación)", "ce": "a", "max": 3 },
-    { "id": "recepcion", "nombre": "Recepción e identificación (señal, zona, interlocutor, palabra clave)", "ce": "a, c", "max": 1.5 },
-    { "id": "verificacion", "nombre": "Verificación de la señal (secuencial, vídeo, audio, personal)", "ce": "b, c", "max": 2 },
-    { "id": "clasificacion", "nombre": "Clasificación: alarma real / falsa alarma / técnica", "ce": "e", "max": 1.5 },
-    { "id": "comunicacion", "nombre": "Respuesta y transmisión (FCSE, 1-1-2, serv. acuda, SAT) con datos completos", "ce": "f", "max": 1.5 },
-    { "id": "registro", "nombre": "Registro y cierre de la incidencia", "ce": "d", "max": 0.5 }
+    {
+      "id": "tiempo",
+      "nombre": "Tiempo de gestión",
+      "ce": "a",
+      "max": 3,
+      "que": "Segundos desde que pulsas «Atender» hasta que cierras la incidencia, según el tramo de color en que termines.",
+      "niveles": [
+        "Verde (≤ 40 % del objetivo): 3 puntos",
+        "Ámbar (40-75 %): 2 puntos",
+        "Rojo (75-100 %): 1 punto · Fuera de tiempo: 0"
+      ]
+    },
+    {
+      "id": "recepcion",
+      "nombre": "Recepción e identificación (señal, zona, interlocutor, palabra clave)",
+      "ce": "a, c",
+      "max": 1.5,
+      "que": "Señales: consultar «Zonas activadas». Llamadas: identificar al interlocutor y la dirección. En ambos casos, hacer las preguntas clave del caso (palabra clave, qué ocurre, heridos, acceso…).",
+      "niveles": [
+        "Señal/interlocutor identificados y todas las preguntas clave",
+        "Identificación parcial o faltan preguntas clave",
+        "Sin identificación ni preguntas clave"
+      ]
+    },
+    {
+      "id": "verificacion",
+      "nombre": "Verificación de la señal (secuencial, vídeo, audio, personal)",
+      "ce": "b, c",
+      "max": 2,
+      "que": "Comprobar la señal con los medios adecuados: secuencial (varias zonas), vídeo, audio, llamada al titular o vigilante in situ. Se penaliza el procedimiento contraindicado (p. ej., llamar a la instalación en un atraco silencioso).",
+      "niveles": [
+        "Verificación correcta y la obligatoria del caso",
+        "Verificación incompleta o sin la obligatoria",
+        "Sin verificar o procedimiento contraindicado"
+      ]
+    },
+    {
+      "id": "clasificacion",
+      "nombre": "Clasificación: alarma real / falsa alarma / técnica",
+      "ce": "e",
+      "max": 1.5,
+      "que": "Elegir la clasificación correcta al cerrar: alarma real (intrusión, atraco/pánico, coacción, sabotaje), emergencia (sanitaria, incendio), incidencia técnica o falsa alarma (error de usuario, causa técnica/ambiental, causa desconocida).",
+      "niveles": [
+        "Clasificación exacta",
+        "Familia correcta pero tipo equivocado (50 %)",
+        "Familia equivocada o sin clasificar"
+      ]
+    },
+    {
+      "id": "comunicacion",
+      "nombre": "Respuesta y transmisión (FCSE, 1-1-2, serv. acuda, SAT) con datos completos",
+      "ce": "f",
+      "max": 1.5,
+      "que": "Avisar a quien corresponde (FCSE competente, 1-1-2, Serv. Acuda, servicio técnico, titular) y transmitir los datos necesarios: dirección, tipo de señal, verificación, autores/personas, contacto. Se penaliza el aviso improcedente (p. ej., FCSE en una falsa alarma) y avisar a un cuerpo no competente.",
+      "niveles": [
+        "Todos los avisos necesarios con datos completos",
+        "Faltan avisos o datos",
+        "Sin avisos o avisos improcedentes"
+      ]
+    },
+    {
+      "id": "registro",
+      "nombre": "Registro y cierre de la incidencia",
+      "ce": "d",
+      "max": 0.5,
+      "que": "Escribir en el registro qué ocurrió, qué verificaste, a quién avisaste y cuándo (mínimo 30 caracteres).",
+      "niveles": [
+        "Registro completo (≥ 30 caracteres)",
+        "Registro breve",
+        "Sin registro"
+      ]
+    }
   ],
   "tiempo": {
-    "excelenteHastaSeg": 120,
+    "tramos": [
+      {
+        "color": "verde",
+        "hasta": 0.4,
+        "puntos": 3
+      },
+      {
+        "color": "ambar",
+        "hasta": 0.75,
+        "puntos": 2
+      },
+      {
+        "color": "rojo",
+        "hasta": 1.0,
+        "puntos": 1
+      },
+      {
+        "color": "fuera",
+        "hasta": null,
+        "puntos": 0
+      }
+    ],
     "limiteSeg": 240,
-    "notaEnLimite": 0.5,
-    "nota": "Tiempo objetivo: 240 s en práctica y 190 s en evaluación. Hasta la mitad del objetivo: puntuación completa. Hasta el objetivo: baja de forma lineal hasta el 50 %. Por encima del objetivo: 0 puntos en este criterio (la conversación se mantiene hasta el cierre). La puntuación de tiempo se multiplica por el porcentaje obtenido en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa."
+    "excelenteHastaSeg": 96,
+    "nota": "Tiempo objetivo: 240 s en práctica y 190 s en evaluación. Tramos de la barra: verde (0-40 % del objetivo) 3 puntos · ámbar (40-75 %) 2 puntos · rojo (75-100 %) 1 punto · fuera de tiempo 0 puntos (la comunicación sigue hasta el cierre). Los puntos de tiempo se multiplican por el porcentaje obtenido en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa."
   },
   "niveles": [
-    { "nombre": "Excelente", "desde": 0.85 },
-    { "nombre": "Adecuado", "desde": 0.5 },
-    { "nombre": "Insuficiente", "desde": 0 }
+    {
+      "nombre": "Excelente",
+      "desde": 0.85
+    },
+    {
+      "nombre": "Adecuado",
+      "desde": 0.5
+    },
+    {
+      "nombre": "Insuficiente",
+      "desde": 0
+    }
   ],
   "clasificaciones": [
-    { "id": "intrusion_real", "nombre": "Alarma real · Intrusión", "familia": "real" },
-    { "id": "atraco_panico", "nombre": "Alarma real · Atraco / pánico", "familia": "real" },
-    { "id": "coaccion", "nombre": "Alarma real · Coacción", "familia": "real" },
-    { "id": "sabotaje", "nombre": "Alarma real · Sabotaje", "familia": "real" },
-    { "id": "sanitaria", "nombre": "Emergencia sanitaria", "familia": "emergencia" },
-    { "id": "incendio", "nombre": "Incendio / emergencia técnica grave", "familia": "emergencia" },
-    { "id": "tecnica", "nombre": "Incidencia técnica (avería, alimentación, comunicaciones)", "familia": "tecnica" },
-    { "id": "falsa_error_usuario", "nombre": "Falsa alarma · Error de usuario", "familia": "falsa" },
-    { "id": "falsa_causa_tecnica", "nombre": "Falsa alarma · Causa técnica o ambiental", "familia": "falsa" },
-    { "id": "falsa_desconocida", "nombre": "Falsa alarma · Causa desconocida", "familia": "falsa" }
+    {
+      "id": "intrusion_real",
+      "nombre": "Alarma real · Intrusión",
+      "familia": "real"
+    },
+    {
+      "id": "atraco_panico",
+      "nombre": "Alarma real · Atraco / pánico",
+      "familia": "real"
+    },
+    {
+      "id": "coaccion",
+      "nombre": "Alarma real · Coacción",
+      "familia": "real"
+    },
+    {
+      "id": "sabotaje",
+      "nombre": "Alarma real · Sabotaje",
+      "familia": "real"
+    },
+    {
+      "id": "sanitaria",
+      "nombre": "Emergencia sanitaria",
+      "familia": "emergencia"
+    },
+    {
+      "id": "incendio",
+      "nombre": "Incendio / emergencia técnica grave",
+      "familia": "emergencia"
+    },
+    {
+      "id": "tecnica",
+      "nombre": "Incidencia técnica (avería, alimentación, comunicaciones)",
+      "familia": "tecnica"
+    },
+    {
+      "id": "falsa_error_usuario",
+      "nombre": "Falsa alarma · Error de usuario",
+      "familia": "falsa"
+    },
+    {
+      "id": "falsa_causa_tecnica",
+      "nombre": "Falsa alarma · Causa técnica o ambiental",
+      "familia": "falsa"
+    },
+    {
+      "id": "falsa_desconocida",
+      "nombre": "Falsa alarma · Causa desconocida",
+      "familia": "falsa"
+    }
   ],
   "verificaciones": {
     "secuencial": "Verificación secuencial (consulta de zonas activadas)",
@@ -61,5 +197,13 @@
     "autores": "Descripción de autores / huida",
     "personas": "Personas en el lugar / heridos",
     "contacto": "Contacto del servicio de acuda o responsable"
-  }
+  },
+  "penalizaciones": [
+    "ERROR GRAVE: colgar o descartar la señal sin haber hecho ninguna gestión → la incidencia vale 0.",
+    "Procedimiento contraindicado (p. ej., llamar a la instalación en un atraco silencioso o una coacción) → resta en Verificación.",
+    "Aviso improcedente (FCSE o 1-1-2 en una falsa alarma o incidencia técnica verificada) → resta en Respuesta y transmisión.",
+    "Avisar a un cuerpo policial distinto del competente según la ficha → resta en Respuesta y transmisión.",
+    "No detectar la palabra de COACCIÓN o anular la alarma en ese caso → Clasificación errónea."
+  ],
+  "notaFinal": "Cada incidencia se puntúa sobre 10 (suma de los 6 criterios). Tu nota final es la media de todas tus incidencias. Niveles por criterio: Excelente ≥ 85 % · Adecuado ≥ 50 % · Insuficiente < 50 %."
 }

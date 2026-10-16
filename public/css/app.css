@@ -138,8 +138,8 @@ textarea { resize: vertical; }
 .temporizador { display: grid; grid-template-columns: auto 220px; grid-template-rows: auto auto; column-gap: 12px; align-items: center; }
 .t-num { font-family: var(--mono); font-size: 1.6rem; font-weight: 800; grid-row: span 2; }
 .t-num small { font-size: .8rem; color: var(--suave); font-weight: 600; margin-left: 4px; }
-.t-barra { height: 12px; border-radius: 99px; background: var(--linea); overflow: hidden; }
-.t-barra div { height: 100%; width: 0; border-radius: 99px; transition: width .25s linear; }
+.t-barra { height: 12px; border-radius: 99px; background: linear-gradient(90deg, rgba(22,163,74,.22) 0 40%, rgba(245,158,11,.22) 40% 75%, rgba(220,38,38,.22) 75% 100%); overflow: hidden; }
+.t-barra div { height: 100%; width: 0; border-radius: 99px; transition: width .25s linear, background-color .3s; }
 .t-estado { font-size: .78rem; color: var(--suave); }
 .temporizador.fuera .t-num { color: var(--rojo); animation: latido 1s infinite; }
 @keyframes latido { 50% { opacity: .55; } }
@@ -327,3 +327,16 @@ body.redimensionando .ventana * { cursor: inherit; }
 .eval-int label { color: var(--texto); font-weight: 600; }
 .eval-int input { width: 86px; padding: 4px 6px; }
 #d-eval-prog { font-weight: 700; color: var(--acento); margin: 0; }
+
+/* Rúbrica (ventana desde la portada) */
+.rub-int { color: var(--suave); margin-top: 0; }
+.rub-tabla td, .rub-tabla th { vertical-align: top; }
+.rub-tabla td:first-child { font-weight: 700; }
+.rub-tabla ul { margin: 0; padding-left: 16px; }
+.tramos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 8px 0 4px; }
+.tramos div { border-radius: 8px; padding: 8px; text-align: center; font-weight: 700; border: 1px solid var(--linea); }
+.tramos small { display: block; font-weight: 500; color: var(--suave); }
+.tramos .v { background: rgba(22,163,74,.15); border-color: #16a34a; } .tramos .a { background: rgba(245,158,11,.15); border-color: #f59e0b; }
+.tramos .r { background: rgba(220,38,38,.15); border-color: #dc2626; } .tramos .f { background: var(--panel-2); }
+.ver-rubrica { margin-top: 18px; }
+@media (max-width: 600px) { .tramos { grid-template-columns: 1fr 1fr; } }

@@ -1951,5 +1951,92 @@
       "datosAviso": [],
       "solucion": "Una sola zona que se restaura: verificar por vídeo (sin movimiento) y llamar al titular con palabra clave (sin error de usuario ni personas). Si se envía vigilante y no halla nada, no se conoce la causa: cerrar como falsa alarma de causa desconocida, registrar y proponer revisión al SAT. No procede FCSE."
     }
+  },
+  {
+    "id": "S27",
+    "titulo": "Incendio en la cocina de un hotel",
+    "docente": "Detector de humo de la cocina del hotel de madrugada. El vídeo muestra humo y llamas en la campana extractora. La recepción confirma que la cocina está cerrada y que hay huéspedes alojados. Aviso inmediato al 1-1-2 con dirección, ubicación del fuego y ocupación; indicar a recepción que active su plan de autoprotección y evacúe la zona.",
+    "origen": "senal",
+    "abonadoId": "ABN-1011",
+    "minuto": 26,
+    "senal": {
+      "codigo": "E110",
+      "evento": "Alarma de incendio",
+      "zona": "Z04"
+    },
+    "secuencia": [
+      {
+        "seg": -25,
+        "zona": "Z04",
+        "evento": "Detector de humo cocina · PREALARMA"
+      },
+      {
+        "seg": -8,
+        "zona": "Z04",
+        "evento": "Detector de humo cocina · ALARMA DE FUEGO"
+      },
+      {
+        "seg": 0,
+        "zona": "Z05",
+        "evento": "Detector termovelocimétrico cocina · ALARMA"
+      }
+    ],
+    "video": "Cámara cocina: humo denso saliendo de la campana extractora y llamas sobre la freidora. No hay personal en la cocina.",
+    "videoClip": "S27",
+    "llamada": {
+      "quien": "Jefa de recepción de noche",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "Recepción del Hotel Playa Teguise, buenas noches.",
+      "respuestas": {
+        "identificarse": "Soy Noelia, jefa de recepción de noche.",
+        "que_ocurre": "¿Fuego en la cocina? Desde aquí no lo veo… la cocina cerró a las once.",
+        "en_lugar": "Sí, estoy en recepción, en la planta baja.",
+        "personas": "Hay unos doscientos huéspedes alojados. En la cocina no debería haber nadie.",
+        "heridos": "Que yo sepa no, la cocina está cerrada.",
+        "error_usuario": "No, nadie ha estado cocinando a estas horas.",
+        "acceso": "Los bomberos pueden entrar por el acceso de servicio de la calle trasera; les espero allí.",
+        "seguridad": "De acuerdo, activo el plan de emergencia y mando desalojar la zona de cocina.",
+        "aviso_dado": "Gracias, salgo a recibirlos.",
+        "autores": "No, no hay nadie, es un incendio.",
+        "armas": "No, no, es un incendio.",
+        "consciente": "Sí, yo estoy bien."
+      },
+      "porDefecto": "¿Qué hago? ¿Activo la alarma general del hotel?"
+    },
+    "llavero": "Jefe de mantenimiento: voy a la cocina con las llaves del cuarto de instalaciones para cortar el gas.",
+    "eval": {
+      "tipo": "incendio",
+      "preguntasClave": [
+        "personas",
+        "acceso",
+        "seguridad"
+      ],
+      "verificacion": {
+        "algunaDe": [
+          "video",
+          "secuencial",
+          "llamada"
+        ],
+        "obligatorias": [
+          "video"
+        ],
+        "prohibidas": []
+      },
+      "avisos": {
+        "obligatorios": [
+          "cecoes112",
+          "titular"
+        ],
+        "prohibidos": []
+      },
+      "datosAviso": [
+        "direccion",
+        "tipo_senal",
+        "verificacion",
+        "personas"
+      ],
+      "solucion": "Verificar por vídeo, aviso inmediato al 1-1-2 con dirección, ubicación (cocina), verificación y ocupación del hotel. Contactar con recepción: confirmar personas, indicar que active su plan de autoprotección y desaloje la zona, y acordar el acceso para bomberos. Cerrar como incendio."
+    }
   }
 ]

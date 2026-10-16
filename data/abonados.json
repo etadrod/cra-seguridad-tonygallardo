@@ -479,6 +479,14 @@
       {
         "z": "Z09",
         "desc": "Pulsador de emergencia recepción"
+      },
+      {
+        "z": "Z04",
+        "desc": "Detector de humo cocina"
+      },
+      {
+        "z": "Z05",
+        "desc": "Detector termovelocimétrico cocina"
       }
     ]
   },

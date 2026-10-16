@@ -32,6 +32,7 @@ app.get('/api/datos', (_q, r) => r.json({
   avisos: datos.rubrica.avisos,
   datosAviso: datos.rubrica.datosAviso,
   criterios: datos.rubrica.criterios,
+  rubrica: { ra: datos.rubrica.ra, ce: datos.rubrica.ce, fuente: datos.rubrica.fuente, tiempo: datos.rubrica.tiempo, penalizaciones: datos.rubrica.penalizaciones, notaFinal: datos.rubrica.notaFinal, niveles: datos.rubrica.niveles },
 }));
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 

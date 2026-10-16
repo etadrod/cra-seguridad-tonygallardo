@@ -5,6 +5,9 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = (seg) => { seg = Math.max(0, Math.floor(seg)); return `${String(Math.floor(seg / 60)).padStart(2, '0')}:${String(seg % 60).padStart(2, '0')}`; };
 const hora = (ms) => new Date(ms).toLocaleTimeString('es-ES', { timeZone: 'Atlantic/Canary', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+// Color de la barra de tiempo por tramos (verde ≤ 40 %, ámbar ≤ 75 %, rojo ≤ 100 %, fuera > 100 %)
+const colorTramo = (r) => (r <= 0.40 ? '#16a34a' : r <= 0.75 ? '#f59e0b' : '#dc2626');
+const nombreTramo = (r) => (r <= 0.40 ? 'tramo verde · 3 puntos' : r <= 0.75 ? 'tramo ámbar · 2 puntos' : r <= 1 ? 'tramo rojo · 1 punto' : 'fuera de tiempo · 0 puntos');
 const claseNota = (n) => (n == null ? '' : n >= 7 ? 'n-alta' : n >= 5 ? 'n-media' : 'n-baja');
 
 const S = {
@@ -246,3 +249,41 @@ fetch('/api/datos').then((r) => r.json()).then((d) => {
   if (S.vista && S.rol === 'teleop' && S.vistas.teleop) { S.vistas.teleop.montar(); S.vistas.teleop.patch(S.vista); }
 });
 mostrar('inicio');
+
+// ---------- Rúbrica de evaluación (ventana flotante desde la portada y desde el puesto) ----------
+function verRubrica() {
+  if (!S.datos) return;
+  const R = S.datos.rubrica, C = S.datos.criterios, cfg = S.datos.config;
+  const tp = cfg.tiempoPracticaSeg || 240, te = cfg.tiempoEvaluacionSeg || 190;
+  const seg = (lim, f) => Math.round(lim * f);
+  modal('Rúbrica de evaluación · RA4', `
+    <p class="rub-int">${esc(R.ra)}<br><small>${esc(R.fuente)}</small></p>
+    <h3>Cómo se calcula tu nota</h3>
+    <p>${esc(R.notaFinal)}</p>
+    <div class="tabla-env"><table class="tabla rub-tabla">
+      <thead><tr><th>Criterio</th><th>CE</th><th class="num">Puntos</th><th>Qué se evalúa</th><th>Niveles</th></tr></thead>
+      <tbody>${C.map((c) => `<tr><td>${esc(c.nombre)}</td><td>${esc(c.ce)}</td><td class="num">${c.max}</td><td>${esc(c.que || '')}</td><td><ul>${(c.niveles || []).map((n) => `<li>${esc(n)}</li>`).join('')}</ul></td></tr>`).join('')}
+      <tr><td>TOTAL</td><td></td><td class="num"><strong>10</strong></td><td colspan="2"></td></tr></tbody>
+    </table></div>
+    <h3 style="margin-top:14px">Tiempo: tramos de la barra</h3>
+    <p>El tiempo cuenta desde que pulsas «Atender» hasta que cierras. Objetivo: <strong>${tp} s en práctica</strong> y <strong>${te} s en evaluación</strong>.</p>
+    <div class="tramos">
+      <div class="v">3 puntos<small>Verde · hasta ${seg(tp, 0.4)} s (práctica) / ${seg(te, 0.4)} s (evaluación)</small></div>
+      <div class="a">2 puntos<small>Ámbar · hasta ${seg(tp, 0.75)} s / ${seg(te, 0.75)} s</small></div>
+      <div class="r">1 punto<small>Rojo · hasta ${tp} s / ${te} s</small></div>
+      <div class="f">0 puntos<small>Fuera de tiempo · la llamada sigue hasta que cierres</small></div>
+    </div>
+    <p class="ayuda">Los puntos de tiempo se multiplican por el porcentaje que consigas en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa.</p>
+    <h3 style="margin-top:14px">Penalizaciones y error grave</h3>
+    <ul class="mejoras">${R.penalizaciones.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
+    <h3 style="margin-top:14px">Práctica y evaluación</h3>
+    <ul class="mejoras">
+      <li><strong>Práctica:</strong> ${tp} s por incidencia. Ves la corrección y la nota al cerrar cada una y tienes la guía del procedimiento.</li>
+      <li><strong>Evaluación:</strong> ${te} s por incidencia. Todos recibís los mismos casos, uno tras otro. No ves notas ni la guía hasta que el docente finalice; después puedes descargar tu informe.</li>
+    </ul>
+    <h3 style="margin-top:14px">Criterios de evaluación del RA4 (RD 570/2023)</h3>
+    <div class="tabla-env"><table class="tabla compacta"><tbody>${Object.entries(R.ce).map(([k, v]) => `<tr><td><strong>${k}</strong></td><td>${esc(v)}</td></tr>`).join('')}</tbody></table></div>
+  `);
+}
+$('#b-rubrica').addEventListener('click', verRubrica);
+$('#b-rubrica-p').addEventListener('click', verRubrica);
