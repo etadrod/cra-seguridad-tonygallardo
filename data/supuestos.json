@@ -34,7 +34,12 @@
         "error_usuario": "Sí, sí, ha sido culpa mía, se me pasó el tiempo de la entrada.",
         "en_lugar": "Sí, estoy en casa ahora mismo.",
         "personas": "Solo estoy yo, mi mujer llega más tarde.",
-        "direccion": "Calle Los Almendros, 12, en Vecindario."
+        "direccion": "Calle Los Almendros, 12, en Vecindario.",
+        "autores": "¿Autores? No, no, aquí no hay nadie más, soy yo que acabo de llegar.",
+        "armas": "No, por Dios, aquí no pasa nada de eso.",
+        "heridos": "No, estoy perfectamente.",
+        "consciente": "Sí, sí, estoy bien, ha sido solo el despiste.",
+        "acceso": "Estoy dentro, la puerta la he abierto yo con mi llave."
       },
       "porDefecto": "Todo está bien, de verdad, ha sido un despiste mío."
     },
@@ -107,7 +112,13 @@
         "identificarse": "Soy Marta Suárez, la dueña de la joyería.",
         "en_lugar": "No, estoy en mi casa durmiendo. La tienda cerró a las ocho.",
         "personas": "No debería haber nadie dentro, está cerrada.",
-        "que_ocurre": "¿Cómo que ha saltado la alarma? ¿Qué está pasando?"
+        "que_ocurre": "¿Cómo que ha saltado la alarma? ¿Qué está pasando?",
+        "error_usuario": "No, la alarma la dejé conectada a las ocho al cerrar, como siempre.",
+        "autores": "No lo sé, estoy en mi casa, no veo nada.",
+        "armas": "No lo sé, yo no estoy allí.",
+        "heridos": "No debería haber nadie dentro, la tienda está cerrada.",
+        "consciente": "Sí, estoy bien, pero muy nerviosa.",
+        "acceso": "Pedro, el llavero, tiene llaves. Yo también puedo ir."
       },
       "porDefecto": "Hagan lo que tengan que hacer, por favor. ¿Aviso yo a alguien?"
     },
@@ -180,7 +191,11 @@
         "acceso": "La puerta está cerrada con llave. Mi hijo Daniel tiene llave.",
         "mantener_linea": "Vale, mi niño... no me deje sola, por favor.",
         "seguridad": "No me puedo mover de aquí aunque quiera.",
-        "aviso_dado": "Ay, gracias, gracias..."
+        "aviso_dado": "Ay, gracias, gracias...",
+        "en_lugar": "Sí, estoy en mi casa, tirada en el suelo del baño.",
+        "error_usuario": "No, no, le di al botón porque me he caído de verdad.",
+        "autores": "¿Cómo? No, no hay nadie, estoy sola.",
+        "armas": "No le entiendo, mi niño… me he caído en el baño."
       },
       "evolucion": [
         {
@@ -261,7 +276,12 @@
         "que_ocurre": "Ah, sí: hoy hay un corte de luz programado en todo el polígono de Arinaga hasta las seis.",
         "error_usuario": "No, no ha sido nadie de aquí, es el corte de la compañía eléctrica.",
         "en_lugar": "No, estoy fuera, pero nos avisaron del corte por correo.",
-        "personas": "No hay personal en la nave a estas horas."
+        "personas": "No hay personal en la nave a estas horas.",
+        "autores": "No, nadie. Es el corte de luz programado.",
+        "armas": "No, no, es solo el corte de luz.",
+        "heridos": "No, no hay nadie en la nave.",
+        "consciente": "Sí, yo estoy bien, estoy en casa.",
+        "acceso": "Raquel Bordón tiene las llaves si hiciera falta."
       },
       "porDefecto": "Si la batería aguanta, no hace falta nada más. Anótenlo, por favor."
     },
@@ -336,7 +356,11 @@
         "personas": "Estamos mi compañera y yo, y un señor mayor que estaba comprando.",
         "seguridad": "Vale, vale... ya cerramos la puerta.",
         "mantener_linea": "Sí, no cuelgo.",
-        "aviso_dado": "Gracias... por favor, que vengan rápido."
+        "aviso_dado": "Gracias... por favor, que vengan rápido.",
+        "en_lugar": "Sí, estoy en la farmacia, detrás del mostrador.",
+        "error_usuario": "¡No! Nos han atracado de verdad.",
+        "consciente": "Mi compañera sí, está consciente, pero le sangra mucho la mano.",
+        "acceso": "La puerta está abierta… ¿la cierro?"
       },
       "evolucion": [
         {
@@ -431,7 +455,12 @@
         "que_ocurre": "Pues hoy celebramos un cumpleaños en la oficina... dejamos globos en recepción y el aire puesto.",
         "en_lugar": "No, me fui a casa a las siete.",
         "personas": "No queda nadie, cerré yo.",
-        "error_usuario": "La alarma la conecté yo al salir, eso seguro."
+        "error_usuario": "La alarma la conecté yo al salir, eso seguro.",
+        "autores": "No creo que haya nadie, yo cerré la oficina.",
+        "armas": "No, no, ¿por qué?",
+        "heridos": "No, no queda nadie dentro.",
+        "consciente": "Sí, estoy bien, estoy en casa.",
+        "acceso": "La conserjería del edificio tiene llave."
       },
       "porDefecto": "Si quieren, mañana quito los globos. ¿Hace falta que vaya?"
     },
@@ -502,7 +531,11 @@
         "personas": "No... estoy yo solo. Solo yo.",
         "autores": "¿Qué? No, no hay nadie...",
         "seguridad": "Sí... vale.",
-        "aviso_dado": "No hace falta que venga nadie, de verdad... (silencio)"
+        "aviso_dado": "No hace falta que venga nadie, de verdad... (silencio)",
+        "armas": "No… no hay ningún arma. Todo bien.",
+        "heridos": "No, no… nadie. Estoy bien.",
+        "consciente": "Sí… sí, estoy bien.",
+        "acceso": "No hace falta que venga nadie… de verdad."
       },
       "porDefecto": "Está todo bien, de verdad. Anúlenla, por favor."
     },
@@ -575,7 +608,12 @@
         "personas": "No, el último turno salió a las siete. No debería haber nadie.",
         "que_ocurre": "¿Fuego? Dios mío... allí tenemos palés de cartón y plástico.",
         "en_lugar": "No, estoy en casa, en Ingenio.",
-        "acceso": "Raquel Bordón tiene las llaves, es la llavera."
+        "acceso": "Raquel Bordón tiene las llaves, es la llavera.",
+        "error_usuario": "No, nadie ha tocado la alarma. Si salta el humo, es humo.",
+        "autores": "No, no debería haber nadie.",
+        "armas": "No, no, es un incendio, ¿no?",
+        "heridos": "Espero que no, el último turno salió a las siete.",
+        "consciente": "Sí, estoy bien, estoy en casa."
       },
       "porDefecto": "Avisen a los bomberos, por favor, yo salgo para allá."
     },
@@ -643,7 +681,12 @@
         "en_lugar": "No, no, estoy en Madrid. El apartamento está vacío hasta diciembre.",
         "personas": "No hay nadie, no lo tengo alquilado ahora.",
         "error_usuario": "Imposible, allí no hay nadie que pueda tocar la alarma.",
-        "que_ocurre": "¿Ha saltado la alarma? ¡Por favor, manden a alguien!"
+        "que_ocurre": "¿Ha saltado la alarma? ¡Por favor, manden a alguien!",
+        "autores": "No lo sé, estoy en Madrid. No veo nada.",
+        "armas": "No tengo ni idea, yo no estoy allí.",
+        "heridos": "No debería haber nadie, está vacío.",
+        "consciente": "Sí, estoy bien, gracias.",
+        "acceso": "La inmobiliaria Sur Canario tiene las llaves."
       },
       "porDefecto": "La inmobiliaria Sur Canario tiene las llaves."
     },
@@ -847,7 +890,13 @@
         "identificarse": "Sergio Padrón, el titular.",
         "que_ocurre": "Será Lucía, la de la limpieza: empieza a las seis y media y a veces no le da tiempo a quitar la alarma.",
         "error_usuario": "Sí, seguro que es ella. Tiene llave y código, la autorizo yo.",
-        "personas": "Solo debería estar ella a esta hora."
+        "personas": "Solo debería estar ella a esta hora.",
+        "en_lugar": "No, estoy en casa. En la oficina estará Lucía, la de la limpieza.",
+        "autores": "No, será Lucía, la limpiadora.",
+        "armas": "No, no, es la limpieza.",
+        "heridos": "No creo, será Lucía limpiando.",
+        "consciente": "Sí, estoy bien, gracias.",
+        "acceso": "Lucía tiene llave y código propios."
       },
       "porDefecto": "Todo bien, es la limpieza. Gracias por avisar."
     },
@@ -912,7 +961,13 @@
         "identificarse": "Soy Noelia, jefa de recepción de noche.",
         "personas": "No, a estas horas no hay nadie en administración.",
         "en_lugar": "Estoy en la recepción, al otro lado del edificio.",
-        "que_ocurre": "¿Alguien en administración? Yo no he visto entrar a nadie."
+        "que_ocurre": "¿Alguien en administración? Yo no he visto entrar a nadie.",
+        "error_usuario": "No, administración se cierra a las nueve y nadie del hotel tiene que entrar de noche.",
+        "autores": "No los he visto, estoy en recepción, al otro lado del edificio.",
+        "armas": "No lo sé, no he visto a nadie.",
+        "heridos": "No, que yo sepa no hay nadie herido.",
+        "consciente": "Sí, estoy bien.",
+        "acceso": "El jefe de mantenimiento tiene llaves de administración."
       },
       "porDefecto": "¿Mando a alguien de mantenimiento o espero a la policía?"
     },
@@ -973,9 +1028,16 @@
       "respuestas": {
         "identificarse": "José Rivero, el titular.",
         "que_ocurre": "Ni idea, aquí todo funciona y hay luz.",
-        "error_usuario": "No he tocado nada de la alarma."
+        "error_usuario": "No he tocado nada de la alarma.",
+        "en_lugar": "Sí, estoy en casa ahora mismo.",
+        "personas": "Estamos mi mujer y yo, todo normal.",
+        "autores": "No, no, aquí no pasa nada raro. Solo que no sabía lo de la batería.",
+        "armas": "No, no, todo tranquilo.",
+        "heridos": "No, estamos bien.",
+        "consciente": "Sí, estamos bien, gracias.",
+        "acceso": "Estoy en casa, si viene el técnico le abro yo."
       },
-      "porDefecto": "Que vengan a cambiarla cuando puedan, por favor."
+      "porDefecto": "Perdone, ¿me lo puede repetir? Aquí todo está normal."
     },
     "tecnico": "Servicio técnico: se programa la sustitución de la batería en 48 h.",
     "eval": {
@@ -1045,7 +1107,11 @@
         "heridos": "No, yo estoy bien, solo muy asustada.",
         "seguridad": "Vale… cierro con pestillo y no salgo.",
         "mantener_linea": "No cuelgue, por favor.",
-        "aviso_dado": "Gracias… que vengan pronto."
+        "aviso_dado": "Gracias… que vengan pronto.",
+        "en_lugar": "Sí, estoy en casa, encerrada en el dormitorio.",
+        "error_usuario": "¡No! Están intentando entrar de verdad.",
+        "consciente": "Sí, estoy bien, pero muy asustada.",
+        "acceso": "Mi sobrino Ayoze tiene llave. La puerta principal está cerrada."
       },
       "evolucion": [
         {
@@ -1127,7 +1193,11 @@
         "personas": "Está su mujer con él y yo.",
         "acceso": "La entrada principal está abierta, os esperamos en la puerta.",
         "mantener_linea": "Sí, sigo aquí con él.",
-        "aviso_dado": "Gracias, salgo a esperar a la ambulancia."
+        "aviso_dado": "Gracias, salgo a esperar a la ambulancia.",
+        "en_lugar": "Sí, estoy en la recepción, a su lado.",
+        "error_usuario": "¡No! Un cliente se ha desplomado de verdad.",
+        "autores": "No, no le ha hecho nada nadie, se ha caído él solo.",
+        "armas": "No, no, es un señor que se ha desmayado."
       },
       "evolucion": [
         {
@@ -1201,7 +1271,12 @@
         "que_ocurre": "Se me ha quemado el aceite de la sartén y se llenó todo de humo. Ya he abierto las ventanas.",
         "heridos": "No, nadie, estamos bien.",
         "personas": "Estamos mi mujer y yo.",
-        "error_usuario": "No es fuego, ha sido la cocina, ya está ventilado."
+        "error_usuario": "No es fuego, ha sido la cocina, ya está ventilado.",
+        "en_lugar": "Sí, estoy en casa.",
+        "autores": "No, no, ha sido la sartén.",
+        "armas": "No, no, es humo de la cocina.",
+        "consciente": "Sí, estamos bien los dos.",
+        "acceso": "Estamos en casa, no hace falta que venga nadie."
       },
       "porDefecto": "No hay fuego, de verdad. Gracias."
     },
@@ -1266,7 +1341,14 @@
       "respuestas": {
         "identificarse": "Yeray Cabrera, el gerente.",
         "que_ocurre": "Ya… hay perros sueltos por el polígono, no es la primera vez.",
-        "personas": "No, a estas horas no hay nadie."
+        "personas": "No, a estas horas no hay nadie.",
+        "en_lugar": "No, estoy en casa. El concesionario cierra a las ocho.",
+        "error_usuario": "No, la alarma la conecté yo al cerrar.",
+        "autores": "No creo… hay perros sueltos por el polígono.",
+        "armas": "No, no, ¿por qué?",
+        "heridos": "No hay nadie a estas horas.",
+        "consciente": "Sí, estoy bien.",
+        "acceso": "El servicio de acuda tiene llaves."
       },
       "porDefecto": "Anótelo y mañana miramos la valla."
     },
@@ -1332,7 +1414,14 @@
       "inicial": "(Voz tensa) ¿Sí? Banca Insular…",
       "respuestas": {
         "que_ocurre": "Nada, nada… todo normal, estamos abriendo.",
-        "personas": "Solo… solo yo."
+        "personas": "Solo… solo yo.",
+        "en_lugar": "Sí… sí, en la oficina. Abriendo.",
+        "error_usuario": "Sí… me habré equivocado al marcar. Todo bien.",
+        "autores": "No… no hay nadie. Solo yo.",
+        "armas": "No… no, nada.",
+        "heridos": "No… nadie.",
+        "consciente": "Sí… estoy bien.",
+        "acceso": "No hace falta que venga nadie… de verdad."
       },
       "porDefecto": "Todo bien, de verdad."
     },
@@ -1406,7 +1495,13 @@
         "identificarse": "Soy el director facultativo de la cantera.",
         "personas": "No hay nadie autorizado en el depósito fuera de horario.",
         "en_lugar": "No, estoy en Valverde, en casa.",
-        "que_ocurre": "¿El polvorín? Avisen a la Guardia Civil inmediatamente."
+        "que_ocurre": "¿El polvorín? Avisen a la Guardia Civil inmediatamente.",
+        "error_usuario": "No, el depósito se cierra a las tres y fuera de horario no entra nadie.",
+        "autores": "No lo sé, estoy en Valverde.",
+        "armas": "No lo sé, no estoy allí.",
+        "heridos": "No debería haber nadie de la empresa.",
+        "consciente": "Sí, estoy bien.",
+        "acceso": "El encargado de la cantera tiene llaves y puede ir a la entrada."
       },
       "porDefecto": "Voy para allá, avíseme de lo que sepa."
     },
@@ -1475,7 +1570,14 @@
       "respuestas": {
         "identificarse": "Marta Suárez, la dueña.",
         "que_ocurre": "No sé nada, la tienda cerró a las ocho como siempre.",
-        "en_lugar": "No, estoy en casa."
+        "en_lugar": "No, estoy en casa.",
+        "error_usuario": "No, no hemos tocado nada. La alarma se conectó al cerrar.",
+        "personas": "No, la tienda está cerrada desde las ocho.",
+        "autores": "No lo sé, estoy en casa.",
+        "armas": "No lo sé, yo no estoy allí.",
+        "heridos": "No debería haber nadie.",
+        "consciente": "Sí, estoy bien.",
+        "acceso": "Pedro, el llavero, tiene llaves."
       },
       "porDefecto": "Si hace falta voy yo."
     },
@@ -1606,7 +1708,11 @@
         "error_usuario": "Sí, sí, fue sin querer, estoy bien.",
         "consciente": "Sí, sí, si estoy hablando con usted… estoy perfectamente.",
         "heridos": "No, no me he hecho nada.",
-        "personas": "Estoy sola, mi hijo viene el domingo."
+        "personas": "Estoy sola, mi hijo viene el domingo.",
+        "en_lugar": "Sí, estoy en casa, en el sofá.",
+        "autores": "¿Cómo? No, no, estoy sola viendo la tele.",
+        "armas": "No le entiendo, mi niño… estoy bien.",
+        "acceso": "La puerta está cerrada, mi hijo tiene llave, pero no hace falta."
       },
       "porDefecto": "Estoy bien, de verdad, gracias por llamar.",
       "afectado": true
@@ -1725,7 +1831,13 @@
         "identificarse": "Isabel Navarro, la propietaria.",
         "personas": "Pues no lo sé… la inmobiliaria me dijo que quizá entraban huéspedes esta semana.",
         "en_lugar": "No, estoy en Madrid.",
-        "error_usuario": "Puede que sean huéspedes que no saben quitar la alarma, pero no me lo han confirmado."
+        "error_usuario": "Puede que sean huéspedes que no saben quitar la alarma, pero no me lo han confirmado.",
+        "que_ocurre": "Me dice que ha saltado la alarma… pues no lo sé, puede que hayan entrado huéspedes.",
+        "autores": "No lo sé, estoy en Madrid.",
+        "armas": "No tengo ni idea.",
+        "heridos": "No lo sé, no estoy allí.",
+        "consciente": "Sí, yo estoy bien.",
+        "acceso": "La inmobiliaria Sur Canario tiene las llaves."
       },
       "porDefecto": "No le puedo asegurar quién hay dentro."
     },
