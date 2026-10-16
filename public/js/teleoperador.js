@@ -1,4 +1,4 @@
-/* Puesto de teleoperador: cola, ventana de trabajo, temporizador (120 s / 240 s en cola común), cierre y corrección */
+/* Puesto de teleoperador: cola, ventana de trabajo, temporizador (240 s práctica / 190 s evaluación), cierre y corrección */
 'use strict';
 (function () {
   const T = { montado: false, incId: null, nChat: 0, colaIds: new Set(), msgVistos: 0, ultimaV: null };
@@ -54,7 +54,7 @@
       if (r.error) return aviso(r.error, 'error');
       $('#w-obs').value = ''; $('#w-clasif').value = '';
       if (r.eval) mostrarCorreccion(r.eval);
-      else aviso('Incidencia cerrada y registrada.', 'ok', 2500);
+      else aviso('Incidencia cerrada y registrada. En la evaluación verás tu nota al finalizar.', 'ok', 2500);
     });
     $('#b-mi-pdf').addEventListener('click', async () => {
       const r = await emitir('mi_informe');
@@ -167,9 +167,13 @@
     ea.className = `estado-actividad ${a.estado === 'en_curso' ? (a.modo === 'test' ? 'test' : 'en_curso') : ''}`;
     $('#w-pausa').hidden = !a.pausadaDesde;
     $('#barra-centro').insertAdjacentHTML('beforeend', a.pausadaDesde ? '<span class="chip info">⏸ En pausa</span>' : '');
-    ea.textContent = a.pausadaDesde ? '⏸ Actividad en pausa. El tiempo está detenido.' : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST en curso: el docente está probando el sistema. Puedes atender señales.' : 'Actividad en curso. Atiende las señales en cuanto entren.')
+    ea.textContent = a.pausadaDesde ? '⏸ Actividad en pausa. El tiempo está detenido.' : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST en curso: el docente está probando el sistema. Puedes atender señales.' : (a.tipo === 'evaluacion' ? 'EVALUACIÓN en curso. Atiende las señales en cuanto entren. Verás tu nota cuando el docente finalice la actividad.' : 'PRÁCTICA en curso. Atiende las señales en cuanto entren. Verás la corrección al cerrar cada incidencia.'))
       : a.estado === 'finalizada' ? 'Actividad finalizada. Descarga tu informe en PDF.' : 'En espera: el docente aún no ha iniciado la actividad.';
 
+    const evalCurso = a.tipo === 'evaluacion' && a.estado === 'en_curso';
+    $('#b-guia').hidden = evalCurso;
+    $('#b-mi-pdf').disabled = evalCurso;
+    $('#b-mi-pdf').title = evalCurso ? 'Disponible al finalizar la evaluación' : '';
     // Cola
     const nuevos = v.cola.filter((c) => !T.colaIds.has(c.id));
     T.colaIds = new Set(v.cola.map((c) => c.id));
@@ -177,7 +181,7 @@
     $('#cola').innerHTML = v.cola.length ? v.cola.map((c) => `
       <li class="${c.origen === 'llamada' ? 'llamada' : ''} ${nuevos.some((n) => n.id === c.id) ? 'nueva' : ''}">
         <span class="ico" aria-hidden="true">${c.origen === 'llamada' ? '📞' : '🔔'}</span>
-        <div><div><span class="cod">${esc(c.codigo)}</span> · ${esc(c.evento)} <span class="chip">${c.cola === 'comun' ? 'Cola común' : 'Mi puesto'} · ${c.limite} s</span></div>
+        <div><div><span class="cod">${esc(c.codigo)}</span> · ${esc(c.evento)} <span class="chip">${c.cola === 'comun' ? 'Cola común' : 'Mi puesto'}</span></div>
         <div class="det">${esc(c.abonado)} · ${esc(c.municipio)} · Zona ${esc(c.zona)} · <span class="espera" data-desde="${c.creada}">00:00</span> en cola</div></div>
         <button class="btn primario" data-coger="${c.id}" ${v.activa || a.estado !== 'en_curso' || a.pausadaDesde ? 'disabled' : ''}>${c.origen === 'llamada' ? 'Atender llamada' : 'Atender señal'}</button>
       </li>`).join('') : '<li class="cola-vacia">Sin señales pendientes.</li>';
@@ -201,7 +205,7 @@
     if (v.activa) abrirVentana(v.activa); else cerrarVentana();
   }
 
-  const estadoChip = (a) => a.estado === 'en_curso' ? `<span class="chip ${a.modo === 'test' ? 'alerta' : 'ok'}">${a.modo === 'test' ? 'TEST' : 'Actividad en curso'}</span>`
+  const estadoChip = (a) => a.estado === 'en_curso' ? `<span class="chip ${a.modo === 'test' ? 'alerta' : 'ok'}">${a.modo === 'test' ? 'TEST' : a.tipo === 'evaluacion' ? 'Evaluación' : 'Práctica'}</span>`
     : `<span class="chip">${a.estado === 'finalizada' ? 'Actividad finalizada' : 'En espera'}</span>`;
 
   // ---------- Ventana ----------
@@ -334,7 +338,7 @@
     modal(h ? `Corrección ${h.id}` : 'Incidencia cerrada · corrección', `
       <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
         <div class="nota-grande ${claseNota(ev.nota)}">${ev.nota.toFixed(2)}<small style="font-size:1rem"> / 10</small></div>
-        <div><div>Tiempo de gestión: <strong>${fmt(ev.segundos)}</strong> ${ev.segundos > (ev.limite || S.datos.config.tiempoObjetivoSeg) ? '<span class="chip alerta">fuera de tiempo</span>' : '<span class="chip ok">en tiempo</span>'} <span class="ayuda">objetivo ${ev.limite || 120} s</span></div>
+        <div><div>Tiempo de gestión: <strong>${fmt(ev.segundos)}</strong> ${ev.segundos > (ev.limite || S.datos.config.tiempoObjetivoSeg) ? '<span class="chip alerta">fuera de tiempo</span>' : '<span class="chip ok">en tiempo</span>'} <span class="ayuda">objetivo ${ev.limite || 240} s</span></div>
         ${h ? `<div class="ayuda">${esc(h.abonado)} · ${esc(h.codigo)} · ${esc(h.clasificacion)}</div>` : ''}</div>
       </div>
       <div class="tabla-env"><table class="tabla" style="margin-top:12px"><thead><tr><th>Criterio</th><th>CE</th><th>Nivel</th><th class="num">Puntos</th><th>Observación</th></tr></thead><tbody>
@@ -359,7 +363,7 @@
         <li><strong>Transmisión.</strong> Alarma real: aviso inmediato a la FCSE competente con dirección, tipo de señal, verificación y datos de autores o personas. Emergencias sanitarias o incendio: 1-1-2. Activa el servicio de acuda (custodia de llaves) cuando haga falta acceder a la instalación.</li>
         <li><strong>Registro y cierre.</strong> Clasifica y anota qué ocurrió, qué verificaste, a quién avisaste y cuándo.</li>
       </ol>
-      <p class="ayuda">Tiempo objetivo desde que atiendes: 120 s si la señal es para tu puesto y 240 s si viene de la cola común (la compartís todos). Si lo superas, la comunicación sigue abierta hasta que cierres. Referencias: Ley 5/2014, RD 2364/1994, Orden INT/316/2011 y normas UNE-EN (pendiente de verificación de artículos por el docente).</p>`);
+      <p class="ayuda">Tiempo objetivo desde que atiendes: 240 s en práctica y 190 s en evaluación. Si lo superas, la comunicación sigue abierta hasta que cierres. Referencias: Ley 5/2014, RD 2364/1994, Orden INT/316/2011 y normas UNE-EN (pendiente de verificación de artículos por el docente).</p>`);
   }
 
   // ---------- Mensajería alumno ↔ docente ----------

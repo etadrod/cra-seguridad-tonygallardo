@@ -311,3 +311,12 @@ body.redimensionando .ventana * { cursor: inherit; }
 #d-cola .espera { font-size: .78rem; text-align: right; }
 #d-cola .espera strong { display: block; font-family: var(--mono); font-size: .95rem; color: var(--texto); }
 @media (prefers-reduced-motion: reduce) { #d-cola li.est-sin { animation: none; } }
+
+/* Tipo de actividad (Práctica / Evaluación) */
+.tipo-act { border: 1px solid var(--linea); border-radius: 10px; padding: 6px 10px 10px; margin: 10px 0 0; display: grid; gap: 6px; }
+.tipo-act legend { font-size: .76rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--suave); padding: 0 4px; }
+.tipo-act label { display: flex; gap: 10px; align-items: flex-start; color: var(--texto); font-weight: 500; border: 1px solid var(--linea); border-radius: 8px; padding: 8px 10px; cursor: pointer; background: var(--panel-2); }
+.tipo-act label:has(input:checked) { border-color: var(--acento); background: var(--acento-fondo); }
+.tipo-act input { width: 18px; height: 18px; margin-top: 2px; flex: none; }
+.tipo-act span { display: grid; }
+.tipo-act small { color: var(--suave); font-size: .78rem; }

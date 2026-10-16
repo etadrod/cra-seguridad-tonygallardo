@@ -48,7 +48,7 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     ok((await quien.pedir('cerrar', { clasificacion: 'nada' })).error, 'cierre sin clasificación válida rechazado');
     const c = await quien.pedir('cerrar', { clasificacion: 'intrusion_real', observaciones: 'Intrusión verificada por vídeo: dos encapuchados. Aviso a Policía Nacional y llavero.' });
     ok(c.ok && c.eval.nota >= 9.5, `evaluación correcta con nota alta (${c.eval.nota})`);
-    ok(c.eval.limite === 240, 'cola común: objetivo de 240 s');
+    ok(c.eval.limite === 240, 'práctica: objetivo de 240 s');
     ok(c.eval.criterios.length === 6 && Math.abs(c.eval.criterios.reduce((s, x) => s + x.max, 0) - 10) < 1e-9, 'rúbrica de 6 criterios sobre 10');
 
     // Falsa alarma mal gestionada (aviso improcedente a FCSE, sin palabra clave)
@@ -57,7 +57,6 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     await a2.pedir('coger', { id: a2.ultima.cola[0].id });
     await a2.pedir('accion', { tipo: 'fcse', datos: { cuerpo: 'Guardia Civil', datos: [] } });
     const c2 = await a2.pedir('cerrar', { clasificacion: 'intrusion_real', observaciones: '' });
-    ok(c2.eval.limite === 120, 'destino puesto: objetivo de 120 s');
     ok(c2.eval.nota < 4.5, `mala gestión penalizada (${c2.eval.nota})`);
     ok(c2.eval.mejoras.length >= 3, 'el informe incluye mejoras concretas');
 
@@ -106,16 +105,26 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     ok(true, 'el tiempo de la incidencia no cuenta la pausa');
     await a2.pedir('cerrar', { clasificacion: 'intrusion_real', observaciones: 'Prueba de pausa: intrusión verificada y avisada.' });
 
-    // Informes
-    const inf = await a1.pedir('mi_informe');
-    ok(inf.alumno || (await a2.pedir('mi_informe')).alumno, 'informe del alumno disponible');
-    ok((await doc.pedir('doc_finalizar')).ok, 'actividad finalizada');
+    // Informes de la práctica
+    await doc.pedir('doc_finalizar');
     const todos = await doc.pedir('doc_informes');
     ok(todos.alumnos.length === 2, 'informe conjunto con los dos alumnos');
     const alu2 = todos.alumnos.find((x) => x.alumno === 'Luis Gil');
     ok(alu2.incidencias.length === (r1.ok ? 5 : 6), 'incidencias del alumno evaluadas al finalizar');
     ok(alu2.incidencias.some((i) => i.clasificacion.startsWith('ERROR GRAVE')), 'error grave registrado en el informe');
     ok((await a1.pedir('coger', { id: 'x' })).error, 'tras finalizar no se pueden coger señales');
+    // Evaluación: sin nota ni informe del alumno hasta finalizar
+    ok((await doc.pedir('doc_iniciar', { tipo: 'evaluacion' })).ok, 'evaluación iniciada');
+    await doc.pedir('doc_lanzar', { supId: 'S01', destino: 'puesto:2' });
+    await hasta(() => a2.ultima.cola.length === 1 && !a2.ultima.activa);
+    await a2.pedir('coger', { id: a2.ultima.cola[0].id });
+    const ce = await a2.pedir('cerrar', { clasificacion: 'falsa_error_usuario', observaciones: 'Error de usuario confirmado con palabra clave.' });
+    ok(ce.ok && ce.eval === null, 'en evaluación no se muestra la nota al cerrar');
+    ok((await a2.pedir('mi_informe')).error, 'en evaluación el alumno no descarga el informe');
+    ok((await doc.pedir('doc_informes')).alumnos[0].incidencias[0].eval.limite === 190, 'evaluación: objetivo de 190 s');
+    await doc.pedir('doc_finalizar');
+    await hasta(() => a2.ultima.historial.length && a2.ultima.historial[0].nota !== null);
+    ok(!(await a2.pedir('mi_informe')).error, 'al finalizar la evaluación ya hay nota e informe');
     console.log('OK flujo');
   } catch (e) { console.error(e); process.exitCode = 1; } finally { srv.parar(); process.exit(); }
 })();

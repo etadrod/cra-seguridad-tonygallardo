@@ -9,7 +9,8 @@
     $('#d-iniciar').addEventListener('click', async () => {
       const v = D.v;
       if (v && v.cerradas.length && !confirm('Se borrarán los resultados del ejercicio anterior. ¿Has descargado ya los informes?')) return;
-      res(await emitir('doc_iniciar'), 'Actividad iniciada.');
+      const tipo = ($('input[name="tipo-act"]:checked') || {}).value || 'practica';
+      res(await emitir('doc_iniciar', { tipo }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas ni la guía hasta que la finalices.' : 'Práctica iniciada.');
     });
     $('#d-finalizar').addEventListener('click', async () => {
       if (!confirm('¿Finalizar la actividad? Las incidencias abiertas se evaluarán tal como estén.')) return;
@@ -126,14 +127,15 @@
     if (!D.montado) montar();
     D.v = v;
     const a = v.actividad;
-    $('#barra-centro').innerHTML = `<span class="chip info">Docente</span>${a.estado === 'en_curso' ? `<span class="chip ${a.modo === 'test' ? 'alerta' : 'ok'}">${a.modo === 'test' ? 'TEST en curso' : 'Actividad en curso'}</span>` : `<span class="chip">${a.estado === 'finalizada' ? 'Actividad finalizada' : 'En espera'}</span>`}<button class="btn fantasma" id="d-salir">Salir</button>`;
+    $('#barra-centro').innerHTML = `<span class="chip info">Docente</span>${a.estado === 'en_curso' ? `<span class="chip ${a.modo === 'test' ? 'alerta' : 'ok'}">${a.modo === 'test' ? 'TEST en curso' : a.tipo === 'evaluacion' ? 'Evaluación en curso' : 'Práctica en curso'}</span>` : `<span class="chip">${a.estado === 'finalizada' ? 'Actividad finalizada' : 'En espera'}</span>`}<button class="btn fantasma" id="d-salir">Salir</button>`;
     $('#d-salir').onclick = () => { try { sessionStorage.removeItem('cra-pin'); } catch { /* */ } location.reload(); };
     const de = $('#d-estado');
     de.className = `estado-actividad ${a.estado === 'en_curso' ? (a.modo === 'test' ? 'test' : 'en_curso') : ''}`;
-    de.textContent = a.pausadaDesde ? `⏸ En pausa desde las ${hora(a.pausadaDesde)}. Tiempos, cola y supuestos programados detenidos.` : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST: bots en puestos libres y señales automáticas. Los alumnos conectados también pueden atender.' : 'Actividad en curso. Los supuestos marcados entran en su minuto.')
+    de.textContent = a.pausadaDesde ? `⏸ En pausa desde las ${hora(a.pausadaDesde)}. Tiempos, cola y supuestos programados detenidos.` : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST: bots en puestos libres y señales automáticas. Los alumnos conectados también pueden atender.' : `${a.tipo === 'evaluacion' ? 'EVALUACIÓN' : 'PRÁCTICA'} en curso. Los supuestos marcados entran en su minuto.${a.tipo === 'evaluacion' ? ' El alumnado no ve notas ni la guía hasta que la finalices.' : ''}`)
       : a.estado === 'finalizada' ? `Finalizada a las ${hora(a.fin)}. Descarga los informes.` : 'En espera de inicio.';
     const enCurso = a.estado === 'en_curso';
     $('#d-iniciar').disabled = enCurso;
+    $$('#d-tipo input').forEach((r) => { r.disabled = enCurso; if (enCurso && a.tipo) r.checked = r.value === a.tipo; });
     $('#d-finalizar').disabled = !(enCurso && a.modo === 'actividad');
     $('#d-test').disabled = enCurso;
     $('#d-fintest').disabled = !(enCurso && a.modo === 'test');

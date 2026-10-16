@@ -48,7 +48,8 @@ const PDF = (function () {
     doc.setTextColor(255); doc.setFont('helvetica', 'bold'); doc.setFontSize(13);
     doc.text(t(cab.sala), M, 11);
     doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
-    doc.text(t(subtitulo), M, 17);
+    const tipoAct = cab.actividad && cab.actividad.tipo ? (cab.actividad.tipo === 'evaluacion' ? ' · EVALUACIÓN' : ' · PRÁCTICA') : '';
+    doc.text(t(subtitulo + tipoAct), M, 17);
     doc.text(t(cab.empresa), M, 22);
     doc.text(t(`Generado: ${fecha(cab.generado)}`), w - M, 22, { align: 'right' });
     return 36;

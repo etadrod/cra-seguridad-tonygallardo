@@ -2,7 +2,7 @@
   "empresa": "SEGURCAN Vigilancia S.L. [EDITABLE · empresa ficticia]",
   "nombreSala": "Central Receptora de Alarmas · CIFP Tony Gallardo",
   "numPuestos": 15,
-  "tiempoObjetivoSeg": 120,
+  "tiempoObjetivoSeg": 240,
   "mostrarNotaAlCerrar": true,
   "test": {
     "intervaloLanzamientoSeg": 25,
@@ -15,5 +15,6 @@
     "Policía Canaria"
   ],
   "notaNormativa": "Referencias normativas: Ley 5/2014 (arts. 5.1.g, 47 y 48), RD 2364/1994 (arts. 46 a 51), Orden INT/316/2011 (modificada por Orden INT/1504/2013), UNE-EN 50130, 50131, 50136 y 50518. Artículos y vigencia pendientes de verificación por el docente.",
-  "tiempoObjetivoComunSeg": 240
+  "tiempoPracticaSeg": 240,
+  "tiempoEvaluacionSeg": 190
 }

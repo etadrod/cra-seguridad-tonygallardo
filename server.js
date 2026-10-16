@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
   socket.on('pregunta', deAlumno(socket, (id, a) => sala.pregunta(id, a)));
   socket.on('accion', deAlumno(socket, (id, a) => sala.accion(id, a)));
   socket.on('cerrar', deAlumno(socket, (id, a) => sala.cerrar(id, a)));
-  socket.on('mi_informe', deAlumno(socket, (id) => sala.informeAlumno(id) || { error: 'Todavía no tienes incidencias evaluadas.' }));
+  socket.on('mi_informe', deAlumno(socket, (id) => sala.informeAlumno(id, true) || { error: 'Todavía no tienes incidencias evaluadas.' }));
   socket.on('msg_alumno', deAlumno(socket, (id, { texto }) => sala.mensaje(`alumno:${id}`, 'docente', texto)));
 
   socket.on('doc_login', ({ pin } = {}, cb) => {
@@ -79,7 +79,7 @@ io.on('connection', (socket) => {
     socket.join('docente');
     ack(cb, { ok: true, ahora: Date.now(), vista: sala.vistaDocente(), persistencia: persistencia.modo, limite: limite.estado() });
   });
-  socket.on('doc_iniciar', soloDocente(socket, () => sala.iniciarActividad()));
+  socket.on('doc_iniciar', soloDocente(socket, ({ tipo }) => sala.iniciarActividad(tipo)));
   socket.on('doc_finalizar', soloDocente(socket, () => sala.finalizarActividad()));
   socket.on('doc_pausa', soloDocente(socket, () => sala.pausar()));
   socket.on('doc_reanudar', soloDocente(socket, () => sala.reanudar()));

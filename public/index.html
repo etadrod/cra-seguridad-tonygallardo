@@ -6,7 +6,7 @@
 <title>CRA · Simulador</title>
 <meta name="description" content="Simulador de Central Receptora de Alarmas · CFGM Técnico en Seguridad · CIFP Tony Gallardo">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101a2b'/%3E%3Cpath d='M16 6l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10v-6z' fill='%23f5a524'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/app.css?v=12">
+<link rel="stylesheet" href="css/app.css?v=14">
 </head>
 <body>
 <a class="saltar" href="#principal">Saltar al contenido</a>
@@ -52,7 +52,7 @@
       <div class="inicio-intro">
         <p class="sobre">CFGM Técnico en Seguridad · Módulo 1679 Vigilancia y protección · RA4</p>
         <h1 id="t-inicio">Central Receptora de Alarmas</h1>
-        <p>Recepción, verificación, respuesta y transmisión de señales de alarma. Atiende cada señal o llamada aplicando el procedimiento en un tiempo objetivo de <strong>120 segundos</strong> (240 s si la señal llega a la cola común).</p>
+        <p>Recepción, verificación, respuesta y transmisión de señales de alarma. Atiende cada señal o llamada aplicando el procedimiento en un tiempo objetivo de <strong>240 segundos</strong> en práctica y <strong>190 segundos</strong> en evaluación.</p>
         <ul class="inicio-pasos">
           <li><span>1</span>Recibe la señal de la centralita o la llamada del alertante.</li>
           <li><span>2</span>Verifica: secuencia de zonas, vídeo, audio o verificación personal.</li>
@@ -116,6 +116,11 @@
           <h2 id="t-control">Control del ejercicio</h2>
           <div class="reloj" id="d-reloj" aria-live="off">--:--</div>
           <div id="d-estado" class="estado-actividad" role="status"></div>
+          <fieldset class="tipo-act" id="d-tipo">
+            <legend>Tipo de actividad</legend>
+            <label><input type="radio" name="tipo-act" value="practica" checked> <span><strong>Práctica</strong><small>240 s por incidencia · corrección y nota al cerrar cada una · guía disponible</small></span></label>
+            <label><input type="radio" name="tipo-act" value="evaluacion"> <span><strong>Evaluación</strong><small>190 s por incidencia · sin nota ni guía hasta que finalices</small></span></label>
+          </fieldset>
           <div class="grid-botones">
             <button class="btn verde" id="d-iniciar">▶ Inicio actividad</button>
             <button class="btn rojo" id="d-finalizar">■ Fin actividad</button>
@@ -139,7 +144,7 @@
         </section>
         <section class="panel" aria-labelledby="t-sup">
           <h2 id="t-sup">Supuestos programados</h2>
-          <p class="ayuda">«Entra»: se lanza solo en el minuto indicado al iniciar la actividad. Destino «Todos»: una copia por puesto ocupado (evaluación homogénea, objetivo 120 s). «Común»: la coge el primero (objetivo 240 s).</p>
+          <p class="ayuda">«Entra»: se lanza solo en el minuto indicado al iniciar la actividad. Destino «Todos»: una copia por puesto ocupado (evaluación homogénea). «Común»: la coge el primero.</p>
           <div class="tabla-env"><table class="tabla compacta" id="d-programa">
             <thead><tr><th><label class="entra-todos" title="Marcar / desmarcar todos"><input type="checkbox" id="d-entra-todos" aria-label="Marcar o desmarcar todos los supuestos"> Entra</label></th><th>Min</th><th>Supuesto</th><th>Destino</th><th><span class="sr">Lanzar</span></th></tr></thead>
             <tbody></tbody>
@@ -253,10 +258,10 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/vendor/jspdf.js"></script>
 <script src="/vendor/autotable.js"></script>
-<script src="js/app.js?v=12"></script>
-<script src="js/pdf.js?v=12"></script>
-<script src="js/teleoperador.js?v=12"></script>
-<script src="js/docente.js?v=12"></script>
-<script src="js/visor.js?v=12"></script>
+<script src="js/app.js?v=14"></script>
+<script src="js/pdf.js?v=14"></script>
+<script src="js/teleoperador.js?v=14"></script>
+<script src="js/docente.js?v=14"></script>
+<script src="js/visor.js?v=14"></script>
 </body>
 </html>
