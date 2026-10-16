@@ -341,6 +341,9 @@
   // ---------- Guía del procedimiento (apoyo DUA) ----------
   function guia() {
     modal('Guía del procedimiento en CRA', `
+      <video controls preload="none" playsinline poster="video/tutorial-cra.jpg" style="width:100%;aspect-ratio:16/9;border-radius:10px;background:#0b1220;margin-bottom:12px">
+        <source src="video/tutorial-cra.mp4" type="video/mp4"><track kind="subtitles" srclang="es" label="Español" src="video/tutorial-cra.vtt">
+      </video>
       <ol class="mejoras">
         <li><strong>Recepción.</strong> Atiende la señal o la llamada. Lee el código, el evento y la zona.</li>
         <li><strong>Identificación.</strong> Consulta la ficha del abonado y pulsa <em>Zonas activadas</em>: verás qué detectores han saltado, a qué hora y en qué orden. Si hablas con alguien: identifica al interlocutor y pide la <strong>palabra clave</strong>. Compárala con la palabra de <strong>coacción</strong>.</li>

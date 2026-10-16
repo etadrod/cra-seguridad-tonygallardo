@@ -6,7 +6,7 @@
 <title>CRA · Simulador</title>
 <meta name="description" content="Simulador de Central Receptora de Alarmas · CFGM Técnico en Seguridad · CIFP Tony Gallardo">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101a2b'/%3E%3Cpath d='M16 6l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10v-6z' fill='%23f5a524'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/app.css?v=6">
+<link rel="stylesheet" href="css/app.css?v=7">
 </head>
 <body>
 <a class="saltar" href="#principal">Saltar al contenido</a>
@@ -59,6 +59,7 @@
           <li><span>3</span>Decide y transmite: FCSE, 1-1-2, llavero o servicio técnico.</li>
           <li><span>4</span>Clasifica, registra y cierra.</li>
         </ul>
+        <a class="btn primario ver-video" href="#tutorial">▶ Ver el vídeo tutorial (2:32)</a>
       </div>
       <div class="inicio-forms">
         <form id="f-alumno" class="tarjeta" autocomplete="off">
@@ -77,6 +78,17 @@
         </form>
       </div>
     </div>
+    <section id="tutorial" class="tutorial tarjeta" aria-labelledby="t-tutorial">
+      <div class="tutorial-cab">
+        <h2 id="t-tutorial">Vídeo tutorial · Guía del procedimiento en CRA</h2>
+        <p class="ayuda">6 pasos para atender una señal o una llamada en 120 segundos. Sin sonido: todo el contenido está en pantalla. Puedes activar subtítulos (CC) y cambiar la velocidad.</p>
+      </div>
+      <video id="video-tutorial" controls preload="metadata" playsinline poster="video/tutorial-cra.jpg" width="1280" height="720">
+        <source src="video/tutorial-cra.mp4" type="video/mp4">
+        <track kind="subtitles" srclang="es" label="Español" src="video/tutorial-cra.vtt">
+        Tu navegador no puede reproducir el vídeo. <a href="video/tutorial-cra.mp4">Descárgalo aquí</a>.
+      </video>
+    </section>
   </section>
 
   <!-- ===== Teleoperador ===== -->
@@ -237,9 +249,9 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/vendor/jspdf.js"></script>
 <script src="/vendor/autotable.js"></script>
-<script src="js/app.js?v=6"></script>
-<script src="js/pdf.js?v=6"></script>
-<script src="js/teleoperador.js?v=6"></script>
-<script src="js/docente.js?v=6"></script>
+<script src="js/app.js?v=7"></script>
+<script src="js/pdf.js?v=7"></script>
+<script src="js/teleoperador.js?v=7"></script>
+<script src="js/docente.js?v=7"></script>
 </body>
 </html>
