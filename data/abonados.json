@@ -14,15 +14,38 @@
     "audio": false,
     "horario": "L-S 10:00-20:00",
     "contactos": [
-      { "nombre": "Marta Suárez Ojeda", "relacion": "Titular", "telefono": "600 000 101" },
-      { "nombre": "Pedro Hernández Cabrera", "relacion": "Llavero (custodia de llaves)", "telefono": "600 000 102" }
+      {
+        "nombre": "Marta Suárez Ojeda",
+        "relacion": "Titular",
+        "telefono": "600 000 101"
+      },
+      {
+        "nombre": "Pedro Hernández Cabrera",
+        "relacion": "Llavero (custodia de llaves)",
+        "telefono": "600 000 102"
+      }
     ],
     "zonas": [
-      { "z": "Z01", "desc": "Contacto magnético puerta principal" },
-      { "z": "Z02", "desc": "Volumétrico zona de venta" },
-      { "z": "Z03", "desc": "Detector de rotura de cristal escaparate" },
-      { "z": "Z04", "desc": "Sísmico caja fuerte" },
-      { "z": "Z09", "desc": "Pulsador de atraco mostrador" }
+      {
+        "z": "Z01",
+        "desc": "Contacto magnético puerta principal"
+      },
+      {
+        "z": "Z02",
+        "desc": "Volumétrico zona de venta"
+      },
+      {
+        "z": "Z03",
+        "desc": "Detector de rotura de cristal escaparate"
+      },
+      {
+        "z": "Z04",
+        "desc": "Sísmico caja fuerte"
+      },
+      {
+        "z": "Z09",
+        "desc": "Pulsador de atraco mostrador"
+      }
     ]
   },
   {
@@ -40,13 +63,30 @@
     "audio": false,
     "horario": "Vivienda habitual",
     "contactos": [
-      { "nombre": "José Rivero Santana", "relacion": "Titular", "telefono": "600 000 201" },
-      { "nombre": "Ana Rivero Déniz", "relacion": "Llavero (custodia de llaves)", "telefono": "600 000 202" }
+      {
+        "nombre": "José Rivero Santana",
+        "relacion": "Titular",
+        "telefono": "600 000 201"
+      },
+      {
+        "nombre": "Ana Rivero Déniz",
+        "relacion": "Llavero (custodia de llaves)",
+        "telefono": "600 000 202"
+      }
     ],
     "zonas": [
-      { "z": "Z01", "desc": "Contacto puerta de entrada" },
-      { "z": "Z02", "desc": "Volumétrico salón" },
-      { "z": "Z03", "desc": "Volumétrico pasillo dormitorios" }
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta de entrada"
+      },
+      {
+        "z": "Z02",
+        "desc": "Volumétrico salón"
+      },
+      {
+        "z": "Z03",
+        "desc": "Volumétrico pasillo dormitorios"
+      }
     ]
   },
   {
@@ -64,14 +104,34 @@
     "audio": true,
     "horario": "L-D 09:00-22:00",
     "contactos": [
-      { "nombre": "Cristina Medina Alemán", "relacion": "Titular", "telefono": "600 000 301" },
-      { "nombre": "Luis Medina Alemán", "relacion": "Llavero (custodia de llaves)", "telefono": "600 000 302" }
+      {
+        "nombre": "Cristina Medina Alemán",
+        "relacion": "Titular",
+        "telefono": "600 000 301"
+      },
+      {
+        "nombre": "Luis Medina Alemán",
+        "relacion": "Llavero (custodia de llaves)",
+        "telefono": "600 000 302"
+      }
     ],
     "zonas": [
-      { "z": "Z01", "desc": "Contacto puerta principal" },
-      { "z": "Z02", "desc": "Volumétrico zona de dispensación" },
-      { "z": "Z05", "desc": "Volumétrico rebotica" },
-      { "z": "Z09", "desc": "Pulsador de atraco mostrador" }
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta principal"
+      },
+      {
+        "z": "Z02",
+        "desc": "Volumétrico zona de dispensación"
+      },
+      {
+        "z": "Z05",
+        "desc": "Volumétrico rebotica"
+      },
+      {
+        "z": "Z09",
+        "desc": "Pulsador de atraco mostrador"
+      }
     ]
   },
   {
@@ -89,16 +149,42 @@
     "audio": false,
     "horario": "L-V 07:00-19:00",
     "contactos": [
-      { "nombre": "Carlos Monzón Vega", "relacion": "Jefe de seguridad / titular", "telefono": "600 000 401" },
-      { "nombre": "Raquel Bordón Ramos", "relacion": "Llavero (custodia de llaves)", "telefono": "600 000 402" }
+      {
+        "nombre": "Carlos Monzón Vega",
+        "relacion": "Jefe de seguridad / titular",
+        "telefono": "600 000 401"
+      },
+      {
+        "nombre": "Raquel Bordón Ramos",
+        "relacion": "Llavero (custodia de llaves)",
+        "telefono": "600 000 402"
+      }
     ],
     "zonas": [
-      { "z": "Z01", "desc": "Contacto puerta de muelle de carga" },
-      { "z": "Z02", "desc": "Barrera de infrarrojos perímetro" },
-      { "z": "Z03", "desc": "Volumétrico almacén" },
-      { "z": "Z06", "desc": "Detector óptico de humo almacén" },
-      { "z": "Z07", "desc": "Tamper sirena exterior" },
-      { "z": "Z99", "desc": "Supervisión de alimentación (220 V)" }
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta de muelle de carga"
+      },
+      {
+        "z": "Z02",
+        "desc": "Barrera de infrarrojos perímetro"
+      },
+      {
+        "z": "Z03",
+        "desc": "Volumétrico almacén"
+      },
+      {
+        "z": "Z06",
+        "desc": "Detector óptico de humo almacén"
+      },
+      {
+        "z": "Z07",
+        "desc": "Tamper sirena exterior"
+      },
+      {
+        "z": "Z99",
+        "desc": "Supervisión de alimentación (220 V)"
+      }
     ]
   },
   {
@@ -116,12 +202,26 @@
     "audio": true,
     "horario": "Vivienda habitual · persona mayor que vive sola",
     "contactos": [
-      { "nombre": "Carmen Ojeda Pérez (82 años)", "relacion": "Titular", "telefono": "600 000 501" },
-      { "nombre": "Daniel Ojeda Sosa (hijo)", "relacion": "Familiar / llavero", "telefono": "600 000 502" }
+      {
+        "nombre": "Carmen Ojeda Pérez (82 años)",
+        "relacion": "Titular",
+        "telefono": "600 000 501"
+      },
+      {
+        "nombre": "Daniel Ojeda Sosa (hijo)",
+        "relacion": "Familiar / llavero",
+        "telefono": "600 000 502"
+      }
     ],
     "zonas": [
-      { "z": "Z01", "desc": "Contacto puerta de entrada" },
-      { "z": "Z08", "desc": "Pulsador colgante de ayuda (manos libres)" }
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta de entrada"
+      },
+      {
+        "z": "Z08",
+        "desc": "Pulsador colgante de ayuda (manos libres)"
+      }
     ]
   },
   {
@@ -139,14 +239,34 @@
     "audio": true,
     "horario": "L-V 08:30-14:30",
     "contactos": [
-      { "nombre": "Rubén Afonso Marrero", "relacion": "Director de oficina", "telefono": "600 000 601" },
-      { "nombre": "Departamento de Seguridad Banca Insular", "relacion": "Llavero / Dpto. Seguridad", "telefono": "600 000 602" }
+      {
+        "nombre": "Rubén Afonso Marrero",
+        "relacion": "Director de oficina",
+        "telefono": "600 000 601"
+      },
+      {
+        "nombre": "Departamento de Seguridad Banca Insular",
+        "relacion": "Llavero / Dpto. Seguridad",
+        "telefono": "600 000 602"
+      }
     ],
     "zonas": [
-      { "z": "Z01", "desc": "Contacto puerta exclusa" },
-      { "z": "Z02", "desc": "Volumétrico patio de operaciones" },
-      { "z": "Z09", "desc": "Pulsador de atraco caja 1" },
-      { "z": "Z10", "desc": "Pulsador de atraco caja 2 (silencioso)" }
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta exclusa"
+      },
+      {
+        "z": "Z02",
+        "desc": "Volumétrico patio de operaciones"
+      },
+      {
+        "z": "Z09",
+        "desc": "Pulsador de atraco caja 1"
+      },
+      {
+        "z": "Z10",
+        "desc": "Pulsador de atraco caja 2 (silencioso)"
+      }
     ]
   },
   {
@@ -164,13 +284,30 @@
     "audio": false,
     "horario": "Desocupado · titular residente en Madrid",
     "contactos": [
-      { "nombre": "Isabel Navarro Gil", "relacion": "Titular", "telefono": "600 000 701" },
-      { "nombre": "Inmobiliaria Sur Canario", "relacion": "Llavero (custodia de llaves)", "telefono": "600 000 702" }
+      {
+        "nombre": "Isabel Navarro Gil",
+        "relacion": "Titular",
+        "telefono": "600 000 701"
+      },
+      {
+        "nombre": "Inmobiliaria Sur Canario",
+        "relacion": "Llavero (custodia de llaves)",
+        "telefono": "600 000 702"
+      }
     ],
     "zonas": [
-      { "z": "Z01", "desc": "Contacto puerta de entrada" },
-      { "z": "Z02", "desc": "Contacto ventana terraza" },
-      { "z": "Z03", "desc": "Volumétrico salón" }
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta de entrada"
+      },
+      {
+        "z": "Z02",
+        "desc": "Contacto ventana terraza"
+      },
+      {
+        "z": "Z03",
+        "desc": "Volumétrico salón"
+      }
     ]
   },
   {
@@ -188,15 +325,38 @@
     "audio": false,
     "horario": "L-S 08:00-21:30",
     "contactos": [
-      { "nombre": "Óscar Delgado Hernández", "relacion": "Encargado / titular", "telefono": "600 000 801" },
-      { "nombre": "Nieves González Díaz", "relacion": "Llavero (custodia de llaves)", "telefono": "600 000 802" }
+      {
+        "nombre": "Óscar Delgado Hernández",
+        "relacion": "Encargado / titular",
+        "telefono": "600 000 801"
+      },
+      {
+        "nombre": "Nieves González Díaz",
+        "relacion": "Llavero (custodia de llaves)",
+        "telefono": "600 000 802"
+      }
     ],
     "zonas": [
-      { "z": "Z01", "desc": "Contacto puerta principal" },
-      { "z": "Z02", "desc": "Volumétrico sala de ventas" },
-      { "z": "Z03", "desc": "Volumétrico almacén trasero" },
-      { "z": "Z04", "desc": "Contacto puerta de emergencia" },
-      { "z": "Z07", "desc": "Tamper caja de sirena exterior" }
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta principal"
+      },
+      {
+        "z": "Z02",
+        "desc": "Volumétrico sala de ventas"
+      },
+      {
+        "z": "Z03",
+        "desc": "Volumétrico almacén trasero"
+      },
+      {
+        "z": "Z04",
+        "desc": "Contacto puerta de emergencia"
+      },
+      {
+        "z": "Z07",
+        "desc": "Tamper caja de sirena exterior"
+      }
     ]
   },
   {
@@ -214,12 +374,26 @@
     "audio": true,
     "horario": "24 h · un empleado en turno de noche",
     "contactos": [
-      { "nombre": "Tienda de la estación (empleado de turno)", "relacion": "Instalación", "telefono": "600 000 901" },
-      { "nombre": "Alicia Ramírez Florido", "relacion": "Titular / llavero", "telefono": "600 000 902" }
+      {
+        "nombre": "Tienda de la estación (empleado de turno)",
+        "relacion": "Instalación",
+        "telefono": "600 000 901"
+      },
+      {
+        "nombre": "Alicia Ramírez Florido",
+        "relacion": "Titular / llavero",
+        "telefono": "600 000 902"
+      }
     ],
     "zonas": [
-      { "z": "Z01", "desc": "Contacto puerta tienda" },
-      { "z": "Z09", "desc": "Pulsador de atraco caja (silencioso)" }
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta tienda"
+      },
+      {
+        "z": "Z09",
+        "desc": "Pulsador de atraco caja (silencioso)"
+      }
     ]
   },
   {
@@ -237,13 +411,239 @@
     "audio": false,
     "horario": "L-V 08:00-18:00",
     "contactos": [
-      { "nombre": "Sergio Padrón León", "relacion": "Titular", "telefono": "600 000 1001" },
-      { "nombre": "Conserjería del edificio", "relacion": "Llavero (custodia de llaves)", "telefono": "600 000 1002" }
+      {
+        "nombre": "Sergio Padrón León",
+        "relacion": "Titular",
+        "telefono": "600 000 1001"
+      },
+      {
+        "nombre": "Conserjería del edificio",
+        "relacion": "Llavero (custodia de llaves)",
+        "telefono": "600 000 1002"
+      }
     ],
     "zonas": [
-      { "z": "Z01", "desc": "Contacto puerta de acceso" },
-      { "z": "Z02", "desc": "Volumétrico recepción" },
-      { "z": "Z03", "desc": "Volumétrico despachos" }
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta de acceso"
+      },
+      {
+        "z": "Z02",
+        "desc": "Volumétrico recepción"
+      },
+      {
+        "z": "Z03",
+        "desc": "Volumétrico despachos"
+      }
+    ]
+  },
+  {
+    "id": "ABN-1011",
+    "nombre": "Hotel Playa Teguise",
+    "tipo": "Hotel",
+    "direccion": "Avenida de las Islas Canarias, 9, Costa Teguise",
+    "municipio": "Teguise",
+    "isla": "Lanzarote",
+    "cuerpoCompetente": "Guardia Civil",
+    "grado": "Grado 2 [EDITABLE]",
+    "palabraClave": "MALPAÍS",
+    "palabraCoaccion": "JAMEOS",
+    "video": true,
+    "audio": false,
+    "horario": "24 h · recepción permanente",
+    "contactos": [
+      {
+        "nombre": "Recepción del hotel (jefa de turno)",
+        "relacion": "Instalación / titular",
+        "telefono": "600 001 101"
+      },
+      {
+        "nombre": "Jefe de mantenimiento",
+        "relacion": "Llavero (custodia de llaves)",
+        "telefono": "600 001 102"
+      }
+    ],
+    "zonas": [
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta de administración"
+      },
+      {
+        "z": "Z02",
+        "desc": "Volumétrico despacho de dirección"
+      },
+      {
+        "z": "Z03",
+        "desc": "Volumétrico pasillo de oficinas"
+      },
+      {
+        "z": "Z09",
+        "desc": "Pulsador de emergencia recepción"
+      }
+    ]
+  },
+  {
+    "id": "ABN-1012",
+    "nombre": "Concesionario Motor Majorero",
+    "tipo": "Concesionario de vehículos",
+    "direccion": "Calle Lucha Canaria, 54, polígono Risco Prieto",
+    "municipio": "Puerto del Rosario",
+    "isla": "Fuerteventura",
+    "cuerpoCompetente": "Policía Nacional",
+    "grado": "Grado 2 [EDITABLE]",
+    "palabraClave": "TINDAYA",
+    "palabraCoaccion": "CALDERA",
+    "video": true,
+    "audio": false,
+    "horario": "L-S 09:00-20:00",
+    "contactos": [
+      {
+        "nombre": "Yeray Cabrera Umpiérrez",
+        "relacion": "Gerente / titular",
+        "telefono": "600 001 201"
+      },
+      {
+        "nombre": "Servicio de acuda contratado",
+        "relacion": "Custodia de llaves",
+        "telefono": "600 001 202"
+      }
+    ],
+    "zonas": [
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta exposición"
+      },
+      {
+        "z": "Z02",
+        "desc": "Barrera de infrarrojos campa exterior"
+      },
+      {
+        "z": "Z03",
+        "desc": "Volumétrico taller"
+      }
+    ]
+  },
+  {
+    "id": "ABN-1013",
+    "nombre": "Vivienda Dña. Rosa Pérez Acosta",
+    "tipo": "Vivienda",
+    "direccion": "Camino de la Laguna, 27",
+    "municipio": "Los Llanos de Aridane",
+    "isla": "La Palma",
+    "cuerpoCompetente": "Guardia Civil",
+    "grado": "Grado 2 [EDITABLE]",
+    "palabraClave": "TABURIENTE",
+    "palabraCoaccion": "VOLCÁN",
+    "video": false,
+    "audio": true,
+    "horario": "Vivienda habitual",
+    "contactos": [
+      {
+        "nombre": "Rosa Pérez Acosta",
+        "relacion": "Titular",
+        "telefono": "600 001 301"
+      },
+      {
+        "nombre": "Ayoze Pérez (sobrino)",
+        "relacion": "Familiar / llavero",
+        "telefono": "600 001 302"
+      }
+    ],
+    "zonas": [
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta principal"
+      },
+      {
+        "z": "Z02",
+        "desc": "Contacto puerta trasera"
+      },
+      {
+        "z": "Z09",
+        "desc": "Pulsador de pánico dormitorio"
+      }
+    ]
+  },
+  {
+    "id": "ABN-1014",
+    "nombre": "Colegio privado Garajonay",
+    "tipo": "Centro educativo",
+    "direccion": "Calle Real, 61",
+    "municipio": "San Sebastián de La Gomera",
+    "isla": "La Gomera",
+    "cuerpoCompetente": "Guardia Civil",
+    "grado": "Grado 2 [EDITABLE]",
+    "palabraClave": "SILBO",
+    "palabraCoaccion": "ROQUE",
+    "video": true,
+    "audio": false,
+    "horario": "L-V 07:30-17:00",
+    "contactos": [
+      {
+        "nombre": "Dirección del centro",
+        "relacion": "Titular",
+        "telefono": "600 001 401"
+      },
+      {
+        "nombre": "Conserje",
+        "relacion": "Llavero (custodia de llaves)",
+        "telefono": "600 001 402"
+      }
+    ],
+    "zonas": [
+      {
+        "z": "Z01",
+        "desc": "Contacto puerta principal"
+      },
+      {
+        "z": "Z02",
+        "desc": "Barrera de infrarrojos patio"
+      },
+      {
+        "z": "Z03",
+        "desc": "Volumétrico pasillo aulas"
+      }
+    ]
+  },
+  {
+    "id": "ABN-1015",
+    "nombre": "Cantera Áridos del Hierro · depósito de explosivos",
+    "tipo": "Depósito de explosivos (cantera)",
+    "direccion": "Carretera HI-1, km 6, Tiñor",
+    "municipio": "Valverde",
+    "isla": "El Hierro",
+    "cuerpoCompetente": "Guardia Civil",
+    "grado": "Grado 4 [EDITABLE]",
+    "palabraClave": "SABINA",
+    "palabraCoaccion": "GAROÉ",
+    "video": true,
+    "audio": true,
+    "horario": "L-V 07:00-15:00 · fuera de horario sin personal [EDITABLE]",
+    "contactos": [
+      {
+        "nombre": "Director facultativo",
+        "relacion": "Titular / responsable del depósito",
+        "telefono": "600 001 501"
+      },
+      {
+        "nombre": "Encargado de la cantera",
+        "relacion": "Llavero (custodia de llaves)",
+        "telefono": "600 001 502"
+      }
+    ],
+    "zonas": [
+      {
+        "z": "Z01",
+        "desc": "Barrera perimetral vallado"
+      },
+      {
+        "z": "Z02",
+        "desc": "Contacto puerta del polvorín"
+      },
+      {
+        "z": "Z03",
+        "desc": "Sísmico pared del polvorín"
+      }
     ]
   }
 ]

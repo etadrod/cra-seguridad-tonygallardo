@@ -6,7 +6,7 @@
 <title>CRA · Simulador</title>
 <meta name="description" content="Simulador de Central Receptora de Alarmas · CFGM Técnico en Seguridad · CIFP Tony Gallardo">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101a2b'/%3E%3Cpath d='M16 6l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10v-6z' fill='%23f5a524'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/app.css?v=8">
+<link rel="stylesheet" href="css/app.css?v=10">
 </head>
 <body>
 <a class="saltar" href="#principal">Saltar al contenido</a>
@@ -21,7 +21,7 @@
     <button class="btn msg-btn" id="b-mensajes" hidden aria-expanded="false" aria-controls="panel-msg" title="Mensajería docente ↔ alumnado">✉ Mensajes <span class="badge" id="b-msg-n" hidden></span></button>
     <button class="btn-ico" id="b-letra-menos" title="Reducir tamaño de letra" aria-label="Reducir tamaño de letra">A−</button>
     <button class="btn-ico" id="b-letra-mas" title="Aumentar tamaño de letra" aria-label="Aumentar tamaño de letra">A+</button>
-    <button class="btn-ico" id="b-voz" title="Leer en voz alta los mensajes del interlocutor" aria-pressed="false" aria-label="Lectura en voz alta">🔈</button>
+    <button class="btn-ico" id="b-voz" title="Leer en voz alta los mensajes del interlocutor" aria-pressed="false" aria-label="Lectura en voz alta">🔇</button>
     <button class="btn-ico" id="b-tema" title="Cambiar tema claro / oscuro" aria-label="Cambiar tema">◐</button>
   </div>
 </header>
@@ -59,7 +59,6 @@
           <li><span>3</span>Decide y transmite: FCSE, 1-1-2, servicio de acuda o servicio técnico.</li>
           <li><span>4</span>Clasifica, registra y cierra.</li>
         </ul>
-        <a class="btn primario ver-video" href="#tutorial">▶ Ver el vídeo tutorial (2:32)</a>
       </div>
       <div class="inicio-forms">
         <form id="f-alumno" class="tarjeta" autocomplete="off">
@@ -78,17 +77,6 @@
         </form>
       </div>
     </div>
-    <section id="tutorial" class="tutorial tarjeta" aria-labelledby="t-tutorial">
-      <div class="tutorial-cab">
-        <h2 id="t-tutorial">Vídeo tutorial · Guía del procedimiento en CRA</h2>
-        <p class="ayuda">6 pasos para atender una señal o una llamada en 120 segundos. Sin sonido: todo el contenido está en pantalla. Puedes activar subtítulos (CC) y cambiar la velocidad.</p>
-      </div>
-      <video id="video-tutorial" controls preload="metadata" playsinline poster="video/tutorial-cra.jpg" width="1280" height="720">
-        <source src="video/tutorial-cra.mp4" type="video/mp4">
-        <track kind="subtitles" srclang="es" label="Español" src="video/tutorial-cra.vtt">
-        Tu navegador no puede reproducir el vídeo. <a href="video/tutorial-cra.mp4">Descárgalo aquí</a>.
-      </video>
-    </section>
   </section>
 
   <!-- ===== Teleoperador ===== -->
@@ -153,7 +141,7 @@
           <h2 id="t-sup">Supuestos programados</h2>
           <p class="ayuda">«Entra»: se lanza solo en el minuto indicado al iniciar la actividad. Destino «Todos»: una copia por puesto ocupado (evaluación homogénea). «Común»: la coge el primero.</p>
           <div class="tabla-env"><table class="tabla compacta" id="d-programa">
-            <thead><tr><th>Entra</th><th>Min</th><th>Supuesto</th><th>Destino</th><th><span class="sr">Lanzar</span></th></tr></thead>
+            <thead><tr><th><label class="entra-todos" title="Marcar / desmarcar todos"><input type="checkbox" id="d-entra-todos" aria-label="Marcar o desmarcar todos los supuestos"> Entra</label></th><th>Min</th><th>Supuesto</th><th>Destino</th><th><span class="sr">Lanzar</span></th></tr></thead>
             <tbody></tbody>
           </table></div>
           <div class="fila-botones"><button class="btn" id="d-lanzar-todos">Lanzar ya todos los marcados</button></div>
@@ -245,15 +233,30 @@
   </div>
 </div>
 
+<div id="visor" class="visor" hidden role="dialog" aria-modal="false" aria-labelledby="visor-tit">
+  <div class="visor-cab" id="visor-cab"><strong id="visor-tit">📹 Verificación por vídeo</strong><button class="btn-ico" id="visor-cerrar" aria-label="Cerrar vídeo">✕</button></div>
+  <video id="visor-video" playsinline muted preload="auto"></video>
+  <div class="visor-ctrl">
+    <button class="btn" data-v="atras" title="Retroceder 1 s" aria-label="Retroceder 1 segundo">⏪ 1 s</button>
+    <button class="btn primario" data-v="play" id="visor-play" aria-label="Reproducir o pausar">⏸</button>
+    <button class="btn" data-v="adelante" title="Avanzar 1 s" aria-label="Avanzar 1 segundo">1 s ⏩</button>
+    <button class="btn" data-v="otra" title="Volver a reproducir" aria-label="Volver a reproducir">↻ Repetir</button>
+    <input type="range" id="visor-pos" min="0" max="5" step="0.04" value="0" aria-label="Posición del vídeo">
+    <span class="num" id="visor-t">0.0 / 5.0 s</span>
+  </div>
+  <p class="ayuda" id="visor-desc"></p>
+</div>
+
 <div id="avisos" class="avisos" aria-live="assertive"></div>
 <div id="bloqueo" class="bloqueo" hidden><div><h2>Límite de uso diario agotado</h2><p>El simulador estará disponible de nuevo a partir de las 00:00 (hora de Canarias).</p></div></div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/vendor/jspdf.js"></script>
 <script src="/vendor/autotable.js"></script>
-<script src="js/app.js?v=8"></script>
-<script src="js/pdf.js?v=8"></script>
-<script src="js/teleoperador.js?v=8"></script>
-<script src="js/docente.js?v=8"></script>
+<script src="js/app.js?v=10"></script>
+<script src="js/pdf.js?v=10"></script>
+<script src="js/teleoperador.js?v=10"></script>
+<script src="js/docente.js?v=10"></script>
+<script src="js/visor.js?v=10"></script>
 </body>
 </html>

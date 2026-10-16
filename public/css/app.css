@@ -282,3 +282,14 @@ body.redimensionando .ventana * { cursor: inherit; }
 .w-pausa > div { background: var(--panel); border: 2px solid var(--azul); border-radius: 14px; padding: 22px 28px; display: grid; gap: 6px; text-align: center; max-width: 440px; }
 .w-pausa strong { font-size: 1.4rem; }
 .w-pausa span { color: var(--suave); }
+
+.entra-todos { display: inline-flex; gap: 6px; align-items: center; color: inherit; font: inherit; cursor: pointer; }
+.entra-todos input { width: 18px; height: 18px; }
+/* ---- Visor de vídeo de cámara (flotante, sobre la ventana de trabajo) ---- */
+.visor { position: fixed; z-index: 2600; right: 24px; bottom: 24px; width: min(640px, calc(100vw - 32px)); background: var(--panel); border: 2px solid var(--azul); border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.45); padding: 10px; display: grid; gap: 8px; }
+.visor-cab { display: flex; justify-content: space-between; align-items: center; cursor: move; user-select: none; }
+.visor video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 8px; display: block; }
+.visor-ctrl { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.visor-ctrl .btn { min-height: 34px; padding: 5px 10px; }
+.visor-ctrl input[type=range] { flex: 1; min-width: 120px; padding: 0; }
+.visor .ayuda { margin: 0; }

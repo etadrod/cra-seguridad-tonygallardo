@@ -249,12 +249,14 @@
     });
     $('.w-acciones [data-acc="vigilante"]').disabled = inc.vigilanteEnviado;
     $('#w-verif').innerHTML = [...inc.verif.map((x) => `<span class="chip ok">${esc(S.datos.verificaciones[x])}</span>`), ...inc.avisos.map((x) => `<span class="chip info">${esc(S.datos.avisos[x])}</span>`)].join('') || '<span class="ayuda">Ninguna todavía.</span>';
+    if (inc.clip && T.clipVisto !== `${inc.id}:${inc.clip.n}`) { T.clipVisto = `${inc.id}:${inc.clip.n}`; Visor.abrir(inc.clip.id, inc.clip.desc); }
     tic();
   }
 
   function cerrarVentana() {
     if (!T.incId) return;
     T.incId = null;
+    Visor.cerrar();
     $('#ventana').hidden = true;
   }
 

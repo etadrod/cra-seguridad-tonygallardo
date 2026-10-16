@@ -42,6 +42,11 @@
       const i = e.target.closest('[data-info]');
       if (i) { const s = D.v.supuestos.find((x) => x.id === i.dataset.info); modal(`${s.id} · ${s.titulo}`, `<p><strong>Abonado:</strong> ${esc(s.abonado)} · <strong>Origen:</strong> ${s.origen === 'llamada' ? 'llamada entrante' : 'señal de centralita'}</p><p>${esc(s.docente)}</p>`); }
     });
+    $('#d-entra-todos').addEventListener('change', (e) => {
+      const on = e.target.checked;
+      emitir('doc_programa', { lista: D.v.programa.map((p) => ({ supId: p.supId, entra: on })) });
+      $$('#d-programa tbody .p-entra').forEach((c) => { c.checked = on; });
+    });
     $('#d-lanzar-todos').addEventListener('click', async () => {
       const filas = $$('#d-programa tbody tr').filter((tr) => $('.p-entra', tr).checked);
       if (!filas.length) return aviso('No hay supuestos marcados.', 'error');
@@ -151,6 +156,9 @@
       $('.p-entra', tr).checked = p.entra; $('.p-min', tr).value = p.minuto; $('.p-dest', tr).value = p.destino;
     });
 
+    const nEntra = v.programa.filter((p) => p.entra).length;
+    const mt = $('#d-entra-todos');
+    mt.checked = nEntra === v.programa.length; mt.indeterminate = nEntra > 0 && nEntra < v.programa.length;
     // Puestos
     const firmaP = v.puestos.map((p) => [p.n, p.alumno, p.activa && p.activa.id, p.cerradas, p.notaMedia]);
     if (cambia('puestos', firmaP)) pintarPuestos(v);

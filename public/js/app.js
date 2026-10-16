@@ -173,10 +173,24 @@ function sonar() {
 }
 
 // ---------- Lectura en voz alta (DUA: múltiples formas de representación) ----------
-function hablar(texto) {
-  if (!S.voz || !('speechSynthesis' in window)) return;
-  const u = new SpeechSynthesisUtterance(String(texto).replace(/\([^)]*\)/g, ''));
-  u.lang = 'es-ES'; u.rate = 1.05;
+// Elige una voz en español si el sistema la tiene (Chrome carga las voces de forma asíncrona)
+let vozEs = null;
+function cargarVoces() {
+  if (!('speechSynthesis' in window)) return;
+  const vs = speechSynthesis.getVoices();
+  vozEs = vs.find((v) => /^es[-_]ES/i.test(v.lang)) || vs.find((v) => /^es/i.test(v.lang)) || null;
+}
+if ('speechSynthesis' in window) { cargarVoces(); speechSynthesis.addEventListener('voiceschanged', cargarVoces); }
+function hablar(texto, forzar) {
+  if ((!S.voz && !forzar) || !('speechSynthesis' in window)) return;
+  const limpio = String(texto).replace(/\([^)]*\)/g, '').replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu, '').trim();
+  if (!limpio) return;
+  if (!vozEs) cargarVoces();
+  const u = new SpeechSynthesisUtterance(limpio);
+  u.lang = vozEs ? vozEs.lang : 'es-ES';
+  if (vozEs) u.voice = vozEs;
+  u.rate = 1.0; u.volume = 1;
+  speechSynthesis.resume(); // Chrome a veces deja la cola en pausa
   speechSynthesis.speak(u);
 }
 
@@ -185,7 +199,14 @@ const pref = (k, v) => { try { if (v === undefined) return localStorage.getItem(
 (function preferencias() {
   const tema = pref('cra-tema'); if (tema) document.documentElement.dataset.theme = tema;
   const fs = Number(pref('cra-fs')) || 16; document.documentElement.style.setProperty('--fs', `${fs}px`);
-  S.voz = pref('cra-voz') === '1'; $('#b-voz').setAttribute('aria-pressed', String(S.voz));
+  S.voz = pref('cra-voz') === '1';
+  const pintarVoz = () => {
+    const b = $('#b-voz');
+    b.setAttribute('aria-pressed', String(S.voz));
+    b.textContent = S.voz ? '🔊' : '🔇';
+    b.title = S.voz ? 'Lectura en voz alta ACTIVADA (pulsa para desactivar)' : 'Lectura en voz alta desactivada (pulsa para activar)';
+  };
+  pintarVoz();
   $('#b-tema').addEventListener('click', () => {
     const oscuro = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.dataset.theme = oscuro ? 'light' : 'dark';
@@ -195,8 +216,15 @@ const pref = (k, v) => { try { if (v === undefined) return localStorage.getItem(
   $('#b-letra-mas').addEventListener('click', () => letra(1));
   $('#b-letra-menos').addEventListener('click', () => letra(-1));
   $('#b-voz').addEventListener('click', () => {
-    S.voz = !S.voz; pref('cra-voz', S.voz ? '1' : '0'); $('#b-voz').setAttribute('aria-pressed', String(S.voz));
-    aviso(S.voz ? 'Lectura en voz alta activada para los mensajes del interlocutor.' : 'Lectura en voz alta desactivada.', 'ok', 2000);
+    S.voz = !S.voz; pref('cra-voz', S.voz ? '1' : '0'); pintarVoz();
+    if (!('speechSynthesis' in window)) return aviso('Este navegador no permite la lectura en voz alta.', 'error');
+    speechSynthesis.cancel();
+    // La frase de prueba se lanza dentro del clic: desbloquea el audio del navegador
+    if (S.voz) {
+      hablar('Lectura en voz alta activada.', true);
+      setTimeout(() => { if (!speechSynthesis.getVoices().length) aviso('Tu navegador no tiene voces instaladas para leer en voz alta. Prueba con Chrome o Edge.', 'error'); }, 1200);
+    }
+    aviso(S.voz ? 'Lectura en voz alta activada: se leerán los mensajes del interlocutor.' : 'Lectura en voz alta desactivada.', 'ok', 2000);
   });
 })();
 
