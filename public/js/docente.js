@@ -91,6 +91,7 @@
       const card = e.target.closest('.puesto[data-np]');
       if (card && e.target === card && !card.classList.contains('libre')) { e.preventDefault(); observar(Number(card.dataset.np)); }
     });
+    $('#d-cola').addEventListener('click', (e) => { const li = e.target.closest('[data-obs-p]'); if (li) observar(Number(li.dataset.obsP)); });
     $('#d-cerradas').addEventListener('click', async (e) => {
       const b = e.target.closest('[data-ver]');
       if (!b) return;
@@ -166,9 +167,20 @@
     $('#d-resumen').textContent = `${ocup.length}/${v.puestos.length} ocupados · ${v.activas.length} atendiendo · ${v.cerradas.length} cerradas`;
 
     // Cola
-    if (cambia('cola', v.cola.map((c) => c.id))) {
+    if (cambia('cola', [v.cola.map((c) => c.id), v.activas.map((a) => [a.id, a.puesto])])) {
       $('#d-cola-n').textContent = v.cola.length;
-      $('#d-cola').innerHTML = v.cola.length ? v.cola.map((c) => `<li class="${c.origen === 'llamada' ? 'llamada' : ''}"><span class="ico" aria-hidden="true">${c.origen === 'llamada' ? '📞' : '🔔'}</span><div><span class="cod">${esc(c.codigo)}</span> · ${esc(c.abonado)} <span class="det">· ${c.cola === 'comun' ? 'cola común' : `puesto ${c.cola}`}</span></div><span class="espera" data-desde="${c.creada}"></span></li>`).join('') : '<li class="cola-vacia">Sin señales en cola.</li>';
+      $('#d-cola-at').textContent = v.activas.length;
+      const sin = v.cola.map((c) => `<li class="est-sin ${c.origen === 'llamada' ? 'llamada' : ''}">
+        <span class="ico" aria-hidden="true">${c.origen === 'llamada' ? '📞' : '🔔'}</span>
+        <div><span class="estado-chip sin">SIN ATENDER</span> <span class="cod">${esc(c.codigo)}</span> · ${esc(c.abonado)}
+          <div class="det">${c.cola === 'comun' ? 'Cola común' : `Puesto ${c.cola}`} · objetivo ${c.limite} s</div></div>
+        <span class="espera">en espera <strong data-desde="${c.creada}">00:00</strong></span></li>`);
+      const at = v.activas.map((a) => `<li class="est-at ${a.origen === 'llamada' ? 'llamada' : ''}" data-obs-p="${a.puesto}" title="Pulsa para visualizar el puesto">
+        <span class="ico" aria-hidden="true">${a.origen === 'llamada' ? '📞' : '🔔'}</span>
+        <div><span class="estado-chip at">EN ATENCIÓN</span> <span class="cod">${esc(a.senal.codigo)}</span> · ${esc(a.abonado.nombre)}
+          <div class="det">Puesto ${a.puesto} · ${esc(a.alumno)}</div></div>
+        <span class="espera">atendiendo <strong data-cogida-c="${a.cogida}" data-lim="${a.limite}">00:00</strong></span></li>`);
+      $('#d-cola').innerHTML = sin.length || at.length ? [...sin, ...at].join('') : '<li class="cola-vacia">Sin señales pendientes ni en atención.</li>';
     }
     // Cerradas
     if (cambia('cerradas', [v.cerradas.map((c) => c.id), v.noAtendidas])) {
@@ -238,6 +250,7 @@
     $$('#d-puestos [data-cogida]').forEach((e) => { const s = (ahora - Number(e.dataset.cogida)) / 1000; const l = Number(e.dataset.lim) || obj; e.textContent = `${fmt(s)} / ${fmt(l)}`; e.closest('.puesto').classList.toggle('fuera', s > l); });
     $$('#d-puestos [data-barra]').forEach((e) => { const r = Math.min(1, (ahora - Number(e.dataset.barra)) / 1000 / (Number(e.dataset.lim) || obj)); e.style.width = `${Math.max(3, r * 100)}%`; e.style.background = `hsl(${Math.round(120 * (1 - r))} 80% 45%)`; });
     $$('#d-cola [data-desde]').forEach((s) => { s.textContent = fmt((ahora - Number(s.dataset.desde)) / 1000); });
+    $$('#d-cola [data-cogida-c]').forEach((e) => { const s = (ahora - Number(e.dataset.cogidaC)) / 1000; const l = Number(e.dataset.lim) || obj; e.textContent = `${fmt(s)} / ${fmt(l)}`; e.closest('li').classList.toggle('fuera', s > l); });
     if (D.observando && D.obsInc) {
       const inc = v.activas.find((x) => x.id === D.obsInc);
       if (inc && $('#obs-tiempo')) {

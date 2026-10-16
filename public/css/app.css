@@ -297,3 +297,17 @@ body.redimensionando .ventana * { cursor: inherit; }
 /* Colgar: grande y rojo */
 .btn.colgar { background: var(--rojo); border-color: var(--rojo); color: #fff; font-size: 1.05rem; padding: 10px 22px; min-height: 46px; font-weight: 800; }
 .btn.colgar:hover:not(:disabled) { filter: brightness(1.1); border-color: var(--rojo); }
+
+/* Estados en «Señales en cola» (docente) */
+.estado-chip { display: inline-block; font-size: .7rem; font-weight: 800; letter-spacing: .04em; border-radius: 999px; padding: 2px 8px; border: 1px solid; white-space: nowrap; }
+.estado-chip.sin { color: var(--rojo); border-color: var(--rojo); background: var(--rojo-fondo); }
+.estado-chip.at { color: var(--verde); border-color: var(--verde); background: var(--verde-fondo); }
+.estado-chip b { font-family: var(--mono); margin-left: 4px; }
+.leyenda { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+#d-cola li.est-sin { border-left-color: var(--rojo); background: var(--rojo-fondo); animation: parpadeo 1.6s ease-in-out infinite; }
+#d-cola li.est-at { border-left-color: var(--verde); cursor: pointer; }
+#d-cola li.est-at:hover { border-color: var(--azul); }
+#d-cola li.fuera .espera strong { color: var(--rojo); }
+#d-cola .espera { font-size: .78rem; text-align: right; }
+#d-cola .espera strong { display: block; font-family: var(--mono); font-size: .95rem; color: var(--texto); }
+@media (prefers-reduced-motion: reduce) { #d-cola li.est-sin { animation: none; } }
