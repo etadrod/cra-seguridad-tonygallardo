@@ -11,7 +11,7 @@ function puertoLibre() {
 async function lanzarServidor(env = {}) {
   const port = await puertoLibre();
   const proc = spawn(process.execPath, [path.join(__dirname, '..', 'server.js')], {
-    env: { ...process.env, PORT: String(port), PERSISTENCIA: 'off', DOCENTE_PIN: '0112', FACTOR_VELOCIDAD: '20', LIMITE_HORAS_DIA: '0', ...env },
+    env: { ...process.env, PORT: String(port), PERSISTENCIA: 'off', DOCENTE_PIN: '0112', FACTOR_VELOCIDAD: '20', LIMITE_HORAS_DIA: '0', REPOSO_ONLINE_MIN: '0.02', ...env },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   proc.stderr.on('data', (d) => process.stderr.write(`[srv] ${d}`));

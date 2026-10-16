@@ -51,6 +51,8 @@ const deAlumno = (socket, fn) => (arg, cb) => {
 };
 
 io.on('connection', (socket) => {
+  sinNadieDesde = Date.now();
+  if (!limite.agotado() && sala.asegurarOnline()) console.log('[cra] modo ONLINE activado: alguien ha entrado');
   if (limite.agotado()) {
     socket.emit('limite_agotado');
     return setTimeout(() => socket.disconnect(true), 200);
@@ -123,7 +125,13 @@ function emitirVistas() {
 setInterval(() => { if (sala.tomarSucio()) emitirVistas(); }, 150);
 setInterval(() => { if (sala.S.actividad.estado === 'en_curso') io.to('docente').emit('vista_docente', { ahora: Date.now(), vista: sala.vistaDocente(), limite: limite.estado() }); }, 1000);
 setInterval(() => sala.tic(), 250);
-setInterval(() => { if (sala.asegurarOnline()) console.log('[cra] modo ONLINE reactivado'); }, 10 * 60 * 1000);
+// Modo online solo mientras haya alguien en la app: se activa al entrar alguien y se detiene tras 15 min sin conexiones
+let sinNadieDesde = Date.now();
+const REPOSO_MS = Number(process.env.REPOSO_ONLINE_MIN || 15) * 60 * 1000;
+setInterval(() => {
+  if (io.engine.clientsCount > 0) { sinNadieDesde = Date.now(); return; }
+  if (Date.now() - sinNadieDesde >= REPOSO_MS && sala.reposoOnline()) console.log('[cra] modo ONLINE en reposo: nadie conectado');
+}, Math.max(200, Math.min(30 * 1000, REPOSO_MS / 2)));
 
 // Límite de uso diario
 setInterval(() => {
@@ -139,7 +147,6 @@ async function arrancar() {
   await limite.cargar();
   const d = await persistencia.leer('estado.json');
   if (d && sala.importar(d)) console.log('[cra] estado restaurado desde', persistencia.modo);
-  if (sala.asegurarOnline()) console.log('[cra] modo ONLINE activado por defecto');
   server.listen(PORT, () => console.log(`[cra] escuchando en ${PORT} · persistencia: ${persistencia.modo} · PIN docente ${PIN ? 'configurado' : 'NO configurado'}`));
 }
 

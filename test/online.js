@@ -30,6 +30,13 @@ const { lanzarServidor, cliente, hasta, ok } = require('./util');
     const v2 = (await doc.pedir('doc_login', { pin: '0112' })).vista;
     ok(v2.actividad.tipo === 'practica', 'práctica en curso');
     ok((await doc.pedir('doc_finalizar')).ok, 'práctica finalizada');
+    // Reposo: sin nadie conectado, el online se detiene; vuelve al entrar alguien
+    await doc.pedir('doc_iniciar', { tipo: 'online' });
+    a.disconnect(); doc.disconnect();
+    await new Promise((r) => setTimeout(r, 2500));
+    const d2 = await cliente(srv.url);
+    const v3 = (await d2.pedir('doc_login', { pin: '0112' })).vista;
+    ok(v3.actividad.tipo === 'online' && v3.actividad.estado === 'en_curso' && !v3.cerradas.length, 'tras el reposo, el online vuelve a empezar al entrar alguien');
     console.log('OK online');
   } catch (e) { console.error(e); process.exitCode = 1; } finally { srv.parar(); process.exit(); }
 })();
