@@ -10,7 +10,7 @@
     const grupos = {};
     for (const p of S.datos.preguntas) (grupos[p.grupo] = grupos[p.grupo] || []).push(p);
     $('#w-preguntas').innerHTML = Object.entries(grupos).map(([g, ps], i) => `
-      <details ${i < 1 ? 'open' : ''}><summary>${esc(g)}</summary><div class="lista">
+      <details open><summary>${esc(g)}</summary><div class="lista">
         ${ps.map((p) => `<button type="button" class="${p.tipo === 'indicacion' ? 'ind' : ''}" data-preg="${p.id}" title="${p.tipo === 'indicacion' ? 'Indicación' : 'Pregunta'}">${esc(p.texto)}</button>`).join('')}
       </div></details>`).join('');
     $('#w-clasif').innerHTML = '<option value="">— Clasificación de la incidencia —</option>' +
@@ -165,7 +165,9 @@
     $('#barra-centro').innerHTML = `<span class="chip info">Puesto ${String(v.yo.puesto).padStart(2, '0')}</span><span class="chip">${esc(v.yo.nombre)}</span>${estadoChip(a)}`;
     const ea = $('#estado-actividad');
     ea.className = `estado-actividad ${a.estado === 'en_curso' ? (a.modo === 'test' ? 'test' : 'en_curso') : ''}`;
-    ea.textContent = a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST en curso: el docente está probando el sistema. Puedes atender señales.' : 'Actividad en curso. Atiende las señales en cuanto entren.')
+    $('#w-pausa').hidden = !a.pausadaDesde;
+    $('#barra-centro').insertAdjacentHTML('beforeend', a.pausadaDesde ? '<span class="chip info">⏸ En pausa</span>' : '');
+    ea.textContent = a.pausadaDesde ? '⏸ Actividad en pausa. El tiempo está detenido.' : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST en curso: el docente está probando el sistema. Puedes atender señales.' : 'Actividad en curso. Atiende las señales en cuanto entren.')
       : a.estado === 'finalizada' ? 'Actividad finalizada. Descarga tu informe en PDF.' : 'En espera: el docente aún no ha iniciado la actividad.';
 
     // Cola
@@ -177,7 +179,7 @@
         <span class="ico" aria-hidden="true">${c.origen === 'llamada' ? '📞' : '🔔'}</span>
         <div><div><span class="cod">${esc(c.codigo)}</span> · ${esc(c.evento)} <span class="chip">${c.cola === 'comun' ? 'Cola común' : 'Mi puesto'}</span></div>
         <div class="det">${esc(c.abonado)} · ${esc(c.municipio)} · Zona ${esc(c.zona)} · <span class="espera" data-desde="${c.creada}">00:00</span> en cola</div></div>
-        <button class="btn primario" data-coger="${c.id}" ${v.activa || a.estado !== 'en_curso' ? 'disabled' : ''}>${c.origen === 'llamada' ? 'Atender llamada' : 'Atender señal'}</button>
+        <button class="btn primario" data-coger="${c.id}" ${v.activa || a.estado !== 'en_curso' || a.pausadaDesde ? 'disabled' : ''}>${c.origen === 'llamada' ? 'Atender llamada' : 'Atender señal'}</button>
       </li>`).join('') : '<li class="cola-vacia">Sin señales pendientes.</li>';
 
     // Historial
@@ -207,6 +209,7 @@
     const w = $('#ventana');
     if (T.incId !== inc.id) {
       T.incId = inc.id; T.nChat = 0;
+      $$('#w-preguntas details').forEach((d) => { d.open = true; }); // cada llamada empieza con todos los grupos abiertos
       $('#w-mensajes').innerHTML = '';
       $('#w-titulo').textContent = `${inc.id} · ${inc.senal.codigo}`;
       $('#w-sub').textContent = `${inc.senal.evento} · Zona ${inc.senal.zona} · ${inc.abonado.nombre}`;
@@ -279,7 +282,8 @@
 
   function tic() {
     if (!T.ultimaV) return;
-    const ahora = ahoraSrv();
+    const pausa = T.ultimaV.actividad && T.ultimaV.actividad.pausadaDesde;
+    const ahora = pausa || ahoraSrv();
     $$('#cola [data-desde]').forEach((s) => { s.textContent = fmt((ahora - Number(s.dataset.desde)) / 1000); });
     const inc = T.ultimaV.activa;
     if (!inc || !T.incId) return;
@@ -347,9 +351,9 @@
       <ol class="mejoras">
         <li><strong>Recepción.</strong> Atiende la señal o la llamada. Lee el código, el evento y la zona.</li>
         <li><strong>Identificación.</strong> Consulta la ficha del abonado y pulsa <em>Zonas activadas</em>: verás qué detectores han saltado, a qué hora y en qué orden. Si hablas con alguien: identifica al interlocutor y pide la <strong>palabra clave</strong>. Compárala con la palabra de <strong>coacción</strong>.</li>
-        <li><strong>Verificación.</strong> Según los medios del abonado: <em>secuencial</em> (si saltan varios detectores distintos seguidos, p. ej. puerta → pasillo → salón, es indicio de que alguien se mueve dentro; si salta uno solo, no basta), vídeo, audio o verificación personal (llamada al titular o vigilante de acuda).</li>
+        <li><strong>Verificación.</strong> Según los medios del abonado: <em>secuencial</em> (si saltan varios detectores distintos seguidos, p. ej. puerta → pasillo → salón, es indicio de que alguien se mueve dentro; si salta uno solo, no basta), vídeo, audio o verificación personal (llamada al titular o vigilante in situ).</li>
         <li><strong>Decisión.</strong> ¿Alarma real, falsa alarma o incidencia técnica? No movilices recursos públicos sin verificación, salvo riesgo para las personas.</li>
-        <li><strong>Transmisión.</strong> Alarma real: aviso inmediato a la FCSE competente con dirección, tipo de señal, verificación y datos de autores o personas. Emergencias sanitarias o incendio: 1-1-2. Avisa al llavero cuando haga falta acceder.</li>
+        <li><strong>Transmisión.</strong> Alarma real: aviso inmediato a la FCSE competente con dirección, tipo de señal, verificación y datos de autores o personas. Emergencias sanitarias o incendio: 1-1-2. Activa el servicio de acuda (custodia de llaves) cuando haga falta acceder a la instalación.</li>
         <li><strong>Registro y cierre.</strong> Clasifica y anota qué ocurrió, qué verificaste, a quién avisaste y cuándo.</li>
       </ol>
       <p class="ayuda">Tiempo objetivo: 120 s desde que atiendes. Si lo superas, la comunicación sigue abierta hasta que cierres. Referencias: Ley 5/2014, RD 2364/1994, Orden INT/316/2011 y normas UNE-EN (pendiente de verificación de artículos por el docente).</p>`);

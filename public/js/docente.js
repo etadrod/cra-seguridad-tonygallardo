@@ -20,6 +20,11 @@
       const r = await emitir('doc_test');
       res(r, r.ok ? `TEST iniciado: ${r.bots} bots ocupan los puestos libres y entran señales automáticas.` : '');
     });
+    $('#d-pausa').addEventListener('click', async () => {
+      const pausada = D.v && D.v.actividad.pausadaDesde;
+      const r = await emitir(pausada ? 'doc_reanudar' : 'doc_pausa');
+      res(r, pausada ? `Actividad reanudada (pausa de ${fmt(r.pausaSeg || 0)}).` : 'Actividad en pausa: el tiempo de todos los puestos está detenido.');
+    });
     $('#d-fintest').addEventListener('click', async () => res(await emitir('doc_fin_test'), 'TEST finalizado. Bots retirados y datos de prueba borrados.'));
 
     const tabla = $('#d-programa');
@@ -119,13 +124,18 @@
     $('#d-salir').onclick = () => { try { sessionStorage.removeItem('cra-pin'); } catch { /* */ } location.reload(); };
     const de = $('#d-estado');
     de.className = `estado-actividad ${a.estado === 'en_curso' ? (a.modo === 'test' ? 'test' : 'en_curso') : ''}`;
-    de.textContent = a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST: bots en puestos libres y señales automáticas. Los alumnos conectados también pueden atender.' : 'Actividad en curso. Los supuestos marcados entran en su minuto.')
+    de.textContent = a.pausadaDesde ? `⏸ En pausa desde las ${hora(a.pausadaDesde)}. Tiempos, cola y supuestos programados detenidos.` : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST: bots en puestos libres y señales automáticas. Los alumnos conectados también pueden atender.' : 'Actividad en curso. Los supuestos marcados entran en su minuto.')
       : a.estado === 'finalizada' ? `Finalizada a las ${hora(a.fin)}. Descarga los informes.` : 'En espera de inicio.';
     const enCurso = a.estado === 'en_curso';
     $('#d-iniciar').disabled = enCurso;
     $('#d-finalizar').disabled = !(enCurso && a.modo === 'actividad');
     $('#d-test').disabled = enCurso;
     $('#d-fintest').disabled = !(enCurso && a.modo === 'test');
+    const pausaBtn = $('#d-pausa');
+    pausaBtn.disabled = !(enCurso && a.modo === 'actividad');
+    pausaBtn.textContent = a.pausadaDesde ? '▶ Reanudar actividad' : '⏸ Pausa';
+    pausaBtn.className = `btn ${a.pausadaDesde ? 'verde' : 'azul'}`;
+    de.classList.toggle('test', !!a.pausadaDesde);
     $('#d-persistencia').textContent = S.persistencia === 'github' ? 'Resultados guardados en GitHub (rama «datos»).'
       : S.persistencia === 'local' ? '⚠ Sin GITHUB_TOKEN: los resultados se guardan en disco local y NO sobreviven a un reinicio de Render. Descarga los informes al terminar.'
       : 'Persistencia desactivada (modo pruebas).';
@@ -213,8 +223,8 @@
   function tic() {
     const v = D.v;
     if (!v) return;
-    const ahora = ahoraSrv();
     const a = v.actividad;
+    const ahora = a.pausadaDesde || ahoraSrv();
     $('#d-reloj').textContent = a.inicio ? fmt(((a.estado === 'finalizada' ? a.fin : ahora) - a.inicio) / 1000) : '--:--';
     const obj = S.datos ? S.datos.config.tiempoObjetivoSeg : 120;
     $$('#d-puestos [data-cogida]').forEach((e) => { const s = (ahora - Number(e.dataset.cogida)) / 1000; e.textContent = fmt(s); e.closest('.puesto').classList.toggle('fuera', s > obj); });

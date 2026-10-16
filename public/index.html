@@ -6,7 +6,7 @@
 <title>CRA · Simulador</title>
 <meta name="description" content="Simulador de Central Receptora de Alarmas · CFGM Técnico en Seguridad · CIFP Tony Gallardo">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101a2b'/%3E%3Cpath d='M16 6l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10v-6z' fill='%23f5a524'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/app.css?v=7">
+<link rel="stylesheet" href="css/app.css?v=8">
 </head>
 <body>
 <a class="saltar" href="#principal">Saltar al contenido</a>
@@ -56,7 +56,7 @@
         <ul class="inicio-pasos">
           <li><span>1</span>Recibe la señal de la centralita o la llamada del alertante.</li>
           <li><span>2</span>Verifica: secuencia de zonas, vídeo, audio o verificación personal.</li>
-          <li><span>3</span>Decide y transmite: FCSE, 1-1-2, llavero o servicio técnico.</li>
+          <li><span>3</span>Decide y transmite: FCSE, 1-1-2, servicio de acuda o servicio técnico.</li>
           <li><span>4</span>Clasifica, registra y cierra.</li>
         </ul>
         <a class="btn primario ver-video" href="#tutorial">▶ Ver el vídeo tutorial (2:32)</a>
@@ -133,6 +133,7 @@
             <button class="btn rojo" id="d-finalizar">■ Fin actividad</button>
             <button class="btn ambar" id="d-test">▶ TEST</button>
             <button class="btn" id="d-fintest">■ FIN TEST</button>
+            <button class="btn azul" id="d-pausa" style="grid-column:1 / -1">⏸ Pausa</button>
           </div>
           <p class="ayuda" id="d-persistencia"></p>
           <p class="ayuda" id="d-limite"></p>
@@ -187,6 +188,7 @@
       <span class="t-estado" id="w-testado"></span>
     </div>
   </div>
+  <div class="w-pausa" id="w-pausa" hidden role="status"><div><strong>⏸ Actividad en pausa</strong><span>El tiempo está detenido. Espera a que el docente la reanude.</span></div></div>
   <div class="w-cuerpo">
     <section class="w-chat" aria-label="Conversación">
       <div class="w-chat-cab"><h3>Comunicación</h3><div class="w-tam"><span id="w-llamada" class="chip"></span>
@@ -213,13 +215,13 @@
       <button class="btn" data-acc="audio">🎧 Audio</button>
       <button class="btn" data-acc="llamar" id="w-b-llamar">📞 Llamar al titular</button>
       <button class="btn" data-acc="colgar" id="w-b-colgar">Colgar</button>
-      <button class="btn" data-acc="vigilante">🚗 Vigilante (acuda)</button>
+      <button class="btn" data-acc="vigilante" title="Envía un vigilante a verificar en el lugar">🚗 Vigilante in situ</button>
     </fieldset>
     <fieldset>
       <legend>Respuesta y transmisión</legend>
       <button class="btn azul" data-form="fcse">🚓 Aviso FCSE</button>
       <button class="btn azul" data-form="cecoes112">🚑 Aviso 1-1-2</button>
-      <button class="btn" data-acc="llavero">🔑 Llavero</button>
+      <button class="btn" data-acc="llavero" title="Servicio de acuda / custodia de llaves">🔑 Serv. Acuda</button>
       <button class="btn" data-acc="tecnico">🛠️ Servicio técnico</button>
     </fieldset>
     <form id="w-f-cierre" class="cierre">
@@ -249,9 +251,9 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/vendor/jspdf.js"></script>
 <script src="/vendor/autotable.js"></script>
-<script src="js/app.js?v=7"></script>
-<script src="js/pdf.js?v=7"></script>
-<script src="js/teleoperador.js?v=7"></script>
-<script src="js/docente.js?v=7"></script>
+<script src="js/app.js?v=8"></script>
+<script src="js/pdf.js?v=8"></script>
+<script src="js/teleoperador.js?v=8"></script>
+<script src="js/docente.js?v=8"></script>
 </body>
 </html>

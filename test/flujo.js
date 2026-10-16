@@ -86,6 +86,23 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     await a2.pedir('pregunta', { preguntaId: 'direccion' });
     const cg2 = await a2.pedir('accion', { tipo: 'colgar' });
     ok(cg2.ok && !cg2.errorGrave, 'colgar tras gestionar no es error grave');
+    await a2.pedir('cerrar', { clasificacion: 'sanitaria', observaciones: 'Caída de persona mayor, aviso al 1-1-2 y al hijo.' });
+
+    // Pausa: detiene el tiempo y bloquea acciones
+    await doc.pedir('doc_lanzar', { supId: 'S02', destino: 'puesto:2' });
+    await hasta(() => a2.ultima.cola.length === 1 && !a2.ultima.activa && !vistos.has(a2.ultima.cola[0].id)); vistos.add(a2.ultima.cola[0].id);
+    await a2.pedir('coger', { id: a2.ultima.cola[0].id });
+    await hasta(() => a2.ultima.activa);
+    const cog0 = a2.ultima.activa.cogida;
+    ok((await doc.pedir('doc_pausa')).ok, 'pausa de la actividad');
+    ok((await a2.pedir('accion', { tipo: 'secuencial' })).error, 'en pausa no se puede actuar');
+    ok((await doc.pedir('doc_lanzar', { supId: 'S01', destino: 'comun' })).error, 'en pausa no se lanzan supuestos');
+    await esperar(1200);
+    const rr = await doc.pedir('doc_reanudar');
+    ok(rr.ok, 'reanudar actividad');
+    await hasta(() => a2.ultima.activa && a2.ultima.activa.cogida > cog0 + 1000);
+    ok(true, 'el tiempo de la incidencia no cuenta la pausa');
+    await a2.pedir('cerrar', { clasificacion: 'intrusion_real', observaciones: 'Prueba de pausa: intrusión verificada y avisada.' });
 
     // Informes
     const inf = await a1.pedir('mi_informe');
@@ -94,8 +111,8 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     const todos = await doc.pedir('doc_informes');
     ok(todos.alumnos.length === 2, 'informe conjunto con los dos alumnos');
     const alu2 = todos.alumnos.find((x) => x.alumno === 'Luis Gil');
-    ok(alu2.incidencias.length === (r1.ok ? 4 : 5), 'incidencia abierta evaluada al finalizar');
-    ok(alu2.incidencias.some((i) => i.clasificacion === 'No cerrada por el alumno'), 'incidencia no cerrada registrada');
+    ok(alu2.incidencias.length === (r1.ok ? 5 : 6), 'incidencias del alumno evaluadas al finalizar');
+    ok(alu2.incidencias.some((i) => i.clasificacion.startsWith('ERROR GRAVE')), 'error grave registrado en el informe');
     ok((await a1.pedir('coger', { id: 'x' })).error, 'tras finalizar no se pueden coger señales');
     console.log('OK flujo');
   } catch (e) { console.error(e); process.exitCode = 1; } finally { srv.parar(); process.exit(); }

@@ -14,7 +14,7 @@
     { "id": "recepcion", "nombre": "Recepción e identificación (señal, zona, interlocutor, palabra clave)", "ce": "a, c", "max": 1.5 },
     { "id": "verificacion", "nombre": "Verificación de la señal (secuencial, vídeo, audio, personal)", "ce": "b, c", "max": 2 },
     { "id": "clasificacion", "nombre": "Clasificación: alarma real / falsa alarma / técnica", "ce": "e", "max": 1.5 },
-    { "id": "comunicacion", "nombre": "Respuesta y transmisión (FCSE, 1-1-2, llavero, SAT) con datos completos", "ce": "f", "max": 1.5 },
+    { "id": "comunicacion", "nombre": "Respuesta y transmisión (FCSE, 1-1-2, serv. acuda, SAT) con datos completos", "ce": "f", "max": 1.5 },
     { "id": "registro", "nombre": "Registro y cierre de la incidencia", "ce": "d", "max": 0.5 }
   ],
   "tiempo": {
@@ -45,12 +45,12 @@
     "video": "Verificación por vídeo",
     "audio": "Verificación por audio",
     "llamada": "Verificación personal telefónica (titular / interlocutor)",
-    "vigilante": "Verificación personal in situ (vigilante de acuda)"
+    "vigilante": "Verificación personal in situ (vigilante)"
   },
   "avisos": {
     "fcse": "Aviso a Fuerzas y Cuerpos de Seguridad",
     "cecoes112": "Aviso al 1-1-2 (CECOES)",
-    "llavero": "Aviso al llavero / custodia de llaves",
+    "llavero": "Aviso al servicio de acuda (custodia de llaves)",
     "tecnico": "Aviso al servicio técnico (SAT)",
     "titular": "Comunicación con el titular"
   },
@@ -60,6 +60,6 @@
     "verificacion": "Verificación realizada y resultado",
     "autores": "Descripción de autores / huida",
     "personas": "Personas en el lugar / heridos",
-    "contacto": "Contacto de llavero o responsable"
+    "contacto": "Contacto del servicio de acuda o responsable"
   }
 }

@@ -81,6 +81,8 @@ io.on('connection', (socket) => {
   });
   socket.on('doc_iniciar', soloDocente(socket, () => sala.iniciarActividad()));
   socket.on('doc_finalizar', soloDocente(socket, () => sala.finalizarActividad()));
+  socket.on('doc_pausa', soloDocente(socket, () => sala.pausar()));
+  socket.on('doc_reanudar', soloDocente(socket, () => sala.reanudar()));
   socket.on('doc_test', soloDocente(socket, () => sala.iniciarTest()));
   socket.on('doc_fin_test', soloDocente(socket, () => sala.finalizarTest()));
   socket.on('doc_lanzar', soloDocente(socket, ({ supId, destino }) => sala.lanzar(supId, destino)));
