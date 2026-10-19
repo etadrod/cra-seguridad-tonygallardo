@@ -2,6 +2,8 @@
 'use strict';
 (function () {
   const D = { montado: false, firmas: {}, v: null, observando: null };
+  // Reloj de actividad: con 1 h o más se muestra en días, horas y minutos
+  const fmtLargo = (seg) => { if (seg < 3600) return fmt(seg); const m = Math.floor(seg / 60); const d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60); return `${d ? d + ' d ' : ''}${h} h ${String(m % 60).padStart(2, '0')} min`; };
 
   function montar() {
     if (D.montado) return;
@@ -299,7 +301,7 @@
       const prox = Number(ep.dataset.inicio) + env * iv * 1000 - ahora;
       ep.textContent = env >= tot ? `Enviados ${env}/${tot} supuestos. Ya no entran más.` : `Enviados ${env}/${tot} · siguiente supuesto en ${fmt(Math.max(0, prox / 1000))}`;
     }
-    $('#d-reloj').textContent = a.inicio ? fmt(((a.estado === 'finalizada' ? a.fin : ahora) - a.inicio) / 1000) : '--:--';
+    $('#d-reloj').textContent = a.inicio ? fmtLargo(((a.estado === 'finalizada' ? a.fin : ahora) - a.inicio) / 1000) : '--:--';
     const obj = S.datos ? S.datos.config.tiempoObjetivoSeg : 120;
     $$('#d-puestos [data-cogida]').forEach((e) => { const s = (ahora - Number(e.dataset.cogida)) / 1000; const l = Number(e.dataset.lim) || obj; e.textContent = `${fmt(s)} / ${fmt(l)}`; e.closest('.puesto').classList.toggle('fuera', s > l); });
     $$('#d-puestos [data-barra]').forEach((e) => { const r = Math.min(1, (ahora - Number(e.dataset.barra)) / 1000 / (Number(e.dataset.lim) || obj)); e.style.width = `${Math.max(3, r * 100)}%`; e.style.background = colorTramo((ahora - Number(e.dataset.barra)) / 1000 / (Number(e.dataset.lim) || obj)); });
