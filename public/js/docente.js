@@ -304,7 +304,7 @@
     $('#d-reloj').textContent = a.inicio ? fmtLargo(((a.estado === 'finalizada' ? a.fin : ahora) - a.inicio) / 1000) : '--:--';
     const obj = S.datos ? S.datos.config.tiempoObjetivoSeg : 120;
     $$('#d-puestos [data-cogida]').forEach((e) => { const s = (ahora - Number(e.dataset.cogida)) / 1000; const l = Number(e.dataset.lim) || obj; e.textContent = `${fmt(s)} / ${fmt(l)}`; e.closest('.puesto').classList.toggle('fuera', s > l); });
-    $$('#d-puestos [data-barra]').forEach((e) => { const r = Math.min(1, (ahora - Number(e.dataset.barra)) / 1000 / (Number(e.dataset.lim) || obj)); e.style.width = `${Math.max(3, r * 100)}%`; e.style.background = colorTramo((ahora - Number(e.dataset.barra)) / 1000 / (Number(e.dataset.lim) || obj)); });
+    $$('#d-puestos [data-barra]').forEach((e) => { const r = Math.min(1, (ahora - Number(e.dataset.barra)) / 1000 / (Number(e.dataset.lim) || obj)); e.style.width = `${Math.max(3, r * 100)}%`; e.style.background = colorTramo((ahora - Number(e.dataset.barra)) / 1000, Number(e.dataset.lim) || obj); });
     $$('#d-cola [data-desde]').forEach((s) => { s.textContent = fmt((ahora - Number(s.dataset.desde)) / 1000); });
     $$('#d-cola [data-cogida-c]').forEach((e) => { const s = (ahora - Number(e.dataset.cogidaC)) / 1000; const l = Number(e.dataset.lim) || obj; e.textContent = `${fmt(s)} / ${fmt(l)}`; e.closest('li').classList.toggle('fuera', s > l); });
     if (D.observando && D.obsInc) {
@@ -313,7 +313,7 @@
         const lo = inc.limite || obj; const s2 = (ahora - inc.cogida) / 1000; const r = Math.min(1, s2 / lo);
         $('#obs-tiempo').textContent = fmt(s2);
         $('#obs-tiempo').classList.toggle('n-baja', s2 > lo);
-        $('#obs-barra').style.width = `${Math.max(2, r * 100)}%`; $('#obs-barra').style.background = colorTramo(s2 / lo);
+        $('#obs-barra').style.width = `${Math.max(2, r * 100)}%`; $('#obs-barra').style.background = colorTramo(s2, lo);
       }
     }
   }

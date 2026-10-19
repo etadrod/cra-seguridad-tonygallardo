@@ -300,10 +300,10 @@
     $('#w-tiempo').textContent = fmt(seg);
     const barra = $('#w-barra');
     barra.style.width = `${Math.max(2, r * 100)}%`;
-    barra.style.background = colorTramo(rr);
+    barra.style.background = colorTramo(seg, obj);
     const fuera = seg > obj;
     $('.temporizador').classList.toggle('fuera', fuera);
-    $('#w-testado').textContent = fuera ? `Fuera de tiempo (+${fmt(seg - obj)}) · la comunicación continúa` : `Quedan ${fmt(obj - seg)} · ${nombreTramo(rr)}`;
+    $('#w-testado').textContent = fuera ? `Fuera de tiempo (+${fmt(seg - obj)}) · la comunicación continúa` : `Quedan ${fmt(obj - seg)} · ${nombreTramo(seg, obj)}`;
   }
 
   // ---------- Formularios de aviso ----------

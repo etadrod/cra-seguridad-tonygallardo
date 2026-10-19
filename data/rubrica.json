@@ -17,9 +17,9 @@
       "max": 3,
       "que": "Segundos desde que pulsas «Atender» hasta que cierras la incidencia, según el tramo de color en que termines.",
       "niveles": [
-        "Verde (≤ 40 % del objetivo): 3 puntos",
-        "Ámbar (40-75 %): 2 puntos",
-        "Rojo (75-100 %): 1 punto · Fuera de tiempo: 0"
+        "Verde (hasta 100 s): 3 puntos, el máximo",
+        "Desde 100 s baja progresivamente: ámbar y después rojo, hasta 1 punto al llegar al objetivo (240 s práctica / 190 s evaluación)",
+        "Fuera de tiempo: 0"
       ]
     },
     {
@@ -84,31 +84,10 @@
     }
   ],
   "tiempo": {
-    "tramos": [
-      {
-        "color": "verde",
-        "hasta": 0.4,
-        "puntos": 3
-      },
-      {
-        "color": "ambar",
-        "hasta": 0.75,
-        "puntos": 2
-      },
-      {
-        "color": "rojo",
-        "hasta": 1.0,
-        "puntos": 1
-      },
-      {
-        "color": "fuera",
-        "hasta": null,
-        "puntos": 0
-      }
-    ],
     "limiteSeg": 240,
     "excelenteHastaSeg": 96,
-    "nota": "Tiempo objetivo: 240 s en práctica y 190 s en evaluación. Tramos de la barra: verde (0-40 % del objetivo) 3 puntos · ámbar (40-75 %) 2 puntos · rojo (75-100 %) 1 punto · fuera de tiempo 0 puntos (la comunicación sigue hasta el cierre). Los puntos de tiempo se multiplican por el porcentaje obtenido en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa."
+    "nota": "Tiempo objetivo: 240 s en práctica y 190 s en evaluación. Verde hasta 100 s: 3 puntos (máximo). A partir de 100 s la puntuación baja de forma progresiva hasta 1 punto al llegar al tiempo objetivo (ámbar en la primera mitad de ese tramo, rojo en la segunda). Fuera de tiempo: 0 puntos (la comunicación sigue hasta el cierre). Los puntos de tiempo se multiplican por el porcentaje obtenido en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa.",
+    "verdeSeg": 100
   },
   "niveles": [
     {
