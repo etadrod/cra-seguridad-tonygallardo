@@ -17,8 +17,8 @@
       "max": 3,
       "que": "Segundos desde que pulsas «Atender» hasta que cierras la incidencia, según el tramo de color en que termines.",
       "niveles": [
-        "Verde (hasta 100 s): 3 puntos, el máximo",
-        "Desde 100 s baja progresivamente: ámbar y después rojo, hasta 1 punto al llegar al objetivo (240 s práctica / 190 s evaluación)",
+        "Verde (hasta 140 s): 3 puntos, el máximo",
+        "Desde 140 s baja progresivamente: ámbar y después rojo, hasta 1 punto al llegar al objetivo (240 s práctica / 190 s evaluación)",
         "Fuera de tiempo: 0"
       ]
     },
@@ -86,8 +86,8 @@
   "tiempo": {
     "limiteSeg": 240,
     "excelenteHastaSeg": 96,
-    "nota": "Tiempo objetivo: 240 s en práctica y 190 s en evaluación. Verde hasta 100 s: 3 puntos (máximo). A partir de 100 s la puntuación baja de forma progresiva hasta 1 punto al llegar al tiempo objetivo (ámbar en la primera mitad de ese tramo, rojo en la segunda). Fuera de tiempo: 0 puntos (la comunicación sigue hasta el cierre). Los puntos de tiempo se multiplican por el porcentaje obtenido en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa.",
-    "verdeSeg": 100
+    "nota": "Tiempo objetivo: 240 s en práctica y 190 s en evaluación. Verde hasta 140 s: 3 puntos (máximo). A partir de 140 s la puntuación baja de forma progresiva hasta 1 punto al llegar al tiempo objetivo (ámbar en la primera mitad de ese tramo, rojo en la segunda). Fuera de tiempo: 0 puntos (la comunicación sigue hasta el cierre). Los puntos de tiempo se multiplican por el porcentaje obtenido en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa.",
+    "verdeSeg": 140
   },
   "niveles": [
     {

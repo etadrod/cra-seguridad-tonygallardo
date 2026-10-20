@@ -5,8 +5,8 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = (seg) => { seg = Math.max(0, Math.floor(seg)); return `${String(Math.floor(seg / 60)).padStart(2, '0')}:${String(seg % 60).padStart(2, '0')}`; };
 const hora = (ms) => new Date(ms).toLocaleTimeString('es-ES', { timeZone: 'Atlantic/Canary', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-// Barra de tiempo: verde hasta 100 s (3 puntos); después baja lineal hasta 1 punto en el objetivo (ámbar 1.ª mitad, rojo 2.ª); fuera 0
-const verdeSeg = () => (S.datos && S.datos.rubrica.tiempo.verdeSeg) || 100;
+// Barra de tiempo: verde hasta 140 s (3 puntos); después baja lineal hasta 1 punto en el objetivo (ámbar 1.ª mitad, rojo 2.ª); fuera 0
+const verdeSeg = () => (S.datos && S.datos.rubrica.tiempo.verdeSeg) || 140;
 const puntosTiempo = (seg, lim) => { const v = verdeSeg(); return seg <= v ? 3 : seg > lim ? 0 : 3 - 2 * (seg - v) / Math.max(1, lim - v); };
 const colorTramo = (seg, lim) => { const v = verdeSeg(); return seg <= v ? '#16a34a' : seg <= (v + lim) / 2 ? '#f59e0b' : '#dc2626'; };
 const nombreTramo = (seg, lim) => { const v = verdeSeg(); const p = puntosTiempo(seg, lim).toFixed(1).replace('.', ','); return seg <= v ? 'tramo verde · 3 puntos' : seg > lim ? 'fuera de tiempo · 0 puntos' : `${seg <= (v + lim) / 2 ? 'tramo ámbar' : 'tramo rojo'} · ${p} puntos`; };
