@@ -75,13 +75,13 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
 
     // Colgar sin gestión = error grave (nota 0) — S07 sigue abierta en el puesto 2: se cierra antes
     await a2.pedir('cerrar', { clasificacion: 'coaccion', observaciones: 'Palabra de coacción TEJINA. Aviso a Policía Nacional.' });
-    await doc.pedir('doc_lanzar', { supId: 'S03', destino: 'puesto:2' });
+    await doc.pedir('doc_lanzar', { supId: 'A03', destino: 'puesto:2' });
     await hasta(() => a2.ultima.cola.length === 1 && !a2.ultima.activa && !vistos.has(a2.ultima.cola[0].id)); vistos.add(a2.ultima.cola[0].id);
     await a2.pedir('coger', { id: a2.ultima.cola[0].id });
     const cg = await a2.pedir('accion', { tipo: 'colgar' });
     ok(cg.errorGrave && cg.eval.nota === 0, 'colgar sin gestión: error grave y nota 0');
     // Colgar con gestión hecha no es error
-    await doc.pedir('doc_lanzar', { supId: 'S03', destino: 'puesto:2' });
+    await doc.pedir('doc_lanzar', { supId: 'A03', destino: 'puesto:2' });
     await hasta(() => a2.ultima.cola.length === 1 && !a2.ultima.activa && !vistos.has(a2.ultima.cola[0].id)); vistos.add(a2.ultima.cola[0].id);
     await a2.pedir('coger', { id: a2.ultima.cola[0].id });
     await a2.pedir('pregunta', { preguntaId: 'direccion' });

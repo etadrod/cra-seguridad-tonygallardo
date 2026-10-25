@@ -1,5 +1,5 @@
 'use strict';
-// Modo online: activo al arrancar; cada alumno recibe los supuestos S01-S10 en orden aleatorio, uno tras otro.
+// Modo online: activo al arrancar; cada alumno recibe los supuestos de práctica 01-10 (S señales · A llamadas) en orden aleatorio, uno tras otro.
 const { lanzarServidor, cliente, hasta, ok } = require('./util');
 
 (async () => {
