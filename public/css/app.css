@@ -300,6 +300,8 @@ body.redimensionando .ventana * { cursor: inherit; }
 /* Colgar: grande y rojo */
 .btn.colgar { background: var(--rojo); border-color: var(--rojo); color: #fff; font-size: 1.05rem; padding: 10px 22px; min-height: 46px; font-weight: 800; }
 .btn.colgar:hover:not(:disabled) { filter: brightness(1.1); border-color: var(--rojo); }
+.btn.colgar.gris { background: #9ca3af; border-color: #9ca3af; color: #fff; }
+.btn.colgar.gris:hover:not(:disabled) { border-color: #9ca3af; }
 
 /* Estados en «Señales en cola» (docente) */
 .estado-chip { display: inline-block; font-size: .7rem; font-weight: 800; letter-spacing: .04em; border-radius: 999px; padding: 2px 8px; border: 1px solid; white-space: nowrap; }

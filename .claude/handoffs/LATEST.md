@@ -1,21 +1,20 @@
 # Session Handoff
 
-- **Generated:** 2026-10-25T13:26:33.874Z
+- **Generated:** 2026-10-25T18:39:01.967Z
 - **Session ID:** 11a76c3b-683c-5d5e-9a97-ef11a8b19daf
 - **End reason:** other
 - **Working directory:** /home/claude/cra
 - **Git branch:** main
-- **Last commit:** 64348ca Umbral de retraso del aviso para el informe explicativo: 180 s
-- **Prompts this session:** 7
+- **Last commit:** 287ac51 Panel docente: botón Reiniciar que libera todos los puestos
+- **Prompts this session:** 8
 
 ## Session goal
 
 **Opened with:** <system-reminder>The user's timezone is Atlantic/Canary (UTC+01:00). Message sent at Mon 2026-10-19 14:28 local time.</system-reminder>
 En el horario de Control del ejercicio aparece el contador 2991:43, pasalo a dias, horas y minutos
 
-**Ended with:** <system-reminder>The user's timezone is Atlantic/Canary (UTC+00:00). Message sent at Sun 2026-10-25 13:23 local time.</system-reminder>
-El umbral es solo para que realicen la práctica de evaluación en un tiempo definido pero subelo a 180 seg.
-Olvida lo del vídeo.
+**Ended with:** <system-reminder>The user's timezone is Atlantic/Canary (UTC+00:00). Message sent at Sun 2026-10-25 18:34 local time.</system-reminder>
+en el panel docente incluye un boton de Reiniciar (al ado de Pausa) que libere todos los puestos.
 
 ## Decisions
 

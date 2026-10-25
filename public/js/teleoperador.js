@@ -244,6 +244,7 @@
     ll.className = `chip ${inc.llamadaAbierta ? 'ok' : ''}`;
     $('#w-b-llamar').disabled = inc.llamadaAbierta;
     $('#w-b-colgar').disabled = false; // siempre disponible: colgar sin gestionar es un error grave
+    $('#w-b-colgar').classList.toggle('gris', inc.origen !== 'llamada' && !inc.llamadaAbierta); // señal sin llamada: en gris (sigue activo)
     $('#w-libre').disabled = !inc.llamadaAbierta;
     $('#w-libre').placeholder = inc.llamadaAbierta ? 'Mensaje libre (con «?» es pregunta; sin «?», indicación)…' : 'Abre una llamada para hablar con el interlocutor';
     $$('#w-preguntas [data-preg]').forEach((b) => { b.disabled = !inc.llamadaAbierta; b.classList.toggle('usada', inc.preguntas.includes(b.dataset.preg)); });
