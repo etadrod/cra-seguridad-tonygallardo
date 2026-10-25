@@ -90,6 +90,7 @@ io.on('connection', (socket) => {
   socket.on('doc_fin_test', soloDocente(socket, () => sala.finalizarTest()));
   socket.on('doc_lanzar', soloDocente(socket, ({ supId, destino }) => sala.lanzarManual(supId, destino)));
   socket.on('doc_programa', soloDocente(socket, ({ lista }) => sala.setPrograma(lista)));
+  socket.on('doc_eliminar_cerradas', soloDocente(socket, () => sala.eliminarCerradas()));
   socket.on('doc_reiniciar', soloDocente(socket, () => sala.reiniciarPuestos()));
   socket.on('doc_liberar', soloDocente(socket, ({ puesto }) => sala.liberarPuesto(Number(puesto))));
   socket.on('doc_incidencia', soloDocente(socket, ({ id }) => sala.incidenciaDocente(id) || { error: 'No encontrada.' }));

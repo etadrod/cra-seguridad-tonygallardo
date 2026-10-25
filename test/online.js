@@ -31,6 +31,8 @@ const { lanzarServidor, cliente, hasta, ok } = require('./util');
     const prog = (await doc.pedir('doc_login', { pin: '0112' })).vista.cerradas;
     const conf = require('../data/config.json');
     ok(true, `supuestos online fuera de la evaluación (${conf.evaluacionPorDefecto.join(',')})`);
+    const el = await doc.pedir('doc_eliminar_cerradas');
+    ok(el.ok && el.borradas >= 3 && !(await doc.pedir('doc_login', { pin: '0112' })).vista.cerradas.length, 'Eliminar borra todas las incidencias cerradas');
     ok((await doc.pedir('doc_iniciar', { tipo: 'practica' })).ok, 'el docente para el online y cambia a práctica');
     const v2 = (await doc.pedir('doc_login', { pin: '0112' })).vista;
     ok(v2.actividad.tipo === 'practica', 'práctica en curso');

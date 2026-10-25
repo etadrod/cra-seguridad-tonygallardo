@@ -2038,5 +2038,525 @@
       ],
       "solucion": "Verificar por vídeo, aviso inmediato al 1-1-2 con dirección, ubicación (cocina), verificación y ocupación del hotel. Contactar con recepción: confirmar personas, indicar que active su plan de autoprotección y desaloje la zona, y acordar el acceso para bomberos. Cerrar como incendio."
     }
+  },
+  {
+    "id": "A28",
+    "titulo": "Robo con violencia en supermercado: empleada empujada",
+    "docente": "Llamada de la cajera: un hombre se lleva una bolsa con botellas, la empuja al intentar pararle y huye en un coche. La empleada tiene un golpe en la muñeca. Aviso a Guardia Civil con descripción, vehículo y huida, y al 1-1-2 por la lesión.",
+    "origen": "llamada",
+    "abonadoId": "ABN-1008",
+    "minuto": 28,
+    "senal": {
+      "codigo": "E120",
+      "evento": "Pulsador de atraco / pánico (caja)",
+      "zona": "Z02"
+    },
+    "secuencia": [
+      {
+        "seg": -20,
+        "zona": "Z02",
+        "evento": "Pulsador de atraco línea de cajas · ALARMA"
+      },
+      {
+        "seg": 0,
+        "zona": "—",
+        "evento": "Llamada entrante desde la instalación"
+      }
+    ],
+    "video": "Cámara sala de ventas (hace 1 min): un hombre con gorra y chaqueta oscura empuja a la cajera, que cae hacia atrás, y sale corriendo con una bolsa por la puerta principal.",
+    "videoClip": "A28",
+    "llamada": {
+      "quien": "Yaiza, cajera del supermercado",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "(Alterada) ¡Oiga! Nos acaban de robar, un hombre me ha empujado…",
+      "respuestas": {
+        "identificarse": "Soy Yaiza, la cajera del Supermercado El Guanche.",
+        "direccion": "Carretera General del Norte, kilómetro 12, en Tacoronte.",
+        "que_ocurre": "Un hombre ha cogido una bolsa con botellas de whisky, le he dicho que pagara y me ha empujado. Se ha ido corriendo.",
+        "autores": "Un hombre de unos cuarenta años, gorra negra, chaqueta oscura. Se ha montado en un coche blanco, pequeño, dirección Santa Úrsula. No vi la matrícula entera, empezaba por 4.",
+        "armas": "No, no he visto ningún arma. Me empujó con las manos.",
+        "heridos": "Me duele mucho la muñeca, me caí encima de ella. Está un poco hinchada.",
+        "consciente": "Sí, sí, estoy bien, solo es la muñeca.",
+        "personas": "Estamos el encargado, otra compañera y dos clientes. Nadie más herido.",
+        "seguridad": "Vale, no salgo. Estoy con mi compañera.",
+        "mantener_linea": "Vale, aquí sigo.",
+        "aviso_dado": "Vale, gracias, que vengan pronto.",
+        "en_lugar": "Sí, estoy en la caja.",
+        "error_usuario": "¡No, no! Ha sido un robo de verdad.",
+        "acceso": "La tienda está abierta, estamos en horario."
+      },
+      "evolucion": [
+        {
+          "seg": 35,
+          "texto": "El encargado dice que el coche era un Seat blanco."
+        },
+        {
+          "seg": 80,
+          "texto": "La muñeca se me está hinchando más…"
+        }
+      ],
+      "porDefecto": "Perdone, estoy nerviosa… ¿qué me decía?"
+    },
+    "llavero": "Nieves González: recibido, voy para el supermercado.",
+    "eval": {
+      "tipo": "atraco_panico",
+      "preguntasClave": [
+        "direccion",
+        "autores",
+        "armas",
+        "heridos",
+        "seguridad"
+      ],
+      "verificacion": {
+        "algunaDe": [
+          "llamada",
+          "video"
+        ],
+        "obligatorias": [],
+        "prohibidas": []
+      },
+      "avisos": {
+        "obligatorios": [
+          "fcse",
+          "cecoes112"
+        ],
+        "prohibidos": []
+      },
+      "datosAviso": [
+        "direccion",
+        "tipo_senal",
+        "autores",
+        "personas"
+      ],
+      "solucion": "Tranquilizar y confirmar la dirección. Recabar descripción del autor, ausencia de armas, vehículo y dirección de huida, y la lesión. Indicar que no salgan tras el autor. Aviso inmediato a Guardia Civil con los datos de huida y al 1-1-2 por la lesión de la muñeca. Cerrar como atraco/pánico real."
+    }
+  },
+  {
+    "id": "A29",
+    "titulo": "Llamada para anular la alarma con palabra de coacción en joyería",
+    "docente": "La titular llama para anular un salto de alarma al abrir la joyería, pero da la PALABRA DE COACCIÓN. El vídeo muestra a un hombre pegado a ella. No anular, no alertar al interlocutor y aviso inmediato a Policía Nacional indicando coacción.",
+    "origen": "llamada",
+    "abonadoId": "ABN-1001",
+    "minuto": 29,
+    "senal": {
+      "codigo": "E130",
+      "evento": "Alarma de intrusión (apertura fuera de horario)",
+      "zona": "Z01"
+    },
+    "secuencia": [
+      {
+        "seg": -60,
+        "zona": "Z01",
+        "evento": "Apertura puerta principal fuera de horario · ALARMA"
+      },
+      {
+        "seg": 0,
+        "zona": "—",
+        "evento": "Llamada entrante de la titular"
+      }
+    ],
+    "video": "Cámara zona de venta: la titular abre la caja fuerte; un hombre con gorra y gafas de sol permanece pegado a su espalda, con la mano en el bolsillo de la chaqueta.",
+    "videoClip": "A29",
+    "audio": "",
+    "llamada": {
+      "quien": "Marta Suárez Ojeda (titular)",
+      "contesta": true,
+      "clave": "coaccion",
+      "inicial": "(Voz forzadamente tranquila) Hola, buenas… les llamo de la Joyería Atlántida, ha saltado la alarma sin querer, ¿la pueden anular?",
+      "respuestas": {
+        "identificarse": "Soy Marta Suárez, la dueña de la joyería.",
+        "direccion": "Calle Mayor de Triana, 74, en Las Palmas.",
+        "que_ocurre": "Nada, nada, que he venido antes a hacer inventario y me he liado con el código. Anúlenla, por favor.",
+        "en_lugar": "Sí, estoy dentro, en la tienda.",
+        "error_usuario": "Sí, sí… ha sido un error mío. Todo bien.",
+        "personas": "No… estoy sola. Sola.",
+        "autores": "No, aquí no hay nadie… todo normal.",
+        "armas": "No… no, ¿por qué?",
+        "heridos": "No, estoy bien.",
+        "acceso": "No hace falta que venga nadie, de verdad. Ya lo tengo controlado.",
+        "aviso_dado": "Vale… gracias.",
+        "mantener_linea": "Eh… vale."
+      },
+      "evolucion": [
+        {
+          "seg": 40,
+          "texto": "¿Ya la han anulado? Es que tengo prisa…"
+        }
+      ],
+      "porDefecto": "Todo bien, de verdad. Anúlenla, por favor."
+    },
+    "llavero": "Pedro Hernández: recibido. No me acerco hasta que llegue la policía.",
+    "eval": {
+      "tipo": "coaccion",
+      "preguntasClave": [
+        "palabra_clave"
+      ],
+      "verificacion": {
+        "algunaDe": [
+          "llamada",
+          "video"
+        ],
+        "obligatorias": [
+          "video"
+        ],
+        "prohibidas": []
+      },
+      "avisos": {
+        "obligatorios": [
+          "fcse"
+        ],
+        "prohibidos": []
+      },
+      "datosAviso": [
+        "direccion",
+        "tipo_senal",
+        "verificacion",
+        "autores"
+      ],
+      "solucion": "Pedir la palabra clave y detectar que es la de COACCIÓN. Mantener un tono normal, no anular la alarma y no alertar al interlocutor. Verificar por vídeo sin que se note (hombre pegado a la titular). Aviso inmediato a Policía Nacional indicando coacción y lo observado en la cámara. Cerrar como coacción."
+    }
+  },
+  {
+    "id": "A30",
+    "titulo": "Conserje encuentra el colegio forzado al abrir",
+    "docente": "El conserje llama al llegar a las 07:30: puerta lateral forzada y cristal roto. No sabe si queda alguien dentro. El vídeo de hace 20 min muestra a dos personas saltando la valla con mochilas. No entrar; aviso a Guardia Civil.",
+    "origen": "llamada",
+    "abonadoId": "ABN-1014",
+    "minuto": 30,
+    "senal": {
+      "codigo": "E130",
+      "evento": "Alarma de intrusión",
+      "zona": "Z02"
+    },
+    "secuencia": [
+      {
+        "seg": -1260,
+        "zona": "Z02",
+        "evento": "Barrera de infrarrojos patio · ALARMA (sin comunicación posterior)"
+      },
+      {
+        "seg": 0,
+        "zona": "—",
+        "evento": "Llamada entrante del conserje"
+      }
+    ],
+    "video": "Cámara patio (07:10): dos personas con capucha y mochila saltan la valla del patio y se dirigen al pasillo de aulas. No se las ve salir.",
+    "videoClip": "A30",
+    "llamada": {
+      "quien": "Juan Manuel, conserje del colegio",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "Buenos días, llamo del Colegio Garajonay. Acabo de llegar y la puerta lateral está reventada…",
+      "respuestas": {
+        "identificarse": "Soy Juan Manuel, el conserje del Colegio Garajonay.",
+        "direccion": "Calle Real, 61, en San Sebastián de La Gomera.",
+        "que_ocurre": "La puerta lateral está forzada y hay un cristal roto del pasillo de aulas. Hay papeles por el suelo.",
+        "en_lugar": "Estoy en la puerta, fuera. No he entrado.",
+        "personas": "No lo sé, no he entrado. A esta hora no debería haber nadie.",
+        "autores": "No he visto a nadie, pero no sé si siguen dentro.",
+        "armas": "No he visto nada.",
+        "heridos": "No, yo estoy bien.",
+        "error_usuario": "No, no, esto es un robo, está todo forzado.",
+        "seguridad": "Vale, no entro. Me quedo en la calle.",
+        "acceso": "Yo tengo las llaves, puedo abrirles la puerta principal.",
+        "mantener_linea": "Vale, sigo al teléfono.",
+        "aviso_dado": "Perfecto, aquí les espero."
+      },
+      "evolucion": [
+        {
+          "seg": 45,
+          "texto": "Me ha parecido oír un ruido dentro… no sé."
+        },
+        {
+          "seg": 90,
+          "texto": "Están empezando a llegar profesores, ¿qué les digo?"
+        }
+      ],
+      "porDefecto": "Perdone, no le he entendido bien."
+    },
+    "llavero": "Conserje: estoy en el lugar con las llaves.",
+    "eval": {
+      "tipo": "intrusion_real",
+      "preguntasClave": [
+        "direccion",
+        "personas",
+        "autores",
+        "seguridad"
+      ],
+      "verificacion": {
+        "algunaDe": [
+          "llamada",
+          "video"
+        ],
+        "obligatorias": [
+          "video"
+        ],
+        "prohibidas": []
+      },
+      "avisos": {
+        "obligatorios": [
+          "fcse"
+        ],
+        "prohibidos": []
+      },
+      "datosAviso": [
+        "direccion",
+        "tipo_senal",
+        "verificacion",
+        "autores"
+      ],
+      "solucion": "Confirmar dirección y que el conserje no ha entrado. Indicarle que no entre ni deje entrar a nadie y que no toque nada. Verificar por vídeo: dos personas entraron y no se las ve salir (posibles autores dentro). Aviso inmediato a Guardia Civil con la verificación. Cerrar como intrusión real."
+    }
+  },
+  {
+    "id": "A31",
+    "titulo": "Accidente laboral en el taller del concesionario",
+    "docente": "Un mecánico llama: un vehículo se ha deslizado del elevador y ha atrapado la pierna de un compañero, que está consciente. Aviso inmediato al 1-1-2 con dirección, acceso y estado; indicaciones de seguridad.",
+    "origen": "llamada",
+    "abonadoId": "ABN-1012",
+    "minuto": 31,
+    "senal": {
+      "codigo": "E100",
+      "evento": "Pulsador de emergencia (médica) · taller",
+      "zona": "Z03"
+    },
+    "secuencia": [
+      {
+        "seg": -10,
+        "zona": "Z03",
+        "evento": "Pulsador de emergencia taller · ALARMA MÉDICA"
+      },
+      {
+        "seg": 0,
+        "zona": "—",
+        "evento": "Llamada entrante desde la instalación"
+      }
+    ],
+    "video": "Cámara taller: un turismo inclinado sobre un elevador; un operario en el suelo junto a la rueda y otro arrodillado a su lado haciendo señas.",
+    "videoClip": "A31",
+    "llamada": {
+      "quien": "Aday, mecánico del concesionario",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "¡Necesito ayuda! ¡Un coche se ha caído del elevador encima de un compañero!",
+      "respuestas": {
+        "identificarse": "Soy Aday, mecánico de Motor Majorero.",
+        "direccion": "Calle Lucha Canaria, 54, polígono Risco Prieto, en Puerto del Rosario.",
+        "que_ocurre": "El coche se ha resbalado del elevador y le ha pillado la pierna a mi compañero Tino.",
+        "heridos": "Sí, Tino tiene la pierna atrapada debajo de la rueda, se queja mucho.",
+        "consciente": "Sí, está consciente y habla, respira bien, pero tiene mucho dolor.",
+        "personas": "Estamos Tino, yo y el jefe de taller.",
+        "acceso": "La puerta grande del taller está abierta, que entren por ahí.",
+        "seguridad": "Vale, no tocamos el coche y nos apartamos del elevador.",
+        "mantener_linea": "Sí, no cuelgo.",
+        "aviso_dado": "Gracias, que vengan ya, por favor.",
+        "en_lugar": "Sí, estoy a su lado.",
+        "error_usuario": "¡No! Es de verdad, venga.",
+        "autores": "No, no, ha sido un accidente.",
+        "armas": "¿Qué? No, es un accidente con un coche."
+      },
+      "evolucion": [
+        {
+          "seg": 35,
+          "texto": "Dice que no siente bien el pie…"
+        },
+        {
+          "seg": 80,
+          "texto": "El jefe de taller ha cortado la corriente del elevador."
+        }
+      ],
+      "porDefecto": "¡Perdone, repítamelo, estoy muy nervioso!"
+    },
+    "llavero": "Servicio de acuda: recibido, nos desplazamos.",
+    "eval": {
+      "tipo": "sanitaria",
+      "preguntasClave": [
+        "direccion",
+        "heridos",
+        "consciente",
+        "acceso",
+        "seguridad"
+      ],
+      "verificacion": {
+        "algunaDe": [
+          "llamada",
+          "video"
+        ],
+        "obligatorias": [],
+        "prohibidas": []
+      },
+      "avisos": {
+        "obligatorios": [
+          "cecoes112"
+        ],
+        "prohibidos": [
+          "fcse"
+        ]
+      },
+      "datosAviso": [
+        "direccion",
+        "personas",
+        "contacto"
+      ],
+      "solucion": "Confirmar dirección y acceso, estado del herido (consciente, respira, pierna atrapada). Indicar que no intenten mover el vehículo ni al herido y que corten la corriente del elevador. Aviso inmediato al 1-1-2 con dirección, acceso por la puerta del taller y estado. Mantener la línea. Cerrar como emergencia sanitaria."
+    }
+  },
+  {
+    "id": "A32",
+    "titulo": "El titular llega a casa y encuentra la puerta forzada",
+    "docente": "El titular llama desde la calle: puerta de la vivienda forzada al volver; la alarma estaba desconectada porque olvidó conectarla. Sin vídeo ni audio: verificación por la llamada. Indicarle que no entre; aviso a Guardia Civil.",
+    "origen": "llamada",
+    "abonadoId": "ABN-1002",
+    "minuto": 32,
+    "senal": {
+      "codigo": "E000",
+      "evento": "Llamada del titular · sistema desconectado",
+      "zona": "—"
+    },
+    "secuencia": [
+      {
+        "seg": -7200,
+        "zona": "—",
+        "evento": "Desconexión por el usuario (sin conexión posterior)"
+      },
+      {
+        "seg": 0,
+        "zona": "—",
+        "evento": "Llamada entrante del titular"
+      }
+    ],
+    "llamada": {
+      "quien": "José Rivero Santana (titular)",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "Buenas tardes, soy cliente vuestro… acabo de llegar a casa y la puerta está forzada.",
+      "respuestas": {
+        "identificarse": "Soy José Rivero, el titular.",
+        "direccion": "Calle Los Almendros, 12, en Vecindario, Santa Lucía de Tirajana.",
+        "que_ocurre": "La cerradura está reventada y la puerta medio abierta. Esta mañana se me olvidó conectar la alarma.",
+        "en_lugar": "Estoy en la acera, delante de la casa. No he entrado.",
+        "personas": "No lo sé. Mi mujer y mis hijos están en casa de mis suegros.",
+        "autores": "No he visto a nadie, pero hay una luz encendida en el pasillo que yo no dejé.",
+        "armas": "No he visto nada.",
+        "heridos": "No, estoy bien.",
+        "error_usuario": "No, la alarma no saltó porque la dejé sin conectar, pero la puerta está forzada de verdad.",
+        "seguridad": "Vale, no entro. Me quedo en el coche.",
+        "acceso": "Tengo llaves, pero la puerta está abierta.",
+        "mantener_linea": "Vale, no cuelgo.",
+        "aviso_dado": "Gracias, aquí espero."
+      },
+      "evolucion": [
+        {
+          "seg": 50,
+          "texto": "La luz del pasillo se acaba de apagar…"
+        }
+      ],
+      "porDefecto": "Perdone, ¿cómo dice?"
+    },
+    "llavero": "Ana Rivero: recibido, voy para allá.",
+    "eval": {
+      "tipo": "intrusion_real",
+      "preguntasClave": [
+        "direccion",
+        "en_lugar",
+        "personas",
+        "autores",
+        "seguridad"
+      ],
+      "verificacion": {
+        "algunaDe": [
+          "llamada"
+        ],
+        "obligatorias": [],
+        "prohibidas": []
+      },
+      "avisos": {
+        "obligatorios": [
+          "fcse"
+        ],
+        "prohibidos": []
+      },
+      "datosAviso": [
+        "direccion",
+        "tipo_senal",
+        "verificacion",
+        "personas"
+      ],
+      "solucion": "Confirmar dirección y que está fuera de la vivienda. Indicarle que no entre, que se aleje y no toque nada. Datos: puerta forzada, luz que se enciende y apaga (posible autor dentro). Aviso inmediato a Guardia Civil. Cerrar como intrusión real."
+    }
+  },
+  {
+    "id": "A33",
+    "titulo": "Pulsador de emergencia pulsado por un niño en el hotel",
+    "docente": "Salta el pulsador de emergencia de recepción y la recepcionista llama: un niño lo ha pulsado jugando. El vídeo lo confirma. Falsa alarma por error de usuario: no movilizar al 1-1-2 ni a las FCSE.",
+    "origen": "llamada",
+    "abonadoId": "ABN-1011",
+    "minuto": 33,
+    "senal": {
+      "codigo": "E100",
+      "evento": "Pulsador de emergencia recepción",
+      "zona": "Z09"
+    },
+    "secuencia": [
+      {
+        "seg": -15,
+        "zona": "Z09",
+        "evento": "Pulsador de emergencia recepción · ALARMA"
+      },
+      {
+        "seg": 0,
+        "zona": "—",
+        "evento": "Llamada entrante desde recepción"
+      }
+    ],
+    "video": "Cámara hall: un niño de unos seis años se acerca al mostrador, pulsa el botón de la pared y sale corriendo hacia su madre, que le regaña.",
+    "videoClip": "A33",
+    "llamada": {
+      "quien": "Recepcionista del hotel (jefa de turno)",
+      "contesta": true,
+      "clave": "correcta",
+      "inicial": "Hola, buenas, llamo del Hotel Playa Teguise. Ha saltado el pulsador de recepción, pero creo que ha sido un niño…",
+      "respuestas": {
+        "identificarse": "Soy Elena, jefa de turno de recepción del Hotel Playa Teguise.",
+        "direccion": "Avenida de las Islas Canarias, 9, en Costa Teguise.",
+        "que_ocurre": "Un niño de un cliente estaba jugando en el hall y ha pulsado el botón rojo de la pared.",
+        "error_usuario": "Sí, ha sido sin querer, un niño jugando. Lo he visto yo.",
+        "heridos": "No, no hay nadie herido, está todo tranquilo.",
+        "consciente": "Todo el mundo está bien, no hay ninguna emergencia.",
+        "personas": "Hay clientes en el hall, pero todo normal.",
+        "en_lugar": "Sí, estoy en recepción.",
+        "autores": "No, no, es un niño jugando.",
+        "armas": "No, no, nada de eso.",
+        "acceso": "No hace falta que venga nadie.",
+        "aviso_dado": "Perfecto, gracias.",
+        "despedida": "Gracias, perdonen las molestias."
+      },
+      "porDefecto": "Todo bien, de verdad, ha sido el niño."
+    },
+    "eval": {
+      "tipo": "falsa_error_usuario",
+      "preguntasClave": [
+        "error_usuario",
+        "heridos"
+      ],
+      "verificacion": {
+        "algunaDe": [
+          "llamada",
+          "video"
+        ],
+        "obligatorias": [],
+        "prohibidas": []
+      },
+      "avisos": {
+        "obligatorios": [],
+        "prohibidos": [
+          "fcse",
+          "cecoes112"
+        ]
+      },
+      "datosAviso": [],
+      "solucion": "Pedir la palabra clave o confirmar la identidad, comprobar que fue un error (niño jugando) y que no hay heridos ni emergencia. Se puede confirmar por vídeo. No movilizar al 1-1-2 ni a las FCSE. Registrar y cerrar como falsa alarma por error de usuario."
+    }
   }
 ]

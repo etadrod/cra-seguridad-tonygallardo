@@ -126,6 +126,11 @@
       if (card && e.target === card && !card.classList.contains('libre')) { e.preventDefault(); observar(Number(card.dataset.np)); }
     });
     $('#d-cola').addEventListener('click', (e) => { const li = e.target.closest('[data-obs-p]'); if (li) observar(Number(li.dataset.obsP)); });
+    $('#d-eliminar').addEventListener('click', async () => {
+      if (!confirm('⚠ ELIMINAR INCIDENCIAS CERRADAS\n\nSe borrarán todas las incidencias cerradas y sus notas, también del informe del alumnado. Descarga antes los informes si los necesitas. No se puede deshacer.\n\n¿Eliminar?')) return;
+      const r = await emitir('doc_eliminar_cerradas');
+      res(r, `Incidencias eliminadas: ${r.borradas || 0}.`);
+    });
     $('#d-cerradas').addEventListener('click', async (e) => {
       const b = e.target.closest('[data-ver]');
       if (!b) return;
