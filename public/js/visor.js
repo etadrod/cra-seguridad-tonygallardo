@@ -54,6 +54,8 @@ const Visor = (function () {
     const mp4 = v.canPlayType('video/mp4; codecs="avc1.640028"');
     v.src = `video/camaras/${id}.${mp4 ? 'mp4' : 'webm'}`;
     box.hidden = false;
+    // Siempre aparece centrado en la pantalla (luego se puede arrastrar)
+    Object.assign(box.style, { left: `${Math.max(8, (innerWidth - box.offsetWidth) / 2)}px`, top: `${Math.max(8, (innerHeight - box.offsetHeight) / 2)}px`, right: 'auto', bottom: 'auto' });
     v.currentTime = 0;
     v.play().catch(() => pintar());
     setTimeout(() => play.focus(), 50);

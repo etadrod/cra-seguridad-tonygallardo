@@ -1,20 +1,20 @@
 # Session Handoff
 
-- **Generated:** 2026-10-25T18:39:01.967Z
+- **Generated:** 2026-10-25T18:57:58.336Z
 - **Session ID:** 11a76c3b-683c-5d5e-9a97-ef11a8b19daf
 - **End reason:** other
 - **Working directory:** /home/claude/cra
 - **Git branch:** main
-- **Last commit:** 287ac51 Panel docente: botón Reiniciar que libera todos los puestos
-- **Prompts this session:** 8
+- **Last commit:** 965e186 Evaluación: cada alumno avanza a su ritmo; el siguiente supuesto entra 5 s después de cerrar el anterior a tiempo (o al cumplirse el intervalo)
+- **Prompts this session:** 10
 
 ## Session goal
 
 **Opened with:** <system-reminder>The user's timezone is Atlantic/Canary (UTC+01:00). Message sent at Mon 2026-10-19 14:28 local time.</system-reminder>
 En el horario de Control del ejercicio aparece el contador 2991:43, pasalo a dias, horas y minutos
 
-**Ended with:** <system-reminder>The user's timezone is Atlantic/Canary (UTC+00:00). Message sent at Sun 2026-10-25 18:34 local time.</system-reminder>
-en el panel docente incluye un boton de Reiniciar (al ado de Pausa) que libere todos los puestos.
+**Ended with:** <system-reminder>The user's timezone is Atlantic/Canary (UTC+00:00). Message sent at Sun 2026-10-25 18:51 local time.</system-reminder>
+en el modo Evaluación, si el alumno terminó un incidente antes del tiempo máximo, lanzar el siguiente 5 segundos despues de haber finalizado la anterior.
 
 ## Decisions
 
@@ -38,6 +38,7 @@ _No NOTE: lines tagged this session_
 - `/home/claude/cra/public/js/docente.js`
 - `/tmp/claude-0/-home-claude/11a76c3b-683c-5d5e-9a97-ef11a8b19daf/scratchpad/90-cierre.png`
 - `/tmp/claude-0/-home-claude/11a76c3b-683c-5d5e-9a97-ef11a8b19daf/scratchpad/91-correccion.png`
+- `/tmp/claude-0/-home-claude/11a76c3b-683c-5d5e-9a97-ef11a8b19daf/scratchpad/92-llamada.png`
 
 ## Working tree at session end
 
