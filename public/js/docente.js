@@ -36,7 +36,7 @@
         const iv = Number($('#d-intervalo').value) || 240;
         if (!confirm(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), iguales para los ${libres} alumno(s) conectados. Cada uno avanza a su ritmo: el siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${iv} s. Duración máxima: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
       }
-      res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 240 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas ni la guía hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
+      res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 240 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
     });
     $('#d-finalizar').addEventListener('click', async () => {
       if (!confirm('⚠ FIN DE LA ACTIVIDAD\n\nSe detendrá todo el ejercicio en todos los puestos: no entrarán más señales, las incidencias abiertas o en cola se cerrarán y evaluarán tal como estén y el alumnado no podrá seguir atendiendo.\n\n¿Finalizar la actividad?')) return;
@@ -164,7 +164,7 @@
     $('#d-salir').onclick = () => { try { sessionStorage.removeItem('cra-pin'); } catch { /* */ } location.reload(); };
     const de = $('#d-estado');
     de.className = `estado-actividad ${a.estado === 'en_curso' ? (a.modo === 'test' ? 'test' : 'en_curso') : ''}`;
-    de.textContent = a.pausadaDesde ? `⏸ En pausa desde las ${hora(a.pausadaDesde)}. Tiempos, cola y supuestos programados detenidos.` : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST: bots en puestos libres y señales automáticas. Los alumnos conectados también pueden atender.' : (a.tipo === 'online' ? 'MODO ONLINE activo: cada alumno que entra en un puesto recibe los supuestos S01-S10 en orden aleatorio, uno tras otro, a su ritmo. Pulsa «Fin actividad» para pararlo y elegir otro tipo.' : `${a.tipo === 'evaluacion' ? 'EVALUACIÓN' : 'PRÁCTICA'} en curso. Los supuestos marcados entran en su minuto.${a.tipo === 'evaluacion' ? ' El alumnado no ve notas ni la guía hasta que la finalices.' : ''}`))
+    de.textContent = a.pausadaDesde ? `⏸ En pausa desde las ${hora(a.pausadaDesde)}. Tiempos, cola y supuestos programados detenidos.` : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST: bots en puestos libres y señales automáticas. Los alumnos conectados también pueden atender.' : (a.tipo === 'online' ? 'MODO ONLINE activo: cada alumno que entra en un puesto recibe los supuestos S01-S10 en orden aleatorio, uno tras otro, a su ritmo. Pulsa «Fin actividad» para pararlo y elegir otro tipo.' : `${a.tipo === 'evaluacion' ? 'EVALUACIÓN' : 'PRÁCTICA'} en curso. Los supuestos marcados entran en su minuto.${a.tipo === 'evaluacion' ? ' El alumnado no ve notas hasta que la finalices.' : ''}`))
       : a.estado === 'finalizada' ? `Finalizada a las ${hora(a.fin)}. Descarga los informes.` : 'En espera de inicio.';
     const enCurso = a.estado === 'en_curso';
     const enOnline = enCurso && a.modo === 'actividad' && a.tipo === 'online';

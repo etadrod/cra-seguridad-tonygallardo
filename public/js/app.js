@@ -281,8 +281,8 @@ function verRubrica() {
     <h3 style="margin-top:14px">Online, práctica y evaluación</h3>
     <ul class="mejoras">
       <li><strong>Online:</strong> ${tp} s por incidencia. Al entrar en tu puesto recibes los supuestos de práctica en orden aleatorio, uno tras otro, a tu ritmo, con corrección al cerrar cada uno.</li>
-      <li><strong>Práctica:</strong> ${tp} s por incidencia. Ves la corrección y la nota al cerrar cada una y tienes la guía del procedimiento.</li>
-      <li><strong>Evaluación:</strong> ${te} s por incidencia. Todos recibís los mismos casos, uno tras otro. No ves notas ni la guía hasta que el docente finalice; después puedes descargar tu informe.</li>
+      <li><strong>Práctica:</strong> ${tp} s por incidencia. Ves la corrección y la nota al cerrar cada una.</li>
+      <li><strong>Evaluación:</strong> ${te} s por incidencia. Todos recibís los mismos casos, uno tras otro. No ves notas hasta que el docente finalice; después puedes descargar tu informe.</li>
     </ul>
     <h3 style="margin-top:14px">Criterios de evaluación del RA4 (RD 570/2023)</h3>
     <div class="tabla-env"><table class="tabla compacta"><tbody>${Object.entries(R.ce).map(([k, v]) => `<tr><td><strong>${k}</strong></td><td>${esc(v)}</td></tr>`).join('')}</tbody></table></div>
