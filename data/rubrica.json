@@ -26,7 +26,7 @@
       "id": "recepcion",
       "nombre": "Recepción e identificación (señal, zona, interlocutor, palabra clave)",
       "ce": "a, c",
-      "max": 1.5,
+      "max": 1.25,
       "que": "Señales: consultar «Zonas activadas». Llamadas: identificar al interlocutor y la dirección. En ambos casos, hacer las preguntas clave del caso (palabra clave, qué ocurre, heridos, acceso…).",
       "niveles": [
         "Señal/interlocutor identificados y todas las preguntas clave",
@@ -50,7 +50,7 @@
       "id": "clasificacion",
       "nombre": "Clasificación: alarma real / falsa alarma / técnica",
       "ce": "e",
-      "max": 1.5,
+      "max": 1.25,
       "que": "Elegir la clasificación correcta al cerrar: alarma real (intrusión, atraco/pánico, coacción, sabotaje), emergencia (sanitaria, incendio), incidencia técnica o falsa alarma (error de usuario, causa técnica/ambiental, causa desconocida).",
       "niveles": [
         "Clasificación exacta",
@@ -72,14 +72,14 @@
     },
     {
       "id": "registro",
-      "nombre": "Registro y cierre de la incidencia",
-      "ce": "d",
-      "max": 0.5,
-      "que": "Escribir en el registro qué ocurrió, qué verificaste, a quién avisaste y cuándo (mínimo 30 caracteres).",
+      "nombre": "Libro-registro de alarmas, documentos de control y cierre",
+      "ce": "d, e",
+      "max": 1,
+      "que": "Anotar en el libro-registro de alarmas qué ocurrió, qué verificaste, a quién avisaste y cuándo (mínimo 30 caracteres) y marcar al cerrar los documentos de control que procedan: informe explicativo si una alarma real no se comunicó o se comunicó con retraso (más de 120 s desde que atiendes, umbral del simulador) y requerimiento al titular si con esta suma 2 o más falsas alarmas en un mes (la ficha indica las anteriores).",
       "niveles": [
-        "Registro completo (≥ 30 caracteres)",
-        "Registro breve",
-        "Sin registro"
+        "Anotación completa y documentos de control correctos",
+        "Anotación breve o algún documento de control omitido o marcado sin proceder",
+        "Sin anotación ni documentos de control"
       ]
     }
   ],
@@ -87,7 +87,8 @@
     "limiteSeg": 240,
     "excelenteHastaSeg": 96,
     "nota": "Tiempo objetivo: 240 s en práctica y 190 s en evaluación. Verde hasta 140 s: 3 puntos (máximo). A partir de 140 s la puntuación baja de forma progresiva hasta 1 punto al llegar al tiempo objetivo (ámbar en la primera mitad de ese tramo, rojo en la segunda). Fuera de tiempo: 0 puntos (la comunicación sigue hasta el cierre). Los puntos de tiempo se multiplican por el porcentaje obtenido en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa.",
-    "verdeSeg": 140
+    "verdeSeg": 140,
+    "retrasoAvisoSeg": 120
   },
   "niveles": [
     {
@@ -182,7 +183,12 @@
     "Procedimiento contraindicado (p. ej., llamar a la instalación en un atraco silencioso o una coacción) → resta en Verificación.",
     "Aviso improcedente (FCSE o 1-1-2 en una falsa alarma o incidencia técnica verificada) → resta en Respuesta y transmisión.",
     "Avisar a un cuerpo policial distinto del competente según la ficha → resta en Respuesta y transmisión.",
-    "No detectar la palabra de COACCIÓN o anular la alarma en ese caso → Clasificación errónea."
+    "No detectar la palabra de COACCIÓN o anular la alarma en ese caso → Clasificación errónea.",
+    "Documento de control omitido o marcado sin proceder (informe explicativo, requerimiento por falsas alarmas) → resta en Libro-registro y cierre."
   ],
-  "notaFinal": "Cada incidencia se puntúa sobre 10 (suma de los 6 criterios). Tu nota final es la media de todas tus incidencias. Niveles por criterio: Excelente ≥ 85 % · Adecuado ≥ 50 % · Insuficiente < 50 %."
+  "notaFinal": "Cada incidencia se puntúa sobre 10 (suma de los 6 criterios). Tu nota final es la media de todas tus incidencias. Niveles por criterio: Excelente ≥ 85 % · Adecuado ≥ 50 % · Insuficiente < 50 %.",
+  "documentos": {
+    "informe": "Informe explicativo (alarma real no comunicada o comunicada con retraso · entrega en 10 días, art. 14.5 Orden INT/316/2011)",
+    "requerimiento": "Requerimiento al titular por reiteración de falsas alarmas (2 o más en un mes · subsanar en 72 h, art. 15.1 Orden INT/316/2011)"
+  }
 }

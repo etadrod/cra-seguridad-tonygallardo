@@ -40,7 +40,7 @@
       const r = await emitir('accion', { tipo: b.dataset.acc });
       if (r.error) return aviso(r.error, 'error');
       if (r.errorGrave) {
-        $('#w-obs').value = ''; $('#w-clasif').value = '';
+        $('#w-obs').value = ''; $('#w-clasif').value = ''; $$('input[name="w-doc"]').forEach((c) => { c.checked = false; });
         if (r.eval) mostrarCorreccion(r.eval);
         aviso('ERROR GRAVE: has colgado sin realizar ninguna gestión. La incidencia se ha cerrado con nota 0.', 'error');
       }
@@ -50,7 +50,8 @@
       const clasificacion = $('#w-clasif').value;
       if (!clasificacion) return aviso('Selecciona la clasificación de la incidencia.', 'error');
       const observaciones = $('#w-obs').value;
-      const r = await emitir('cerrar', { clasificacion, observaciones });
+      const documentos = $$('input[name="w-doc"]:checked').map((c) => c.value);
+      const r = await emitir('cerrar', { clasificacion, observaciones, documentos });
       if (r.error) return aviso(r.error, 'error');
       $('#w-obs').value = ''; $('#w-clasif').value = '';
       if (r.eval) mostrarCorreccion(r.eval);
@@ -276,6 +277,7 @@
           <dt>Horario</dt><dd>${esc(a.horario)}</dd>
           <dt>Sistema</dt><dd>${esc(a.grado)} · Vídeo: ${a.video ? 'sí' : 'no'} · Audio: ${a.audio ? 'sí' : 'no'}</dd>
           <dt>Cuerpo competente</dt><dd>${esc(a.cuerpoCompetente)} <small class="ayuda">[EDITABLE]</small></dd>
+          <dt>Falsas alarmas (últimos 30 días)</dt><dd${a.falsasUltimoMes ? ' style="color:#b45309;font-weight:700"' : ''}>${a.falsasUltimoMes || 0}</dd>
         </dl></div>
       <div class="ficha-bloque"><h3>Verificación de identidad</h3>
         <div class="claves"><div class="cl"><small>Palabra clave</small>${esc(a.palabraClave)}</div><div class="co"><small>Palabra de coacción</small>${esc(a.palabraCoaccion)}</div></div></div>
@@ -355,12 +357,14 @@
         <source src="video/tutorial-cra.mp4" type="video/mp4"><track kind="subtitles" srclang="es" label="Español" src="video/tutorial-cra.vtt">
       </video>
       <ol class="mejoras">
-        <li><strong>Recepción.</strong> Atiende la señal o la llamada. Lee el código, el evento y la zona.</li>
+        <li><strong>Recepción y registro.</strong> Atiende la señal o la llamada. Lee el código, el evento y la zona. Todo lo que hagas queda en el <strong>libro-registro de alarmas</strong> (art. 6.3 Orden INT/316/2011).</li>
         <li><strong>Identificación.</strong> Consulta la ficha del abonado y pulsa <em>Zonas activadas</em>: verás qué detectores han saltado, a qué hora y en qué orden. Si hablas con alguien: identifica al interlocutor y pide la <strong>palabra clave</strong>. Compárala con la palabra de <strong>coacción</strong>.</li>
         <li><strong>Verificación.</strong> Según los medios del abonado: <em>secuencial</em> (si saltan varios detectores distintos seguidos, p. ej. puerta → pasillo → salón, es indicio de que alguien se mueve dentro; si salta uno solo, no basta), vídeo, audio o verificación personal (llamada al titular o vigilante in situ).</li>
         <li><strong>Decisión.</strong> ¿Alarma real, falsa alarma o incidencia técnica? No movilices recursos públicos sin verificación, salvo riesgo para las personas.</li>
         <li><strong>Transmisión.</strong> Alarma real: aviso inmediato a la FCSE competente con dirección, tipo de señal, verificación y datos de autores o personas. Emergencias sanitarias o incendio: 1-1-2. Activa el servicio de acuda (custodia de llaves) cuando haga falta acceder a la instalación.</li>
-        <li><strong>Registro y cierre.</strong> Clasifica y anota qué ocurrió, qué verificaste, a quién avisaste y cuándo.</li>
+        <li><strong>Seguimiento.</strong> Mantén el contacto con las FCSE o el 1-1-2 mientras intervienen y anota lo que te comuniquen.</li>
+        <li><strong>Libro-registro y cierre.</strong> Clasifica y anota en el libro-registro qué ocurrió, qué verificaste, a quién avisaste y cuándo.</li>
+        <li><strong>Control posterior.</strong> Marca el <em>informe explicativo</em> si una alarma real no se comunicó o se comunicó con retraso (más de 120 s desde que atiendes): se entrega al servicio policial y al titular en 10 días (art. 14.5). Marca el <em>requerimiento al titular</em> si es una falsa alarma y la ficha ya muestra otra en el último mes (2 o más en un mes: subsanar en 72 h, art. 15.1). Recuerda: 3 o más falsas en 60 días abren el procedimiento de falsas alarmas (art. 14.4).</li>
       </ol>
       <p class="ayuda">Tiempo objetivo desde que atiendes: 240 s en práctica y 190 s en evaluación. Si lo superas, la comunicación sigue abierta hasta que cierres. Referencias: Ley 5/2014, RD 2364/1994, Orden INT/316/2011 y normas UNE-EN (pendiente de verificación de artículos por el docente).</p>`);
   }

@@ -46,7 +46,8 @@
         "z": "Z09",
         "desc": "Pulsador de atraco mostrador"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1002",
@@ -87,7 +88,8 @@
         "z": "Z03",
         "desc": "Volumétrico pasillo dormitorios"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1003",
@@ -132,7 +134,8 @@
         "z": "Z09",
         "desc": "Pulsador de atraco mostrador"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1004",
@@ -185,7 +188,8 @@
         "z": "Z99",
         "desc": "Supervisión de alimentación (220 V)"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1005",
@@ -222,7 +226,8 @@
         "z": "Z08",
         "desc": "Pulsador colgante de ayuda (manos libres)"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1006",
@@ -267,7 +272,8 @@
         "z": "Z10",
         "desc": "Pulsador de atraco caja 2 (silencioso)"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1007",
@@ -308,7 +314,8 @@
         "z": "Z03",
         "desc": "Volumétrico salón"
       }
-    ]
+    ],
+    "falsasUltimoMes": 1
   },
   {
     "id": "ABN-1008",
@@ -357,7 +364,8 @@
         "z": "Z07",
         "desc": "Tamper caja de sirena exterior"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1009",
@@ -394,7 +402,8 @@
         "z": "Z09",
         "desc": "Pulsador de atraco caja (silencioso)"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1010",
@@ -435,7 +444,8 @@
         "z": "Z03",
         "desc": "Volumétrico despachos"
       }
-    ]
+    ],
+    "falsasUltimoMes": 1
   },
   {
     "id": "ABN-1011",
@@ -488,7 +498,8 @@
         "z": "Z05",
         "desc": "Detector termovelocimétrico cocina"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1012",
@@ -529,7 +540,8 @@
         "z": "Z03",
         "desc": "Volumétrico taller"
       }
-    ]
+    ],
+    "falsasUltimoMes": 1
   },
   {
     "id": "ABN-1013",
@@ -570,7 +582,8 @@
         "z": "Z09",
         "desc": "Pulsador de pánico dormitorio"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1014",
@@ -611,7 +624,8 @@
         "z": "Z03",
         "desc": "Volumétrico pasillo aulas"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   },
   {
     "id": "ABN-1015",
@@ -652,6 +666,7 @@
         "z": "Z03",
         "desc": "Sísmico pared del polvorín"
       }
-    ]
+    ],
+    "falsasUltimoMes": 0
   }
 ]

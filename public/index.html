@@ -6,7 +6,7 @@
 <title>CRA · Simulador</title>
 <meta name="description" content="Simulador de Central Receptora de Alarmas · CFGM Técnico en Seguridad · CIFP Tony Gallardo">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101a2b'/%3E%3Cpath d='M16 6l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10v-6z' fill='%23f5a524'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/app.css?v=22">
+<link rel="stylesheet" href="css/app.css?v=24">
 </head>
 <body>
 <a class="saltar" href="#principal">Saltar al contenido</a>
@@ -225,11 +225,15 @@
     </fieldset>
     <form id="w-f-cierre" class="cierre">
       <fieldset>
-        <legend>Clasificación, registro y cierre</legend>
+        <legend>Clasificación, libro-registro y cierre</legend>
         <label class="sr" for="w-clasif">Clasificación</label>
         <select id="w-clasif" required></select>
-        <label class="sr" for="w-obs">Observaciones para el registro</label>
-        <textarea id="w-obs" rows="2" maxlength="2000" placeholder="Registro: qué ocurrió, qué verificaste, a quién avisaste…"></textarea>
+        <label class="sr" for="w-obs">Anotación en el libro-registro de alarmas</label>
+        <textarea id="w-obs" rows="2" maxlength="2000" placeholder="Libro-registro de alarmas: qué ocurrió, qué verificaste, a quién avisaste y a qué hora…"></textarea>
+        <div class="docs-control" role="group" aria-label="Documentos de control">
+          <label title="Alarma real no comunicada o comunicada con retraso (más de 120 s). Entrega al servicio policial y al titular en 10 días (art. 14.5 Orden INT/316/2011)"><input type="checkbox" name="w-doc" value="informe"> 📝 Informe explicativo (retraso o no comunicación)</label>
+          <label title="Falsa alarma que suma 2 o más en un mes. El titular debe subsanar en 72 h (art. 15.1 Orden INT/316/2011)"><input type="checkbox" name="w-doc" value="requerimiento"> 📨 Requerimiento por falsas alarmas (≥ 2 en un mes)</label>
+        </div>
         <button class="btn verde" type="submit">Cerrar incidencia</button>
       </fieldset>
     </form>
@@ -264,10 +268,10 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/vendor/jspdf.js"></script>
 <script src="/vendor/autotable.js"></script>
-<script src="js/app.js?v=22"></script>
-<script src="js/pdf.js?v=22"></script>
-<script src="js/teleoperador.js?v=22"></script>
-<script src="js/docente.js?v=22"></script>
-<script src="js/visor.js?v=22"></script>
+<script src="js/app.js?v=24"></script>
+<script src="js/pdf.js?v=24"></script>
+<script src="js/teleoperador.js?v=24"></script>
+<script src="js/docente.js?v=24"></script>
+<script src="js/visor.js?v=24"></script>
 </body>
 </html>

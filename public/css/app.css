@@ -193,6 +193,9 @@ body.redimensionando .ventana * { cursor: inherit; }
 .cierre textarea { grid-column: 1; }
 .cierre button { grid-column: 2; align-self: stretch; }
 .cierre textarea { min-height: 44px; }
+.docs-control { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .88rem; }
+.docs-control label { display: flex; align-items: center; gap: 6px; cursor: pointer; width: 100%; }
+.docs-control input { width: auto; min-width: 0; margin: 0; flex: none; }
 
 /* ---- Docente ---- */
 .docente { display: grid; grid-template-columns: 360px 1fr; gap: 14px; align-items: start; }
