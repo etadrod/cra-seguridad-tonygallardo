@@ -131,7 +131,16 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     ok((await doc.pedir('doc_informes')).alumnos[0].incidencias[0].eval.limite === 190, 'evaluación: objetivo de 190 s');
     await hasta(() => a2.ultima.cola.length === 1 && a2.ultima.cola[0].abonado.includes('Teide'), 3000);
     ok(a1.ultima.cola.length === 1 && a1.ultima.cola[0].codigo === 'E130', 'evaluación: el segundo supuesto entra 5 s después de cerrar a tiempo, sin esperar al intervalo (y no al que no ha cerrado)');
-    await doc.pedir('doc_finalizar');
+    // Fin automático cuando todos han cerrado todos los supuestos
+    for (let t0 = Date.now(); Date.now() - t0 < 10000 && a2.ultima.actividad.estado !== 'finalizada';) {
+      for (const al of [a1, a2, tarde]) {
+        if (al.ultima.activa) await al.pedir('cerrar', { clasificacion: 'intrusion_real', observaciones: 'Cierre para comprobar el fin automático de la evaluación.' });
+        else if (al.ultima.cola.length) await al.pedir('coger', { id: al.ultima.cola[0].id });
+      }
+      await new Promise((r) => setTimeout(r, 100));
+    }
+    await hasta(() => a2.ultima.actividad.estado === 'finalizada', 8000);
+    ok(true, 'evaluación: termina sola cuando todos han cerrado todos los supuestos');
     await hasta(() => a2.ultima.historial.length && a2.ultima.historial[0].nota !== null);
     ok(!(await a2.pedir('mi_informe')).error, 'al finalizar la evaluación ya hay nota e informe');
     console.log('OK flujo');

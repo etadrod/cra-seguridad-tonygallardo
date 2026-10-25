@@ -108,6 +108,7 @@ io.on('connection', (socket) => {
 });
 
 // Avisos inmediatos de señal entrante (sonido en los puestos)
+sala.ev.on('fin_auto', () => io.emit('aviso_sistema', { texto: 'Evaluación finalizada: se han atendido todos los supuestos. Ya puedes ver tu nota y descargar tu informe.' }));
 sala.ev.on('senal_nueva', ({ cola }) => {
   if (cola === 'comun') io.emit('senal_nueva');
   else for (const [id, a] of Object.entries(sala.S.alumnos)) if (a.puesto === cola && !a.esBot) io.to(`alumno:${id}`).emit('senal_nueva');
