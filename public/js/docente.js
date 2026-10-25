@@ -34,7 +34,7 @@
         if (!sel.length && !confirm('No hay ningún supuesto marcado en «Entra». En la evaluación solo entran los casos que lances tú. ¿Iniciar igualmente?')) return;
         const libres = D.v.puestos.filter((p) => p.alumno && !p.alumno.esBot).length;
         const iv = Number($('#d-intervalo').value) || 240;
-        if (!confirm(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), uno cada ${iv} s, iguales para los ${libres} alumno(s) conectados. Duración aproximada: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
+        if (!confirm(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), iguales para los ${libres} alumno(s) conectados. Cada uno avanza a su ritmo: el siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${iv} s. Duración máxima: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
       }
       res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 240 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas ni la guía hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
     });
@@ -303,8 +303,7 @@
     const ep = $('#d-eval-prog');
     if (ep && !ep.hidden) {
       const tot = Number(ep.dataset.total), env = Number(ep.dataset.enviados), iv = Number(ep.dataset.iv);
-      const prox = Number(ep.dataset.inicio) + env * iv * 1000 - ahora;
-      ep.textContent = env >= tot ? `Enviados ${env}/${tot} supuestos. Ya no entran más.` : `Enviados ${env}/${tot} · siguiente supuesto en ${fmt(Math.max(0, prox / 1000))}`;
+      ep.textContent = `Cada alumno avanza a su ritmo: el más adelantado va por ${env}/${tot}. El siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${iv} s.`;
     }
     $('#d-reloj').textContent = a.inicio ? fmtLargo(((a.estado === 'finalizada' ? a.fin : ahora) - a.inicio) / 1000) : '--:--';
     const obj = S.datos ? S.datos.config.tiempoObjetivoSeg : 120;
