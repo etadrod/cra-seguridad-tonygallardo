@@ -53,6 +53,11 @@
       const r = await emitir(pausada ? 'doc_reanudar' : 'doc_pausa');
       res(r, pausada ? `Actividad reanudada (pausa de ${fmt(r.pausaSeg || 0)}).` : 'Actividad en pausa: el tiempo de todos los puestos está detenido.');
     });
+    $('#d-reiniciar').addEventListener('click', async () => {
+      if (!confirm('¿Reiniciar? Se liberan todos los puestos: el alumnado vuelve a la pantalla de inicio y conserva sus resultados. Las incidencias que estén atendiendo se cierran sin clasificar.')) return;
+      const r = await emitir('doc_reiniciar');
+      res(r, `Puestos liberados: ${r.liberados || 0}.`);
+    });
     $('#d-fintest').addEventListener('click', async () => res(await emitir('doc_fin_test'), 'TEST finalizado. Bots retirados y datos de prueba borrados.'));
 
     const tabla = $('#d-programa');

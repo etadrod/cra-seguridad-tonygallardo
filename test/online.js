@@ -23,6 +23,11 @@ const { lanzarServidor, cliente, hasta, ok } = require('./util');
     }
     await hasta(() => a.ultima.cola.length === 1 && !vistos.has(a.ultima.cola[0].id), 8000);
     ok(a.ultima.online && a.ultima.online.hechos === 4 && a.ultima.online.total === 10, 'entra el siguiente al cerrar (4 de 10)');
+    await a.pedir('coger', { id: a.ultima.cola[0].id });
+    const rr = await doc.pedir('doc_reiniciar');
+    await hasta(() => a.ultima && !a.ultima.yo.puesto);
+    ok(rr.ok && rr.liberados === 1, 'Reiniciar libera todos los puestos (con incidencia en curso)');
+    await a.pedir('entrar', { nombre: 'Online Uno', puesto: 4 });
     const prog = (await doc.pedir('doc_login', { pin: '0112' })).vista.cerradas;
     const conf = require('../data/config.json');
     ok(true, `supuestos online fuera de la evaluación (${conf.evaluacionPorDefecto.join(',')})`);
