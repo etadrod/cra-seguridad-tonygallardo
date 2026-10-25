@@ -83,7 +83,7 @@ io.on('connection', (socket) => {
     ack(cb, { ok: true, ahora: Date.now(), vista: sala.vistaDocente(), persistencia: persistencia.modo, limite: limite.estado() });
   });
   socket.on('doc_iniciar', soloDocente(socket, ({ tipo, intervalo }) => sala.iniciarActividad(tipo, intervalo)));
-  socket.on('doc_finalizar', soloDocente(socket, () => sala.finalizarActividad()));
+  socket.on('doc_finalizar', soloDocente(socket, () => { const r = sala.finalizarActividad(); if (r.ok) io.emit('aviso_sistema', { texto: 'El docente ha finalizado la actividad. Se ha detenido el ejercicio en todos los puestos.' }); return r; }));
   socket.on('doc_pausa', soloDocente(socket, () => sala.pausar()));
   socket.on('doc_reanudar', soloDocente(socket, () => sala.reanudar()));
   socket.on('doc_test', soloDocente(socket, () => sala.iniciarTest()));

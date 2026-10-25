@@ -191,7 +191,7 @@
     $('#historial tbody').innerHTML = v.historial.length ? v.historial.slice().reverse().map((h) => `
       <tr><td class="num">${esc(h.id)}</td><td>${esc(h.abonado)}<br><small>${esc(h.codigo)} · ${esc(h.evento)}</small></td><td>${esc(h.clasificacion)}</td>
       <td class="num">${fmt(h.segundos)}</td><td class="num ${claseNota(h.nota)}">${h.nota == null ? '—' : h.nota.toFixed(2)}</td>
-      <td>${h.eval ? `<button class="btn" data-ver="${h.id}">Corrección</button>` : ''}</td></tr>`).join('')
+      <td>${h.eval ? `<button class="btn" data-ver="${h.id}">Valoración</button>` : ''}</td></tr>`).join('')
       : '<tr><td colspan="6" class="ayuda">Todavía no has cerrado ninguna incidencia.</td></tr>';
     $('#nota-media').innerHTML = v.notaMedia == null ? '' : `Nota media: <span class="${claseNota(v.notaMedia)}">${v.notaMedia.toFixed(2)}</span>`;
 
@@ -337,7 +337,7 @@
 
   // ---------- Corrección ----------
   function mostrarCorreccion(ev, h) {
-    modal(h ? `Corrección ${h.id}` : 'Incidencia cerrada · corrección', `
+    modal(h ? `Valoración ${h.id}` : 'Incidencia cerrada · corrección', `
       <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
         <div class="nota-grande ${claseNota(ev.nota)}">${ev.nota.toFixed(2)}<small style="font-size:1rem"> / 10</small></div>
         <div><div>Tiempo de gestión: <strong>${fmt(ev.segundos)}</strong> ${ev.segundos > (ev.limite || S.datos.config.tiempoObjetivoSeg) ? '<span class="chip alerta">fuera de tiempo</span>' : '<span class="chip ok">en tiempo</span>'} <span class="ayuda">objetivo ${ev.limite || 240} s</span></div>

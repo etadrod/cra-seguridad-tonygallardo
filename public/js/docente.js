@@ -39,7 +39,7 @@
       res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 240 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas ni la guía hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
     });
     $('#d-finalizar').addEventListener('click', async () => {
-      if (!confirm('¿Finalizar la actividad? Las incidencias abiertas se evaluarán tal como estén.')) return;
+      if (!confirm('⚠ FIN DE LA ACTIVIDAD\n\nSe detendrá todo el ejercicio en todos los puestos: no entrarán más señales, las incidencias abiertas o en cola se cerrarán y evaluarán tal como estén y el alumnado no podrá seguir atendiendo.\n\n¿Finalizar la actividad?')) return;
       res(await emitir('doc_finalizar'), 'Actividad finalizada. Ya puedes descargar los informes.');
     });
     $('#d-test').addEventListener('click', async () => {
