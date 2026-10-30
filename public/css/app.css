@@ -130,7 +130,7 @@ textarea { resize: vertical; }
 .n-alta { color: var(--verde); font-weight: 700; } .n-media { color: var(--acento); font-weight: 700; } .n-baja { color: var(--rojo); font-weight: 700; }
 
 /* ---- Ventana de trabajo ---- */
-.ventana { position: fixed; inset: calc(var(--barra-h, 58px) + 6px) 12px 12px 12px; z-index: 2000; background: var(--panel); border: 1px solid var(--linea); border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.35); display: grid; grid-template-rows: auto 1fr auto; overflow: hidden; }
+.ventana { position: fixed; inset: calc(var(--barra-h, 58px) + 6px) 12px 12px 12px; z-index: 2000; background: var(--panel); border: 1px solid var(--linea); border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.35); display: grid; grid-template-rows: auto minmax(380px, 1fr) auto; overflow-x: hidden; overflow-y: auto; } /* si no cabe (pantalla baja, A+), se desplaza y la comunicación conserva 380 px */
 .w-cab { display: flex; gap: 16px; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--linea); background: var(--panel-2); flex-wrap: wrap; }
 .w-tit { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; min-width: 0; }
 .w-tit h2 { font-size: 1.1rem; font-family: var(--mono); }
@@ -157,7 +157,18 @@ textarea { resize: vertical; }
 .sep-h span { height: 4px; width: 48px; }
 body.redimensionando { user-select: none; }
 body.redimensionando .ventana * { cursor: inherit; }
-.w-chat { display: grid; grid-template-rows: auto minmax(80px, 1fr) auto var(--h-preg, 36vh) auto; min-height: 0; }
+.w-chat { display: grid; grid-template-rows: auto minmax(60px, 1fr) auto minmax(0, var(--h-preg, 36vh)) auto; min-height: 0; overflow: hidden; }
+/* Pantallas bajas: la caja de mensaje libre debe verse siempre; se compacta la cabecera y la barra de acciones */
+@media (max-height: 820px) {
+  .w-cab { padding: 6px 12px; }
+  .w-chat-cab { padding: 4px 12px; }
+  .chat-form { padding: 6px 12px; }
+  .w-acciones { padding: 6px 12px; gap: 8px; }
+  .w-acciones .btn { min-height: 34px; padding-top: 5px; padding-bottom: 5px; }
+  .btn.colgar { min-height: 38px; padding: 6px 16px; }
+  .cierre textarea { min-height: 36px; }
+}
+
 .w-chat-cab { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; border-bottom: 1px solid var(--linea); }
 .chat { overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
 .msg { max-width: 82%; padding: 8px 11px; border-radius: 10px; white-space: pre-wrap; font-size: .93rem; }
@@ -250,7 +261,8 @@ body.redimensionando .ventana * { cursor: inherit; }
 /* ---- Responsive ---- */
 @media (max-width: 1100px) {
   .docente { grid-template-columns: 1fr; }
-  .w-acciones { grid-template-columns: 1fr; }
+  .w-acciones { grid-template-columns: 1fr 1fr; }
+  .w-acciones .cierre { grid-column: 1 / -1; }
 }
 @media (max-width: 900px) {
   .inicio, .teleop { grid-template-columns: 1fr; }
