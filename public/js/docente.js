@@ -22,29 +22,29 @@
     }));
     $('#d-iniciar').addEventListener('click', async () => {
       const v = D.v;
-      if (v && v.cerradas.length && !confirm('Se borrarán los resultados del ejercicio anterior. ¿Has descargado ya los informes?')) return;
+      if (v && v.cerradas.length && !await confirmar('Se borrarán los resultados del ejercicio anterior. ¿Has descargado ya los informes?')) return;
       const tipo = ($('input[name="tipo-act"]:checked') || {}).value || 'practica';
       const a0 = D.v && D.v.actividad;
       if (a0 && a0.estado === 'en_curso' && a0.tipo === 'online') {
         if (tipo === 'online') return aviso('El modo online ya está activo.', 'ok', 2500);
-        if (!confirm('Se detendrá el modo online (las incidencias abiertas se evaluarán tal como estén) y empezará la nueva actividad. ¿Continuar?')) return;
+        if (!await confirmar('Se detendrá el modo online (las incidencias abiertas se evaluarán tal como estén) y empezará la nueva actividad. ¿Continuar?')) return;
       }
       if (tipo === 'evaluacion') {
         const sel = D.v.programa.filter((p) => p.entra);
-        if (!sel.length && !confirm('No hay ningún supuesto marcado en «Entra». En la evaluación solo entran los casos que lances tú. ¿Iniciar igualmente?')) return;
+        if (!sel.length && !await confirmar('No hay ningún supuesto marcado en «Entra». En la evaluación solo entran los casos que lances tú. ¿Iniciar igualmente?')) return;
         const libres = D.v.puestos.filter((p) => p.alumno && !p.alumno.esBot).length;
         const iv = Number($('#d-intervalo').value) || 240;
-        if (!confirm(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), iguales para los ${libres} alumno(s) conectados. Cada uno avanza a su ritmo: el siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${iv} s. Duración máxima: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
+        if (!await confirmar(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), iguales para los ${libres} alumno(s) conectados. Cada uno avanza a su ritmo: el siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${iv} s. Duración máxima: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
       }
       res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 240 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
     });
     $('#d-finalizar').addEventListener('click', async () => {
-      if (!confirm('⚠ FIN DE LA ACTIVIDAD\n\nSe detendrá todo el ejercicio en todos los puestos: no entrarán más señales, las incidencias abiertas o en cola se cerrarán y evaluarán tal como estén y el alumnado no podrá seguir atendiendo.\n\n¿Finalizar la actividad?')) return;
+      if (!await confirmar('⚠ FIN DE LA ACTIVIDAD\n\nSe detendrá todo el ejercicio en todos los puestos: no entrarán más señales, las incidencias abiertas o en cola se cerrarán y evaluarán tal como estén y el alumnado no podrá seguir atendiendo.\n\n¿Finalizar la actividad?')) return;
       res(await emitir('doc_finalizar'), 'Actividad finalizada. Ya puedes descargar los informes.');
     });
     $('#d-test').addEventListener('click', async () => {
-      if (D.v && D.v.actividad.tipo === 'online' && D.v.actividad.estado === 'en_curso' && !confirm('Se detendrá el modo online para iniciar el TEST. ¿Continuar?')) return;
-      if (D.v && D.v.cerradas.length && !confirm('El TEST borra los resultados actuales. ¿Continuar?')) return;
+      if (D.v && D.v.actividad.tipo === 'online' && D.v.actividad.estado === 'en_curso' && !await confirmar('Se detendrá el modo online para iniciar el TEST. ¿Continuar?')) return;
+      if (D.v && D.v.cerradas.length && !await confirmar('El TEST borra los resultados actuales. ¿Continuar?')) return;
       const r = await emitir('doc_test');
       res(r, r.ok ? `TEST iniciado: ${r.bots} bots ocupan los puestos libres y entran señales automáticas.` : '');
     });
@@ -54,7 +54,7 @@
       res(r, pausada ? `Actividad reanudada (pausa de ${fmt(r.pausaSeg || 0)}).` : 'Actividad en pausa: el tiempo de todos los puestos está detenido.');
     });
     $('#d-reiniciar').addEventListener('click', async () => {
-      if (!confirm('¿Reiniciar? Se liberan todos los puestos: el alumnado vuelve a la pantalla de inicio y conserva sus resultados. Las incidencias que estén atendiendo se cierran sin clasificar.')) return;
+      if (!await confirmar('¿Reiniciar? Se liberan todos los puestos: el alumnado vuelve a la pantalla de inicio y conserva sus resultados. Las incidencias que estén atendiendo se cierran sin clasificar.')) return;
       const r = await emitir('doc_reiniciar');
       res(r, `Puestos liberados: ${r.liberados || 0}.`);
     });
@@ -117,7 +117,7 @@
         if (r.error) return aviso(r.error, 'error');
         PDF.informeAlumno(r);
       }
-      if (b.dataset.p === 'lib' && confirm(`¿Liberar el puesto ${n}? El alumno conserva sus resultados.`)) res(await emitir('doc_liberar', { puesto: n }), `Puesto ${n} liberado.`);
+      if (b.dataset.p === 'lib' && await confirmar(`¿Liberar el puesto ${n}? El alumno conserva sus resultados.`)) res(await emitir('doc_liberar', { puesto: n }), `Puesto ${n} liberado.`);
       if (b.dataset.p === 'msg') { panelMensajes(true); $('#d-msg-destino').value = `puesto:${n}`; $('#d-msg-texto').focus(); }
     });
     $('#d-puestos').addEventListener('keydown', (e) => {
@@ -127,7 +127,7 @@
     });
     $('#d-cola').addEventListener('click', (e) => { const li = e.target.closest('[data-obs-p]'); if (li) observar(Number(li.dataset.obsP)); });
     $('#d-eliminar').addEventListener('click', async () => {
-      if (!confirm('⚠ ELIMINAR INCIDENCIAS CERRADAS\n\nSe borrarán todas las incidencias cerradas y sus notas, también del informe del alumnado. Descarga antes los informes si los necesitas. No se puede deshacer.\n\n¿Eliminar?')) return;
+      if (!await confirmar('⚠ ELIMINAR INCIDENCIAS CERRADAS\n\nSe borrarán todas las incidencias cerradas y sus notas, también del informe del alumnado. Descarga antes los informes si los necesitas. No se puede deshacer.\n\n¿Eliminar?')) return;
       const r = await emitir('doc_eliminar_cerradas');
       res(r, `Incidencias eliminadas: ${r.borradas || 0}.`);
     });

@@ -35,7 +35,7 @@
       if (!b) return;
       if (b.dataset.form) return formularioAviso(b.dataset.form);
       if (b.dataset.acc === 'llamar' && T.ultimaV && T.ultimaV.activa && T.ultimaV.activa.senal.codigo === 'E122') {
-        if (!confirm('Señal de atraco silencioso. ¿Seguro que quieres llamar a la instalación?')) return;
+        if (!await confirmar('Señal de atraco silencioso. ¿Seguro que quieres llamar a la instalación?')) return;
       }
       const r = await emitir('accion', { tipo: b.dataset.acc });
       if (r.error) return aviso(r.error, 'error');
@@ -70,7 +70,7 @@
       if (r.error) aviso(r.error, 'error');
     });
     $('#b-salir').addEventListener('click', async () => {
-      if (!confirm('¿Salir del puesto? Tus resultados se conservan con tu nombre.')) return;
+      if (!await confirmar('¿Salir del puesto? Tus resultados se conservan con tu nombre.')) return;
       const r = await emitir('salir');
       if (r.error) aviso(r.error, 'error');
     });

@@ -157,6 +157,16 @@ function modal(titulo, html, onClose) {
   setTimeout(() => (f || $('#m-cerrar')).focus(), 30);
   return $('#m-cuerpo');
 }
+// Confirmación dentro de la página (window.confirm se bloquea en iframes, p. ej. si se abre desde el Campus, y en algunos navegadores)
+function confirmar(texto) {
+  return new Promise((ok) => {
+    let resp = false;
+    const c = modal('Confirmar', `<p style="white-space:pre-line;font-size:1.02rem">${esc(texto)}</p><div class="fila-botones" style="justify-content:flex-end;margin-top:14px"><button class="btn" type="button" data-conf="no">Cancelar</button><button class="btn rojo" type="button" data-conf="si">Aceptar</button></div>`, () => ok(resp));
+    c.querySelector('[data-conf="si"]').addEventListener('click', () => { resp = true; cerrarModal(); });
+    c.querySelector('[data-conf="no"]').addEventListener('click', cerrarModal);
+    setTimeout(() => c.querySelector('[data-conf="si"]').focus(), 40);
+  });
+}
 function cerrarModal() { $('#modal').hidden = true; $('#m-cuerpo').innerHTML = ''; const f = alCerrarModal; alCerrarModal = null; if (f) f(); }
 $('#m-cerrar').addEventListener('click', cerrarModal);
 $('#modal').addEventListener('pointerdown', (e) => { if (e.target.id === 'modal') cerrarModal(); });
