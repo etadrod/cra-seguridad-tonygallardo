@@ -81,6 +81,7 @@
       if (h && h.eval) mostrarCorreccion(h.eval, h);
     });
     $('#cola').addEventListener('click', async (e) => {
+      if (e.target.closest('#b-iniciar-eval')) { e.target.closest('#b-iniciar-eval').disabled = true; const r = await emitir('iniciar_eval'); if (r.error) aviso(r.error, 'error'); return; }
       const b = e.target.closest('[data-coger]');
       if (!b) return;
       b.disabled = true;
@@ -167,7 +168,7 @@
     ea.className = `estado-actividad ${a.estado === 'en_curso' ? (a.modo === 'test' ? 'test' : 'en_curso') : ''}`;
     $('#w-pausa').hidden = !a.pausadaDesde;
     $('#barra-centro').insertAdjacentHTML('beforeend', a.pausadaDesde ? '<span class="chip info">⏸ En pausa</span>' : '');
-    ea.textContent = a.pausadaDesde ? '⏸ Actividad en pausa. El tiempo está detenido.' : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST en curso: el docente está probando el sistema. Puedes atender señales.' : (a.tipo === 'online' ? `MODO ONLINE: recibirás los supuestos de uno en uno, en orden aleatorio${v.online ? ` (${v.online.hechos} de ${v.online.total})` : ''}. Al cerrar uno entra el siguiente. Verás la corrección al cerrar cada incidencia.${v.online && v.online.hechos >= v.online.total && !v.activa && !v.cola.length ? ' ¡Has completado todos los supuestos! Descarga tu informe.' : ''}` : a.tipo === 'evaluacion' ? 'EVALUACIÓN en curso. Atiende las señales en cuanto entren. Verás tu nota cuando el docente finalice la actividad.' : 'PRÁCTICA en curso. Atiende las señales en cuanto entren. Verás la corrección al cerrar cada incidencia.'))
+    ea.textContent = a.pausadaDesde ? '⏸ Actividad en pausa. El tiempo está detenido.' : a.estado === 'en_curso' ? (a.modo === 'test' ? 'TEST en curso: el docente está probando el sistema. Puedes atender señales.' : (a.tipo === 'online' ? `MODO ONLINE: recibirás los supuestos de uno en uno, en orden aleatorio${v.online ? ` (${v.online.hechos} de ${v.online.total})` : ''}. Al cerrar uno entra el siguiente. Verás la corrección al cerrar cada incidencia.${v.online && v.online.hechos >= v.online.total && !v.activa && !v.cola.length ? ' ¡Has completado todos los supuestos! Descarga tu informe.' : ''}` : a.tipo === 'evaluacion' ? (v.evalPendiente ? 'EVALUACIÓN preparada. Pulsa «Iniciar la prueba de evaluación» cuando estés listo: el primer supuesto entrará en ese momento.' : 'EVALUACIÓN en curso. Atiende las señales en cuanto entren. Verás tu nota cuando el docente finalice la actividad.') : 'PRÁCTICA en curso. Atiende las señales en cuanto entren. Verás la corrección al cerrar cada incidencia.'))
       : a.estado === 'finalizada' ? 'Actividad finalizada. Descarga tu informe en PDF.' : 'En espera: el docente aún no ha iniciado la actividad.';
 
     const evalCurso = a.tipo === 'evaluacion' && a.estado === 'en_curso';
@@ -183,7 +184,7 @@
         <div><div><span class="cod">${esc(c.codigo)}</span> · ${esc(c.evento)} <span class="chip">${c.cola === 'comun' ? 'Cola común' : 'Mi puesto'}</span></div>
         <div class="det">${esc(c.abonado)} · ${esc(c.municipio)} · Zona ${esc(c.zona)} · <span class="espera" data-desde="${c.creada}">00:00</span> en cola</div></div>
         <button class="btn primario" data-coger="${c.id}" ${v.activa || a.estado !== 'en_curso' || a.pausadaDesde ? 'disabled' : ''}>${c.origen === 'llamada' ? 'Atender llamada' : 'Atender señal'}</button>
-      </li>`).join('') : '<li class="cola-vacia">Sin señales pendientes.</li>';
+      </li>`).join('') : v.evalPendiente && !a.pausadaDesde ? '<li class="cola-vacia eval-inicio"><p>La evaluación está preparada. El primer supuesto entrará en cuanto pulses el botón.</p><button class="btn verde" id="b-iniciar-eval" type="button">▶ Iniciar la prueba de evaluación</button></li>' : '<li class="cola-vacia">Sin señales pendientes.</li>';
 
     // Historial
     $('#historial tbody').innerHTML = v.historial.length ? v.historial.slice().reverse().map((h) => `

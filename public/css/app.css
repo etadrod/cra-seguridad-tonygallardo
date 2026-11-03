@@ -360,3 +360,6 @@ body.redimensionando .ventana * { cursor: inherit; }
 .ver-rubrica { margin-top: 18px; }
 @media (max-width: 600px) { .tramos { grid-template-columns: 1fr 1fr; } }
 #d-lim-txt { display: inline !important; padding: 0 !important; border: 0 !important; background: none !important; font-weight: 700; }
+.eval-inicio { display: grid; gap: 10px; justify-items: center; text-align: center; padding: 18px !important; }
+.eval-inicio .btn { font-size: 1.1rem; padding: 12px 22px; }
+.cola li.eval-inicio { grid-template-columns: 1fr; border-left-color: var(--verde, #16a34a); }

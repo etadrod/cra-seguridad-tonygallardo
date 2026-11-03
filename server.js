@@ -71,6 +71,7 @@ io.on('connection', (socket) => {
   socket.on('pregunta', deAlumno(socket, (id, a) => sala.pregunta(id, a)));
   socket.on('accion', deAlumno(socket, (id, a) => sala.accion(id, a)));
   socket.on('cerrar', deAlumno(socket, (id, a) => sala.cerrar(id, a)));
+  socket.on('iniciar_eval', deAlumno(socket, (id) => sala.iniciarEvalAlumno(id)));
   socket.on('mi_informe', deAlumno(socket, (id) => sala.informeAlumno(id, true) || { error: 'Todavía no tienes incidencias evaluadas.' }));
   socket.on('msg_alumno', deAlumno(socket, (id, { texto }) => sala.mensaje(`alumno:${id}`, 'docente', texto)));
 
