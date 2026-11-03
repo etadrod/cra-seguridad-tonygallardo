@@ -40,10 +40,10 @@
         const sel = D.v.programa.filter((p) => p.entra);
         if (!sel.length && !await confirmar('No hay ningún supuesto marcado en «Entra». En la evaluación solo entran los casos que lances tú. ¿Iniciar igualmente?')) return;
         const libres = D.v.puestos.filter((p) => p.alumno && !p.alumno.esBot).length;
-        const iv = Number($('#d-intervalo').value) || 190;
+        const iv = Number($('#d-intervalo').value) || 180;
         if (!await confirmar(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), iguales para los ${libres} alumno(s) conectados. Cada uno avanza a su ritmo: el siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${minSeg(iv)}. Duración máxima: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
       }
-      res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 190, limite: Number($('#d-intervalo').value) || 190 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
+      res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 180, limite: Number($('#d-intervalo').value) || 180 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
     });
     $('#d-finalizar').addEventListener('click', async () => {
       if (!await confirmar('⚠ FIN DE LA ACTIVIDAD\n\nSi aceptas, FINALIZARÁS LAS PRUEBAS DE TODOS LOS ALUMNOS QUE ESTÁN EN CURSO.\n\nSe detendrá el ejercicio en todos los puestos: no entrarán más señales, las incidencias abiertas o en cola se cerrarán y evaluarán tal como estén, y el alumnado no podrá seguir atendiendo.\n\n¿Finalizar la actividad?', true)) return;
@@ -214,7 +214,7 @@
     const ivBloq = a.estado === 'en_curso' && a.tipo === 'evaluacion';
     $('#d-iv-min').disabled = ivBloq; $('#d-iv-seg').disabled = ivBloq;
     if (ivBloq && a.intervalo) { $('#d-intervalo').value = a.intervalo; $('#d-iv-min').value = Math.floor(a.intervalo / 60); $('#d-iv-seg').value = a.intervalo % 60; }
-    $('#d-lim-txt').textContent = minSeg(Number($('#d-intervalo').value) || 190);
+    $('#d-lim-txt').textContent = minSeg(Number($('#d-intervalo').value) || 180);
     // en evaluación no se lanza a mano: botones desactivados y minutos sin efecto
     $('#d-lanzar-todos').disabled = evalSel;
     $$('#d-programa [data-lanzar]').forEach((b) => { b.disabled = evalSel; });

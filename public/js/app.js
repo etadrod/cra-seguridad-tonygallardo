@@ -266,7 +266,7 @@ mostrar('inicio');
 function verRubrica() {
   if (!S.datos) return;
   const R = S.datos.rubrica, C = S.datos.criterios, cfg = S.datos.config;
-  const tp = cfg.tiempoPracticaSeg || 240, te = cfg.tiempoEvaluacionSeg || 190;
+  const tp = cfg.tiempoPracticaSeg || 240, te = cfg.tiempoEvaluacionSeg || 180;
   const pv = (lim) => Math.round(lim * FT().v), pa = (lim) => Math.round(lim * FT().a);
   modal('Rúbrica de evaluación · RA4', `
     <p class="rub-int">${esc(R.ra)}<br><small>${esc(R.fuente)}</small></p>
