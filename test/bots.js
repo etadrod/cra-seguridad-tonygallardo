@@ -14,8 +14,13 @@ const { lanzarServidor, cliente, hasta, ok } = require('./util');
     const r = await doc.pedir('doc_test');
     ok(r.ok && r.bots === 14, `TEST iniciado con 14 bots (${r.bots})`);
     ok((await doc.pedir('doc_iniciar')).error, 'no se puede iniciar actividad durante el TEST');
-    await hasta(() => doc.ultima && doc.ultima.cerradas.length >= 5, 20000, 100);
+    await hasta(() => doc.ultima && doc.ultima.cerradas.length >= 30, 30000, 100);
     ok(true, `bots cerrando incidencias (${doc.ultima.cerradas.length})`);
+    // Cada bot atiende sus propias señales (de su puesto), independientes del resto
+    const incs = (await doc.pedir('doc_informes')).alumnos.filter((x) => x.esBot);
+    const porBot = incs.map((x) => x.incidencias.length);
+    ok(incs.length >= 5 && new Set(incs.flatMap((x) => x.incidencias.map((i) => i.id))).size === porBot.reduce((s, n) => s + n, 0), `cada bot gestiona sus propias incidencias a su ritmo (${porBot.join(', ')})`);
+    ok(al.ultima.cola.length + (al.ultima.activa ? 1 : 0) + al.ultima.historial.length >= 1, 'el alumno real también recibe sus propias señales en el TEST');
     const inf = await doc.pedir('doc_informes');
     ok(inf.alumnos.length >= 2 && inf.alumnos.every((a) => a.notaMedia !== null), 'informes de los bots con nota');
     ok((await doc.pedir('doc_fin_test')).ok, 'FIN TEST');
