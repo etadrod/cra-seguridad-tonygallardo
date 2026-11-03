@@ -20,6 +20,7 @@ const io = new Server(server, { pingInterval: 20000, pingTimeout: 20000 });
 app.disable('x-powered-by');
 app.get('/salud', (_q, r) => r.json({ ok: true, persistencia: persistencia.modo }));
 app.get('/vendor/jspdf.js', (_q, r) => r.sendFile(path.join(__dirname, 'node_modules/jspdf/dist/jspdf.umd.min.js')));
+app.get('/vendor/jszip.js', (_q, r) => r.sendFile(path.join(__dirname, 'node_modules/jszip/dist/jszip.min.js')));
 app.get('/vendor/autotable.js', (_q, r) => r.sendFile(path.join(__dirname, 'node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.min.js')));
 app.get('/api/datos', (_q, r) => r.json({
   config: {

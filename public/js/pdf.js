@@ -125,13 +125,16 @@ const PDF = (function () {
     return parrafo(doc, cab.normativa, y, { size: 7.5, color: GRIS });
   }
 
-  function informeAlumno({ cabecera, alumno }) {
+  function docAlumno(cabecera, alumno) {
     const doc = nuevo();
     let y = banda(doc, cabecera, 'Informe individual de evaluación · Recepción, verificación y transmisión de señales de alarma');
     y = seccionAlumno(doc, cabecera, alumno, y + 4);
     anexo(doc, cabecera, y);
     pies(doc);
-    doc.save(`Informe_CRA_${archivo(alumno.alumno)}.pdf`);
+    return doc;
+  }
+  function informeAlumno({ cabecera, alumno }) {
+    docAlumno(cabecera, alumno).save(`Informe_CRA_${archivo(alumno.alumno)}.pdf`);
   }
 
   function conjunto({ cabecera, alumnos, noAtendidas }) {
@@ -171,19 +174,22 @@ const PDF = (function () {
     doc.save(`Informe_CRA_conjunto_${d}.pdf`);
   }
 
-  // Todos los informes individuales en un único archivo: Informe_CRA_[fecha_hora].pdf (hora de Canarias)
-  function individuales({ cabecera, alumnos }) {
-    const doc = nuevo();
-    alumnos.forEach((a, k) => {
-      if (k) doc.addPage();
-      const y = banda(doc, cabecera, 'Informe individual de evaluación · Recepción, verificación y transmisión de señales de alarma');
-      seccionAlumno(doc, cabecera, a, y + 4);
-    });
-    doc.addPage();
-    anexo(doc, cabecera, 18);
-    pies(doc);
+  // Todos los informes individuales, un PDF por alumno, dentro de un ZIP: Informe_CRA_[fecha_hora].zip (hora de Canarias)
+  async function individuales({ cabecera, alumnos }) {
+    const zip = new JSZip();
+    const usados = new Set();
+    for (const a of alumnos) {
+      let n = `Informe_CRA_P${String(a.puesto || 0).padStart(2, '0')}_${archivo(a.alumno)}`;
+      for (let k = 2; usados.has(n); k++) n = `${n}_${k}`;
+      usados.add(n);
+      zip.file(`${n}.pdf`, docAlumno(cabecera, a).output('arraybuffer'));
+    }
     const p = Object.fromEntries(new Intl.DateTimeFormat('es-ES', { timeZone: 'Atlantic/Canary', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date(cabecera.generado)).map((x) => [x.type, x.value]));
-    doc.save(`Informe_CRA_${p.year}-${p.month}-${p.day}_${p.hour}-${p.minute}.pdf`);
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(blob);
+    const enlace = Object.assign(document.createElement('a'), { href: url, download: `Informe_CRA_${p.year}-${p.month}-${p.day}_${p.hour}-${p.minute}.zip` });
+    document.body.appendChild(enlace); enlace.click(); enlace.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
   }
 
   return { informeAlumno, conjunto, individuales };

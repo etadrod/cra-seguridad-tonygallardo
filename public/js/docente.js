@@ -105,7 +105,8 @@
       const r = await emitir('doc_informes');
       if (r.error) return aviso(r.error, 'error');
       if (!r.alumnos.length) return aviso('Todavía no hay incidencias evaluadas.', 'error');
-      PDF.individuales(r);
+      await PDF.individuales(r);
+      aviso(`ZIP con ${r.alumnos.length} informe(s) individual(es) descargado.`, 'ok', 2500);
     });
 
     $('#d-puestos').addEventListener('click', async (e) => {

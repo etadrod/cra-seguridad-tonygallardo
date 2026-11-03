@@ -1,20 +1,20 @@
 # Session Handoff
 
-- **Generated:** 2026-11-03T17:41:18.006Z
+- **Generated:** 2026-11-03T20:02:02.198Z
 - **Session ID:** 11a76c3b-683c-5d5e-9a97-ef11a8b19daf
 - **End reason:** other
 - **Working directory:** /home/claude/cra
 - **Git branch:** main
-- **Last commit:** bed53f5 Evaluación: tiempo por defecto 3 min 0 s
-- **Prompts this session:** 25
+- **Last commit:** 57a63ac Evaluación: el alumno que termina todos sus supuestos ve su nota y descarga su PDF aunque el resto siga
+- **Prompts this session:** 26
 
 ## Session goal
 
 **Opened with:** <system-reminder>The user's timezone is Atlantic/Canary (UTC+01:00). Message sent at Mon 2026-10-19 14:28 local time.</system-reminder>
 En el horario de Control del ejercicio aparece el contador 2991:43, pasalo a dias, horas y minutos
 
-**Ended with:** <system-reminder>The user's timezone is Atlantic/Canary (UTC+00:00). Message sent at Tue 2026-11-03 17:38 local time.</system-reminder>
-El tiempo por defecto para Evaluación debe ser de 3 min 0 seg
+**Ended with:** <system-reminder>The user's timezone is Atlantic/Canary (UTC+00:00). Message sent at Tue 2026-11-03 19:56 local time.</system-reminder>
+En el perfil de alumno, al terminar la Evaluación no le permite descargar el PDF con sus resultados.
 
 ## Decisions
 

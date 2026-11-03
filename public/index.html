@@ -6,7 +6,7 @@
 <title>CRA · Simulador</title>
 <meta name="description" content="Simulador de Central Receptora de Alarmas · CFGM Técnico en Seguridad · CIFP Tony Gallardo">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101a2b'/%3E%3Cpath d='M16 6l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10v-6z' fill='%23f5a524'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/app.css?v=46">
+<link rel="stylesheet" href="css/app.css?v=47">
 </head>
 <body>
 <a class="saltar" href="#principal">Saltar al contenido</a>
@@ -140,7 +140,7 @@
         <section class="panel" aria-labelledby="t-inf">
           <h2 id="t-inf">Informes PDF</h2>
           <p class="ayuda">Informe individual desde cada puesto o el conjunto de todo el grupo.</p>
-          <div class="fila-botones"><button class="btn primario" id="d-pdf-todos">Informe conjunto (PDF)</button><button class="btn" id="d-pdf-individuales">Todos los individuales</button></div>
+          <div class="fila-botones"><button class="btn primario" id="d-pdf-todos">Informe conjunto (PDF)</button><button class="btn" id="d-pdf-individuales">Todos los individuales (ZIP)</button></div>
         </section>
       </aside>
       <div class="doc-main">
@@ -269,10 +269,11 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/vendor/jspdf.js"></script>
 <script src="/vendor/autotable.js"></script>
-<script src="js/app.js?v=46"></script>
-<script src="js/pdf.js?v=46"></script>
-<script src="js/teleoperador.js?v=46"></script>
-<script src="js/docente.js?v=46"></script>
-<script src="js/visor.js?v=46"></script>
+<script src="/vendor/jszip.js"></script>
+<script src="js/app.js?v=47"></script>
+<script src="js/pdf.js?v=47"></script>
+<script src="js/teleoperador.js?v=47"></script>
+<script src="js/docente.js?v=47"></script>
+<script src="js/visor.js?v=47"></script>
 </body>
 </html>
