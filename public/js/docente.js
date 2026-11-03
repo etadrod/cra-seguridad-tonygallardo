@@ -8,6 +8,7 @@
   function montar() {
     if (D.montado) return;
     D.montado = true;
+    $('#d-tinc').addEventListener('input', () => { $('#d-lim-txt').textContent = Number($('#d-tinc').value) || 190; });
     $$('input[name="tipo-act"]').forEach((r) => r.addEventListener('change', () => {
       D.tipoTocado = true;
       // Evaluación: se marcan por defecto los supuestos que cubren un incidente de cada tipo (el docente puede cambiarlos)
@@ -36,7 +37,7 @@
         const iv = Number($('#d-intervalo').value) || 240;
         if (!await confirmar(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), iguales para los ${libres} alumno(s) conectados. Cada uno avanza a su ritmo: el siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${iv} s. Duración máxima: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
       }
-      res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 240 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
+      res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 240, limite: Number($('#d-tinc').value) || 190 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
     });
     $('#d-finalizar').addEventListener('click', async () => {
       if (!await confirmar('⚠ FIN DE LA ACTIVIDAD\n\nSe detendrá todo el ejercicio en todos los puestos: no entrarán más señales, las incidencias abiertas o en cola se cerrarán y evaluarán tal como estén y el alumnado no podrá seguir atendiendo.\n\n¿Finalizar la actividad?')) return;
@@ -200,11 +201,14 @@
       $('.p-entra', tr).checked = p.entra; $('.p-min', tr).value = p.minuto; $('.p-dest', tr).value = p.destino;
     });
 
-    const evalSel = (($('input[name="tipo-act"]:checked') || {}).value === 'evaluacion' && a.estado !== 'en_curso') || (a.estado === 'en_curso' && a.tipo === 'evaluacion');
+    const evalSel = (($('input[name="tipo-act"]:checked') || {}).value === 'evaluacion' && !(a.estado === 'en_curso' && a.tipo !== 'online')) || (a.estado === 'en_curso' && a.tipo === 'evaluacion');
     $$('#d-programa .p-dest').forEach((sel) => { sel.disabled = evalSel; if (evalSel) sel.value = 'todos'; });
     $('#d-eval-aviso').hidden = !evalSel;
     $('#d-eval-int').hidden = !evalSel;
-    $('#d-intervalo').disabled = a.estado === 'en_curso';
+    $('#d-intervalo').disabled = a.estado === 'en_curso' && a.tipo === 'evaluacion';
+    $('#d-tinc').disabled = a.estado === 'en_curso' && a.tipo === 'evaluacion';
+    if (a.estado === 'en_curso' && a.tipo === 'evaluacion' && a.limiteEval) $('#d-tinc').value = a.limiteEval;
+    $('#d-lim-txt').textContent = Number($('#d-tinc').value) || 190;
     if (a.estado === 'en_curso' && a.tipo === 'evaluacion' && a.intervalo) $('#d-intervalo').value = a.intervalo;
     // en evaluación no se lanza a mano: botones desactivados y minutos sin efecto
     $('#d-lanzar-todos').disabled = evalSel;

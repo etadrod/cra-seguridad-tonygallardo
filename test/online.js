@@ -1,5 +1,5 @@
 'use strict';
-// Modo online: activo al arrancar; cada alumno recibe los supuestos de práctica 01-10 (S señales · A llamadas) en orden aleatorio, uno tras otro.
+// Modo online: solo cuando el docente lo inicia; cada alumno recibe los supuestos de práctica 01-10 (S señales · A llamadas) en orden aleatorio, uno tras otro.
 const { lanzarServidor, cliente, hasta, ok } = require('./util');
 
 (async () => {
@@ -8,11 +8,12 @@ const { lanzarServidor, cliente, hasta, ok } = require('./util');
     console.log('Modo online');
     const doc = await cliente(srv.url);
     const v = (await doc.pedir('doc_login', { pin: '0112' })).vista;
-    ok(v.actividad.estado === 'en_curso' && v.actividad.tipo === 'online', 'el modo online está activo por defecto');
+    ok(v.actividad.estado !== 'en_curso', 'el modo online NO se activa solo al entrar');
+    ok((await doc.pedir('doc_iniciar', { tipo: 'online' })).ok, 'el docente inicia el modo online');
     const a = await cliente(srv.url); await a.pedir('hola', { clientId: 'on-1' });
     await a.pedir('entrar', { nombre: 'Online Uno', puesto: 4 });
     await hasta(() => a.ultima && a.ultima.cola.length === 1);
-    ok(true, 'al entrar recibe su primer supuesto sin que el docente inicie nada');
+    ok(true, 'al entrar recibe su primer supuesto');
     const vistos = new Set();
     for (let k = 0; k < 3; k++) {
       await hasta(() => a.ultima.cola.length === 1 && !a.ultima.activa && !vistos.has(a.ultima.cola[0].id), 8000);
@@ -43,7 +44,7 @@ const { lanzarServidor, cliente, hasta, ok } = require('./util');
     await new Promise((r) => setTimeout(r, 2500));
     const d2 = await cliente(srv.url);
     const v3 = (await d2.pedir('doc_login', { pin: '0112' })).vista;
-    ok(v3.actividad.tipo === 'online' && v3.actividad.estado === 'en_curso' && !v3.cerradas.length, 'tras el reposo, el online vuelve a empezar al entrar alguien');
+    ok(v3.actividad.estado === 'espera', 'tras el reposo, el online no vuelve a empezar solo al entrar alguien');
     console.log('OK online');
   } catch (e) { console.error(e); process.exitCode = 1; } finally { srv.parar(); process.exit(); }
 })();

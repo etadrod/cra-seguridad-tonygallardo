@@ -52,7 +52,6 @@ const deAlumno = (socket, fn) => (arg, cb) => {
 
 io.on('connection', (socket) => {
   sinNadieDesde = Date.now();
-  if (!limite.agotado() && sala.asegurarOnline()) console.log('[cra] modo ONLINE activado: alguien ha entrado');
   if (limite.agotado()) {
     socket.emit('limite_agotado');
     return setTimeout(() => socket.disconnect(true), 200);
@@ -82,7 +81,7 @@ io.on('connection', (socket) => {
     socket.join('docente');
     ack(cb, { ok: true, ahora: Date.now(), vista: sala.vistaDocente(), persistencia: persistencia.modo, limite: limite.estado() });
   });
-  socket.on('doc_iniciar', soloDocente(socket, ({ tipo, intervalo }) => sala.iniciarActividad(tipo, intervalo)));
+  socket.on('doc_iniciar', soloDocente(socket, ({ tipo, intervalo, limite }) => sala.iniciarActividad(tipo, intervalo, limite)));
   socket.on('doc_finalizar', soloDocente(socket, () => { const r = sala.finalizarActividad(); console.log('[cra] Fin actividad (docente):', r.ok ? 'ok' : r.error); if (r.ok) io.emit('aviso_sistema', { texto: 'El docente ha finalizado la actividad. Se ha detenido el ejercicio en todos los puestos.' }); return r; }));
   socket.on('doc_pausa', soloDocente(socket, () => sala.pausar()));
   socket.on('doc_reanudar', soloDocente(socket, () => sala.reanudar()));

@@ -359,3 +359,4 @@ body.redimensionando .ventana * { cursor: inherit; }
 .tramos .r { background: rgba(220,38,38,.15); border-color: #dc2626; } .tramos .f { background: var(--panel-2); }
 .ver-rubrica { margin-top: 18px; }
 @media (max-width: 600px) { .tramos { grid-template-columns: 1fr 1fr; } }
+#d-lim-txt { display: inline !important; padding: 0 !important; border: 0 !important; background: none !important; font-weight: 700; }

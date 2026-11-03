@@ -7,9 +7,9 @@ const fmt = (seg) => { seg = Math.max(0, Math.floor(seg)); return `${String(Math
 const hora = (ms) => new Date(ms).toLocaleTimeString('es-ES', { timeZone: 'Atlantic/Canary', hour: '2-digit', minute: '2-digit', second: '2-digit' });
 // Barra de tiempo: verde hasta 140 s (3 puntos); después baja lineal hasta 1 punto en el objetivo (ámbar 1.ª mitad, rojo 2.ª); fuera 0
 const verdeSeg = () => (S.datos && S.datos.rubrica.tiempo.verdeSeg) || 140;
-const puntosTiempo = (seg, lim) => { const v = verdeSeg(); return seg <= v ? 3 : seg > lim ? 0 : 3 - 2 * (seg - v) / Math.max(1, lim - v); };
-const colorTramo = (seg, lim) => { const v = verdeSeg(); return seg <= v ? '#16a34a' : seg <= (v + lim) / 2 ? '#f59e0b' : '#dc2626'; };
-const nombreTramo = (seg, lim) => { const v = verdeSeg(); const p = puntosTiempo(seg, lim).toFixed(1).replace('.', ','); return seg <= v ? 'tramo verde · 3 puntos' : seg > lim ? 'fuera de tiempo · 0 puntos' : `${seg <= (v + lim) / 2 ? 'tramo ámbar' : 'tramo rojo'} · ${p} puntos`; };
+const puntosTiempo = (seg, lim) => { const v = Math.min(verdeSeg(), Math.round(lim * 0.75)); return seg <= v ? 3 : seg > lim ? 0 : 3 - 2 * (seg - v) / Math.max(1, lim - v); };
+const colorTramo = (seg, lim) => { const v = Math.min(verdeSeg(), Math.round(lim * 0.75)); return seg <= v ? '#16a34a' : seg <= (v + lim) / 2 ? '#f59e0b' : '#dc2626'; };
+const nombreTramo = (seg, lim) => { const v = Math.min(verdeSeg(), Math.round(lim * 0.75)); const p = puntosTiempo(seg, lim).toFixed(1).replace('.', ','); return seg <= v ? 'tramo verde · 3 puntos' : seg > lim ? 'fuera de tiempo · 0 puntos' : `${seg <= (v + lim) / 2 ? 'tramo ámbar' : 'tramo rojo'} · ${p} puntos`; };
 const claseNota = (n) => (n == null ? '' : n >= 7 ? 'n-alta' : n >= 5 ? 'n-media' : 'n-baja');
 
 const S = {
@@ -278,7 +278,7 @@ function verRubrica() {
       <tr><td>TOTAL</td><td></td><td class="num"><strong>10</strong></td><td colspan="2"></td></tr></tbody>
     </table></div>
     <h3 style="margin-top:14px">Tiempo: tramos de la barra</h3>
-    <p>El tiempo cuenta desde que pulsas «Atender» hasta que cierras. Objetivo: <strong>${tp} s en práctica</strong> y <strong>${te} s en evaluación</strong>.</p>
+    <p>El tiempo cuenta desde que pulsas «Atender» hasta que cierras. Objetivo: <strong>${tp} s en práctica</strong> y <strong>${te} s en evaluación</strong> (o el tiempo que fije el docente al iniciarla).</p>
     <div class="tramos">
       <div class="v">3 puntos<small>Verde · hasta ${verdeSeg()} s (práctica y evaluación)</small></div>
       <div class="a">3 → 2 puntos<small>Ámbar · de ${verdeSeg()} s a ${mid(tp)} s (práctica) / ${mid(te)} s (evaluación), baja poco a poco</small></div>
@@ -292,7 +292,7 @@ function verRubrica() {
     <ul class="mejoras">
       <li><strong>Online:</strong> ${tp} s por incidencia. Al entrar en tu puesto recibes los supuestos de práctica en orden aleatorio, uno tras otro, a tu ritmo, con corrección al cerrar cada uno.</li>
       <li><strong>Práctica:</strong> ${tp} s por incidencia. Ves la corrección y la nota al cerrar cada una.</li>
-      <li><strong>Evaluación:</strong> ${te} s por incidencia. Todos recibís los mismos casos, uno tras otro. No ves notas hasta que el docente finalice; después puedes descargar tu informe.</li>
+      <li><strong>Evaluación:</strong> ${te} s por incidencia, o el tiempo que fije el docente. Todos recibís los mismos casos, uno tras otro. No ves notas hasta que el docente finalice; después puedes descargar tu informe.</li>
     </ul>
     <h3 style="margin-top:14px">Criterios de evaluación del RA4 (RD 570/2023)</h3>
     <div class="tabla-env"><table class="tabla compacta"><tbody>${Object.entries(R.ce).map(([k, v]) => `<tr><td><strong>${k}</strong></td><td>${esc(v)}</td></tr>`).join('')}</tbody></table></div>
