@@ -137,6 +137,11 @@ const { lanzarServidor, cliente, hasta, esperar, ok } = require('./util');
     ok((await doc.pedir('doc_informes')).alumnos[0].incidencias[0].eval.limite === 150, 'evaluación: tiempo por incidencia fijado por el docente (150 s)');
     await hasta(() => a2.ultima.cola.length === 1 && a2.ultima.cola[0].abonado.includes('Teide'), 3000);
     ok(a1.ultima.cola.length === 1 && a1.ultima.cola[0].codigo === 'E130', 'evaluación: el segundo supuesto entra 5 s después de cerrar a tiempo, sin esperar al intervalo (y no al que no ha cerrado)');
+    await a2.pedir('coger', { id: a2.ultima.cola[0].id });
+    await a2.pedir('cerrar', { clasificacion: 'falsa_causa_tecnica', observaciones: 'Último supuesto de la evaluación cerrado por la alumna.' });
+    await hasta(() => a2.ultima.evalTerminada);
+    ok(a2.ultima.actividad.estado === 'en_curso' && !(await a2.pedir('mi_informe')).error && a2.ultima.notaMedia !== null, 'evaluación: quien termina todos sus supuestos descarga su informe aunque el resto siga');
+    ok((await a1.pedir('mi_informe')).error, 'evaluación: quien no ha terminado aún no lo descarga');
     // Fin automático cuando todos han cerrado todos los supuestos
     for (let t0 = Date.now(); Date.now() - t0 < 10000 && a2.ultima.actividad.estado !== 'finalizada';) {
       for (const al of [a1, a2, tarde]) {
