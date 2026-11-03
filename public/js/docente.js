@@ -1,6 +1,7 @@
 /* Panel docente: control de actividad y TEST, supuestos programados, puestos, observación, mensajería e informes */
 'use strict';
 (function () {
+  const minSeg = (s) => `${Math.floor(s / 60)} min${s % 60 ? ` ${s % 60} s` : ''}`;
   const D = { montado: false, firmas: {}, v: null, observando: null };
   // Reloj de actividad: con 1 h o más se muestra en días, horas y minutos
   const fmtLargo = (seg) => { if (seg < 3600) return fmt(seg); const m = Math.floor(seg / 60); const d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60); return `${d ? d + ' d ' : ''}${h} h ${String(m % 60).padStart(2, '0')} min`; };
@@ -8,7 +9,12 @@
   function montar() {
     if (D.montado) return;
     D.montado = true;
-    $('#d-intervalo').addEventListener('input', () => { $('#d-lim-txt').textContent = Number($('#d-intervalo').value) || 190; });
+    // Tiempo por incidencia en minutos y segundos (se guarda en segundos en #d-intervalo; entre 30 s y 15 min)
+    const syncIv = () => {
+      const s = Math.max(30, Math.min(900, (Number($('#d-iv-min').value) || 0) * 60 + (Number($('#d-iv-seg').value) || 0)));
+      $('#d-intervalo').value = s; $('#d-lim-txt').textContent = minSeg(s);
+    };
+    $('#d-iv-min').addEventListener('input', syncIv); $('#d-iv-seg').addEventListener('input', syncIv);
     $$('input[name="tipo-act"]').forEach((r) => r.addEventListener('change', () => {
       D.tipoTocado = true;
       // Evaluación: se marcan por defecto los supuestos que cubren un incidente de cada tipo (el docente puede cambiarlos)
@@ -35,12 +41,12 @@
         if (!sel.length && !await confirmar('No hay ningún supuesto marcado en «Entra». En la evaluación solo entran los casos que lances tú. ¿Iniciar igualmente?')) return;
         const libres = D.v.puestos.filter((p) => p.alumno && !p.alumno.esBot).length;
         const iv = Number($('#d-intervalo').value) || 190;
-        if (!await confirmar(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), iguales para los ${libres} alumno(s) conectados. Cada uno avanza a su ritmo: el siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${iv} s. Duración máxima: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
+        if (!await confirmar(`Evaluación: ${sel.length} supuesto(s) en este orden (${sel.map((p) => p.supId).join(', ')}), iguales para los ${libres} alumno(s) conectados. Cada uno avanza a su ritmo: el siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${minSeg(iv)}. Duración máxima: ${fmt(sel.length * iv)}. ¿Iniciar?`)) return;
       }
       res(await emitir('doc_iniciar', { tipo, intervalo: Number($('#d-intervalo').value) || 190, limite: Number($('#d-intervalo').value) || 190 }), tipo === 'evaluacion' ? 'Evaluación iniciada: el alumnado no verá notas hasta que la finalices.' : tipo === 'online' ? 'Modo online activado.' : 'Práctica iniciada.');
     });
     $('#d-finalizar').addEventListener('click', async () => {
-      if (!await confirmar('⚠ FIN DE LA ACTIVIDAD\n\nSe detendrá todo el ejercicio en todos los puestos: no entrarán más señales, las incidencias abiertas o en cola se cerrarán y evaluarán tal como estén y el alumnado no podrá seguir atendiendo.\n\n¿Finalizar la actividad?')) return;
+      if (!await confirmar('⚠ FIN DE LA ACTIVIDAD\n\nSi aceptas, FINALIZARÁS LAS PRUEBAS DE TODOS LOS ALUMNOS QUE ESTÁN EN CURSO.\n\nSe detendrá el ejercicio en todos los puestos: no entrarán más señales, las incidencias abiertas o en cola se cerrarán y evaluarán tal como estén, y el alumnado no podrá seguir atendiendo.\n\n¿Finalizar la actividad?', true)) return;
       res(await emitir('doc_finalizar'), 'Actividad finalizada. Ya puedes descargar los informes.');
     });
     $('#d-test').addEventListener('click', async () => {
@@ -205,9 +211,10 @@
     $$('#d-programa .p-dest').forEach((sel) => { sel.disabled = evalSel; if (evalSel) sel.value = 'todos'; });
     $('#d-eval-aviso').hidden = !evalSel;
     $('#d-eval-int').hidden = !evalSel;
-    $('#d-intervalo').disabled = a.estado === 'en_curso' && a.tipo === 'evaluacion';
-    if (a.estado === 'en_curso' && a.tipo === 'evaluacion' && a.intervalo) $('#d-intervalo').value = a.intervalo;
-    $('#d-lim-txt').textContent = Number($('#d-intervalo').value) || 190;
+    const ivBloq = a.estado === 'en_curso' && a.tipo === 'evaluacion';
+    $('#d-iv-min').disabled = ivBloq; $('#d-iv-seg').disabled = ivBloq;
+    if (ivBloq && a.intervalo) { $('#d-intervalo').value = a.intervalo; $('#d-iv-min').value = Math.floor(a.intervalo / 60); $('#d-iv-seg').value = a.intervalo % 60; }
+    $('#d-lim-txt').textContent = minSeg(Number($('#d-intervalo').value) || 190);
     // en evaluación no se lanza a mano: botones desactivados y minutos sin efecto
     $('#d-lanzar-todos').disabled = evalSel;
     $$('#d-programa [data-lanzar]').forEach((b) => { b.disabled = evalSel; });
@@ -310,7 +317,7 @@
     const ep = $('#d-eval-prog');
     if (ep && !ep.hidden) {
       const tot = Number(ep.dataset.total), env = Number(ep.dataset.enviados), iv = Number(ep.dataset.iv);
-      ep.textContent = `Cada alumno avanza a su ritmo: el más adelantado va por ${env}/${tot}. El siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${iv} s.`;
+      ep.textContent = `Cada alumno avanza a su ritmo: el más adelantado va por ${env}/${tot}. El siguiente entra 5 s después de cerrar el anterior a tiempo o, como máximo, cada ${minSeg(iv)}.`;
     }
     $('#d-reloj').textContent = a.inicio ? fmtLargo(((a.estado === 'finalizada' ? a.fin : ahora) - a.inicio) / 1000) : '--:--';
     const obj = S.datos ? S.datos.config.tiempoObjetivoSeg : 120;

@@ -158,10 +158,10 @@ function modal(titulo, html, onClose) {
   return $('#m-cuerpo');
 }
 // Confirmación dentro de la página (window.confirm se bloquea en iframes, p. ej. si se abre desde el Campus, y en algunos navegadores)
-function confirmar(texto) {
+function confirmar(texto, peligro) {
   return new Promise((ok) => {
     let resp = false;
-    const c = modal('Confirmar', `<p style="white-space:pre-line;font-size:1.02rem">${esc(texto)}</p><div class="fila-botones" style="justify-content:flex-end;margin-top:14px"><button class="btn" type="button" data-conf="no">Cancelar</button><button class="btn rojo" type="button" data-conf="si">Aceptar</button></div>`, () => ok(resp));
+    const c = modal(peligro ? '⚠ Atención' : 'Confirmar', `<p class="${peligro ? 'conf-peligro' : ''}" style="white-space:pre-line;font-size:1.02rem">${esc(texto)}</p><div class="fila-botones" style="justify-content:flex-end;margin-top:14px"><button class="btn" type="button" data-conf="no">Cancelar</button><button class="btn rojo" type="button" data-conf="si">Aceptar</button></div>`, () => ok(resp));
     c.querySelector('[data-conf="si"]').addEventListener('click', () => { resp = true; cerrarModal(); });
     c.querySelector('[data-conf="no"]').addEventListener('click', cerrarModal);
     setTimeout(() => c.querySelector('[data-conf="si"]').focus(), 40);
