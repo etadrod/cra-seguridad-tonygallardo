@@ -5,11 +5,11 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = (seg) => { seg = Math.max(0, Math.floor(seg)); return `${String(Math.floor(seg / 60)).padStart(2, '0')}:${String(seg % 60).padStart(2, '0')}`; };
 const hora = (ms) => new Date(ms).toLocaleTimeString('es-ES', { timeZone: 'Atlantic/Canary', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-// Barra de tiempo: verde hasta 140 s (3 puntos); después baja lineal hasta 1 punto en el objetivo (ámbar 1.ª mitad, rojo 2.ª); fuera 0
-const verdeSeg = () => (S.datos && S.datos.rubrica.tiempo.verdeSeg) || 140;
-const puntosTiempo = (seg, lim) => { const v = Math.min(verdeSeg(), Math.round(lim * 0.75)); return seg <= v ? 3 : seg > lim ? 0 : 3 - 2 * (seg - v) / Math.max(1, lim - v); };
-const colorTramo = (seg, lim) => { const v = Math.min(verdeSeg(), Math.round(lim * 0.75)); return seg <= v ? '#16a34a' : seg <= (v + lim) / 2 ? '#f59e0b' : '#dc2626'; };
-const nombreTramo = (seg, lim) => { const v = Math.min(verdeSeg(), Math.round(lim * 0.75)); const p = puntosTiempo(seg, lim).toFixed(1).replace('.', ','); return seg <= v ? 'tramo verde · 3 puntos' : seg > lim ? 'fuera de tiempo · 0 puntos' : `${seg <= (v + lim) / 2 ? 'tramo ámbar' : 'tramo rojo'} · ${p} puntos`; };
+// Barra de tiempo: verde hasta el 60 % del tiempo (3 puntos), ámbar del 60 al 90 % y rojo del 90 al 100 %; la puntuación baja de 3 a 1 desde el 60 %; fuera 0
+const FT = () => ({ v: (S.datos && S.datos.rubrica.tiempo.verde) || 0.6, a: (S.datos && S.datos.rubrica.tiempo.ambar) || 0.9 });
+const puntosTiempo = (seg, lim) => { const v = Math.round(lim * FT().v); return seg <= v ? 3 : seg > lim ? 0 : 3 - 2 * (seg - v) / Math.max(1, lim - v); };
+const colorTramo = (seg, lim) => (seg <= Math.round(lim * FT().v) ? '#16a34a' : seg <= lim * FT().a ? '#f59e0b' : '#dc2626');
+const nombreTramo = (seg, lim) => { const p = puntosTiempo(seg, lim).toFixed(1).replace('.', ','); return seg <= Math.round(lim * FT().v) ? 'tramo verde · 3 puntos' : seg > lim ? 'fuera de tiempo · 0 puntos' : `${seg <= lim * FT().a ? 'tramo ámbar' : 'tramo rojo'} · ${p} puntos`; };
 const claseNota = (n) => (n == null ? '' : n >= 7 ? 'n-alta' : n >= 5 ? 'n-media' : 'n-baja');
 
 const S = {
@@ -267,7 +267,7 @@ function verRubrica() {
   if (!S.datos) return;
   const R = S.datos.rubrica, C = S.datos.criterios, cfg = S.datos.config;
   const tp = cfg.tiempoPracticaSeg || 240, te = cfg.tiempoEvaluacionSeg || 190;
-  const mid = (lim) => Math.round((verdeSeg() + lim) / 2);
+  const pv = (lim) => Math.round(lim * FT().v), pa = (lim) => Math.round(lim * FT().a);
   modal('Rúbrica de evaluación · RA4', `
     <p class="rub-int">${esc(R.ra)}<br><small>${esc(R.fuente)}</small></p>
     <h3>Cómo se calcula tu nota</h3>
@@ -280,9 +280,9 @@ function verRubrica() {
     <h3 style="margin-top:14px">Tiempo: tramos de la barra</h3>
     <p>El tiempo cuenta desde que pulsas «Atender» hasta que cierras. Objetivo: <strong>${tp} s en práctica</strong> y <strong>${te} s en evaluación</strong> (o el tiempo que fije el docente al iniciarla).</p>
     <div class="tramos">
-      <div class="v">3 puntos<small>Verde · hasta ${verdeSeg()} s (práctica y evaluación)</small></div>
-      <div class="a">3 → 2 puntos<small>Ámbar · de ${verdeSeg()} s a ${mid(tp)} s (práctica) / ${mid(te)} s (evaluación), baja poco a poco</small></div>
-      <div class="r">2 → 1 punto<small>Rojo · hasta ${tp} s / ${te} s</small></div>
+      <div class="v">3 puntos<small>Verde · hasta el 60 % del tiempo: ${pv(tp)} s (práctica) / ${pv(te)} s (evaluación)</small></div>
+      <div class="a">3 → 1,5 puntos<small>Ámbar · del 60 al 90 %: hasta ${pa(tp)} s / ${pa(te)} s, baja poco a poco</small></div>
+      <div class="r">1,5 → 1 punto<small>Rojo · del 90 al 100 %: hasta ${tp} s / ${te} s</small></div>
       <div class="f">0 puntos<small>Fuera de tiempo · la llamada sigue hasta que cierres</small></div>
     </div>
     <p class="ayuda">Los puntos de tiempo se multiplican por el porcentaje que consigas en el procedimiento (los otros 7 puntos): cerrar rápido y mal no puntúa.</p>

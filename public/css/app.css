@@ -138,7 +138,7 @@ textarea { resize: vertical; }
 .temporizador { display: grid; grid-template-columns: auto 220px; grid-template-rows: auto auto; column-gap: 12px; align-items: center; }
 .t-num { font-family: var(--mono); font-size: 1.6rem; font-weight: 800; grid-row: span 2; }
 .t-num small { font-size: .8rem; color: var(--suave); font-weight: 600; margin-left: 4px; }
-.t-barra { height: 12px; border-radius: 99px; background: linear-gradient(90deg, rgba(22,163,74,.22) 0 40%, rgba(245,158,11,.22) 40% 75%, rgba(220,38,38,.22) 75% 100%); overflow: hidden; }
+.t-barra { height: 12px; border-radius: 99px; background: linear-gradient(90deg, rgba(22,163,74,.22) 0 60%, rgba(245,158,11,.22) 60% 90%, rgba(220,38,38,.22) 90% 100%); overflow: hidden; }
 .t-barra div { height: 100%; width: 0; border-radius: 99px; transition: width .25s linear, background-color .3s; }
 .t-estado { font-size: .78rem; color: var(--suave); }
 .temporizador.fuera .t-num { color: var(--rojo); animation: latido 1s infinite; }
